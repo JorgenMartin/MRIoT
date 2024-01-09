@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "com.meta.xr.mrutilitykit": "file:C:/Users/Jorgen/.apps/UnityPackageManager/com.meta.xr.mrutilitykit-60.0.0/com.meta.xr.mrutilitykit-60.0.0/package",
+    "com.meta.xr.mrutilitykit": "file:../Dependencies/com.meta.xr.mrutilitykit-60.0.0.tar.gz",
     "com.meta.xr.sdk.audio": "60.0.0",
     "com.meta.xr.sdk.haptics": "60.0.0",
-    "com.meta.xr.sdk.interaction": "file:C:/Users/Jorgen/.apps/UnityPackageManager/com.meta.xr.sdk.interaction-60.0.0/com.meta.xr.sdk.interaction-60.0.0/package",
+    "com.meta.xr.sdk.interaction": "file:../Dependencies/com.meta.xr.sdk.interaction-60.0.0.tar.gz",
     "com.meta.xr.simulator": "60.0.0",
     "com.unity.collab-proxy": "2.2.0",
     "com.unity.feature.development": "1.0.2",
