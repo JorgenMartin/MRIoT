@@ -1,12 +1,5 @@
 # Mixed Reality - Internet of Things
 
-
-## Setup
-
-
-### Unity Editor and modules
-
-- Unity Editor v2023.2.4f1
-  - Modules: "Android Build Support", "Universal Windows Platform Build Support"
-  - Visual Studio with "Game Development with Unity"
-
+Project is split in two clients:
+- [HoloLensClient](./HoloLensClient)
+- [MetaQuestClient](./MetaQuestClient)
