@@ -58,4 +58,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc00b81230173954c83febafc28d1d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  qrCodePrefab: {fileID: 5688896722800035910, guid: 3c71f3f2aea0dc54d9ecf4139dd9157a, type: 3}
+  qrCodePrefab: {fileID: 1200717071578424, guid: 8b62604eb67ff464088ab7ff5cd00a7d, type: 3}

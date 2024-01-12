@@ -100,7 +100,7 @@ namespace Svanesjo.MRIoT
                         GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity); // TODO: Figure out rotation?
 
                         qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                        // TODO qrCodeObject.GetComponent<localQRCode>().qrCode = action.qrCode;
+                        qrCodeObject.GetComponent<QRDataVisualizer>().qrCode = action.qrCode;
                         Debug.Log("QRCodesVisualizer adding code with data = " + action.qrCode.Data);
                         qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
                     }
@@ -111,7 +111,7 @@ namespace Svanesjo.MRIoT
                             GameObject qrCodeObject =
                                 Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
                             qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                            // TODO qrCodeObject.GetComponent<localQRCode>().qrCode = action.qrCode;
+                            qrCodeObject.GetComponent<QRDataVisualizer>().qrCode = action.qrCode;
                             Debug.Log("QRCodesVisualizer updating? code with data = " + action.qrCode.Data);
                             qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
                         }

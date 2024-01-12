@@ -53,7 +53,7 @@ namespace Svanesjo.MRIoT
                 }
                 else
                 {
-                    Debug.LogWarning("Cannot locate " + Id);
+                    // Debug.LogWarning("Cannot locate " + Id);
                 }
             }
         }
