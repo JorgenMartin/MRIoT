@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Svanesjo.MRIoT
+namespace Svanesjo.MRIoT.Utility
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
