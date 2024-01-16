@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 1200717071578424, guid: 8b62604eb67ff464088ab7ff5cd00a7d, type: 3}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[0].key
@@ -152,6 +152,18 @@ PrefabInstance:
       value: Birk
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[3].key
+      value: 007
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[4].key
+      value: 010
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[5].key
+      value: 021
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[0].value
       value: 
       objectReference: {fileID: 76862849486285448, guid: 8c2504a2b5cb0c64d98513e257f5de2d, type: 3}
@@ -163,6 +175,18 @@ PrefabInstance:
       propertyPath: visualizerPrefabsList.Array.data[2].value
       value: 
       objectReference: {fileID: 4569530571127012298, guid: 4264606e1ae52e3479da73322edb2dcb, type: 3}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[3].value
+      value: 
+      objectReference: {fileID: 4064442297026677719, guid: 625e782961fb5dd4c86f5db9c46bcead, type: 3}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[4].value
+      value: 
+      objectReference: {fileID: 4064442297026677719, guid: 625e782961fb5dd4c86f5db9c46bcead, type: 3}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[5].value
+      value: 
+      objectReference: {fileID: 4064442297026677719, guid: 625e782961fb5dd4c86f5db9c46bcead, type: 3}
     - target: {fileID: 6917500754848938893, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: m_Name
       value: QRCodesManager
@@ -704,6 +728,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedTileUI 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4064442297026677719, guid: 83a52b81e24538b48b60957fd13f44f7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4064442297026677722, guid: 83a52b81e24538b48b60957fd13f44f7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.1
@@ -1241,6 +1269,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedTileUI 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4064442297026677719, guid: 83a52b81e24538b48b60957fd13f44f7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4064442297026677722, guid: 83a52b81e24538b48b60957fd13f44f7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.1
@@ -1366,6 +1398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedTileUI 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4064442297026677719, guid: 83a52b81e24538b48b60957fd13f44f7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4064442297026677722, guid: 83a52b81e24538b48b60957fd13f44f7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.1
@@ -1488,7 +1524,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1351710989
 MonoBehaviour:
   m_ObjectHideFlags: 0

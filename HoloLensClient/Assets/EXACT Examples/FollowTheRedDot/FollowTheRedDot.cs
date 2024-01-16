@@ -14,6 +14,8 @@ namespace Exact.Example
         [SerializeField]
         bool waitForAllConnected = false;
 
+        [SerializeField] int minimumConnectedBeforeStart = 2;
+
         [SerializeField] Color color = Color.red;
         [SerializeField] float intensity = 0.5f;
         [SerializeField, MinMaxSlider(0, 1)] Vector2 fadeIntensity = new Vector2(0, 1);
@@ -44,7 +46,7 @@ namespace Exact.Example
             {
                 yield return null;
                 var devices = exactManager.GetConnectedDevices();
-                if (devices.Count > 0)
+                if (devices.Count >= minimumConnectedBeforeStart)
                 {
                     Restart();
                 }
@@ -111,5 +113,17 @@ namespace Exact.Example
             yield return new WaitForSeconds(time);
             Restart();
         }
+        // TODO: unnecessary?
+        // IEnumerator WaitThenRestart()
+        // {
+        //     yield return new WaitForSeconds(time * 5);
+        //     Restart();
+        // }
+        //
+        // public void AddedNewDevice()
+        // {
+        //     Debug.Log("FollowTheRedDot restarting after adding new device");
+        //     StartCoroutine(WaitThenRestart());
+        // }
     }
 }

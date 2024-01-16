@@ -58,6 +58,8 @@ namespace Exact
             {
                 devices.Add(device);
                 mqttHandler.AddDevice(device);
+                // TODO: unnecessary?
+                // mqttHandler.SendMessageImediate("exact/all_devices/are_you_connected");
             }
         }
 
