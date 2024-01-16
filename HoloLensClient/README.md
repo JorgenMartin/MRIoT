@@ -30,6 +30,9 @@ This project was set up following [this article by Microsoft](https://learn.micr
   - MRTK UX Components (Non-Canvas) (3.1.0, under MRTK3)
 - From NuGet (handled by included Unity plugin [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)):
   - [Microsoft.MixedReality.QR](https://www.nuget.org/Packages/Microsoft.MixedReality.QR) (0.5.3037)
+- Other:
+  - EXACT (copied over from https://github.com/DagSvanaes/Unity-Arduino-IoT.git)
+  - NaughtyAttributes (installed from git: https://github.com/dbrizov/NaughtyAttributes.git#upm)
 
 
 ## Run on the HoloLens 2
