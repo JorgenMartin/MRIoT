@@ -62,6 +62,17 @@ _Might be necessary for USB connection..._
 - Enter the pin from the HoloLens 2 on the computer, and create (and remember) username and password
 
 
+# Permissions/Capabilities
+
+The HoloLensClient requests the following capabilities from the OS:
+- Internet (Client)
+- Internet (Client & Server)
+- Private Network (Client & Server)
+- WebCam
+- SpatialPerception
+- GazeInput
+
+
 # Development Help
 
 
