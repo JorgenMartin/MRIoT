@@ -1,0 +1,11 @@
+# ninja log v5
+59	732	7276260304140588	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	d87e2be7f5e9d59e
+734	1135	7276260308923946	C:/JMSFiles/Svanesjo/mriot/MetaQuestClient/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6w4z1m4k/obj/arm64-v8a/libswappywrapper.so	b301699c43a2c50c
+40	1686	7276260316010780	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	c7d6b0f6cb60fbf1
+23	1774	7276260316911420	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	98f2c8c13311fd9e
+9	1802	7276260317195880	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	4c15a95a2afd87e1
+49	1837	7276260317540520	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	e0a5f2cd4cb88823
+1	1881	7276260318010522	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	474d5dd7ac53295d
+31	2028	7276260319503752	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	b762df3f1aa51975
+16	2118	7276260320426696	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	23f96fc47d71172d
+2118	2231	7276260321274937	C:/JMSFiles/Svanesjo/mriot/MetaQuestClient/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6w4z1m4k/obj/arm64-v8a/libgame.so	5c39f3229e45688b
