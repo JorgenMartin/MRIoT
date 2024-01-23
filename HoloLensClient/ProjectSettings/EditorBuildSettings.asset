@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HoloLens.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/MetaQuest.unity
+    guid: 866074d948ae5534fb86d9319631e886
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 4eea1574a784ca543adfb73802221741, type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 66861a85ae3b44848951e0032f282295, type: 2}
