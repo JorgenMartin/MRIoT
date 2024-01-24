@@ -309,7 +309,7 @@ MonoBehaviour:
     EnableTimeResync: 0
     TimeResyncInterval: 30
     EnsureNetworkVariableLengthSafety: 0
-    EnableSceneManagement: 1
+    EnableSceneManagement: 0
     ForceSamePrefabs: 1
     RecycleNetworkIds: 1
     NetworkIdRecycleDelay: 120
@@ -666,6 +666,10 @@ PrefabInstance:
     - target: {fileID: 1200717071578424, guid: febed53a94d97ed4ba68c48f22fffd3f, type: 3}
       propertyPath: m_Name
       value: MessageHandler
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200717071578424, guid: febed53a94d97ed4ba68c48f22fffd3f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4436408278160384, guid: febed53a94d97ed4ba68c48f22fffd3f, type: 3}
       propertyPath: m_LocalPosition.x
