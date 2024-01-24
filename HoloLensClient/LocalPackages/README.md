@@ -8,6 +8,8 @@
 1. Download a tarball of the Meta MR/XR packages depending on TextMeshPro from [Meta NPM Server](https://npm.developer.oculus.com/):
    - [Meta XR Interaction SDK](https://npm.developer.oculus.com/-/web/detail/com.meta.xr.sdk.interaction)
    - [Meta MR Utility Kit](https://npm.developer.oculus.com/-/web/detail/com.meta.xr.mrutilitykit)
+2. Extract the tarball
+   - E.g. using `tar -xvzf <TarballName>.tar.gz`
 2. Edit the `Package.json` of each package
    - Remove `com.unity.textmeshpro` from the dependencies:
      ```
@@ -18,8 +20,7 @@
      }
      ```
 3. Repack each package as tarballs:
-   - Assuming the tarballs is extracted as `<TarballName>/<TarballName>/package/...`
-   - Navigate to `<TarballName>/<TarballName>/`
+   - Ensure you're in the directory with the root `package` folder
    - Run `tar -cvzf <TarballName>.tar.gz package`
 4. Move the tarball into this directory (`<GitRepo>/LocalPackages`)
 5. Open the project in Unity and open the Package Manager (Window > Package Manager)
