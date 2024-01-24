@@ -5,14 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/HoloLens.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MetaQuest.unity
     guid: 866074d948ae5534fb86d9319631e886
+  - enabled: 0
+    path: Assets/Scenes/HLDemo_01.unity
+    guid: fcc4f8d582cc9e44d886fe48e66faa09
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 4eea1574a784ca543adfb73802221741, type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 66861a85ae3b44848951e0032f282295, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a299d9579ec6ad343ae9ecdd6fbefc2e, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 459177a35450f3b489ff5a01e93bab25, type: 2}
+  m_UseUCBPForAssetBundles: 0
