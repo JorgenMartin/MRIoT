@@ -28,6 +28,7 @@ namespace Svanesjo.MRIoT
 
     public class QRCodesManager : Singleton<QRCodesManager>
     {
+        private DateTime _initTime = DateTime.Now;
         public bool AutoStartQRTracking = true;
         public bool IsTrackerRunning { get; private set; }
         public bool IsSupported { get; private set; }
@@ -42,7 +43,7 @@ namespace Svanesjo.MRIoT
         private bool _capabilityInitialized = false;
         private QRCodeWatcherAccessStatus _accessStatus;
         private Task<QRCodeWatcherAccessStatus> _capabilityTask;
-        
+
         public Guid GetIdForQRCode(string qrCodeData)
         {
             lock (_qrCodesList)
@@ -169,17 +170,31 @@ namespace Svanesjo.MRIoT
             {
                 QRCodeUpdated?.Invoke(this, QRCodeEventArgs.Create(args.Code));
             }
+            else
+            {
+                addQRCode(sender, args.Code);
+            }
         }
 
         private void QRCodeWatcher_Added(object sender, QRCodeAddedEventArgs args)
         {
             Debug.Log("QRCodesManager QRCodeWatcher_Added : " + args.Code.Data);
+            addQRCode(sender, args.Code);
+        }
+
+        private void addQRCode(object sender, QRCode code)
+        {
+            if (code.LastDetectedTime < _initTime)
+            {
+                Debug.Log($"QRCodesManager Code '{code.Data}' last detected prior to application start, aborting add");
+                return;
+            }
 
             lock (_qrCodesList)
             {
-                _qrCodesList[args.Code.Id] = args.Code;
+                _qrCodesList[code.Id] = code;
             }
-            QRCodeAdded?.Invoke(this, QRCodeEventArgs.Create(args.Code));
+            QRCodeAdded?.Invoke(this, QRCodeEventArgs.Create(code));
         }
 
         private void QRCodeWatcher_EnumerationCompleted(object sender, object e)
