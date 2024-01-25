@@ -1,35 +1,36 @@
 using System;
 using UnityEngine;
 
+#nullable enable
+
 namespace Svanesjo.MRIoT.DataVisualizers
 {
     public class DebuggerPrefabDataVisualizer : QRDataVisualizer
     {
-        private GameObject _qrCodeCube;
-
         private float PhysicalSize { get; set; } = 0.1f;
         private string CodeText { get; set; } = "Dummy";
 
-        private TextMesh _qrID;
-        private TextMesh _qrNodeID;
-        private TextMesh _qrText;
-        private TextMesh _qrVersion;
-        private TextMesh _qrTimeStamp;
-        private TextMesh _qrSize;
-        private GameObject _qrInfo;
+        private GameObject _qrCodeCube = null!;
+        private GameObject _qrInfo = null!;
+        private TextMesh _qrID = null!;
+        private TextMesh _qrNodeID = null!;
+        private TextMesh _qrText = null!;
+        private TextMesh _qrVersion = null!;
+        private TextMesh _qrTimeStamp = null!;
+        private TextMesh _qrSize = null!;
 
         private long _lastTimeStamp = 0;
 
         // Start is called before the first frame update
         void Start()
         {
-            if (qrCode == null)
+            if (Code == null)
             {
                 throw new Exception("QR Code Empty");
             }
 
-            PhysicalSize = qrCode.PhysicalSideLength;
-            CodeText = qrCode.Data;
+            PhysicalSize = Code.PhysicalSideLength;
+            CodeText = Code.Data;
 
             _qrCodeCube = gameObject.transform.Find("Cube").gameObject;
             _qrInfo = gameObject.transform.Find("QRInfo").gameObject;
@@ -40,34 +41,39 @@ namespace Svanesjo.MRIoT.DataVisualizers
             _qrTimeStamp = _qrInfo.transform.Find("QRTimeStamp").gameObject.GetComponent<TextMesh>();
             _qrSize = _qrInfo.transform.Find("QRSize").gameObject.GetComponent<TextMesh>();
 
-            _qrID.text = "Id:" + qrCode.Id;
-            _qrNodeID.text = "NodeId:" + qrCode.SpatialGraphNodeId;
+            if (_qrInfo is null || _qrCodeCube is null || _qrID is null || _qrNodeID is null || _qrText is null
+                || _qrVersion is null || _qrTimeStamp is null || _qrSize is null)
+            {
+                throw new Exception("Components not found");
+            }
+
+            _qrID.text = "Id:" + Code.Id;
+            _qrNodeID.text = "NodeId:" + Code.SpatialGraphNodeId;
             _qrText.text = CodeText;
 
-            _qrVersion.text = "Ver: " + qrCode.Version;
-            _qrSize.text = "Size:" + qrCode.PhysicalSideLength.ToString("F04") + "m";
-            _qrTimeStamp.text = "Time:" + qrCode.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            _qrVersion.text = "Ver: " + Code.Version;
+            _qrSize.text = "Size:" + Code.PhysicalSideLength.ToString("F04") + "m";
+            _qrTimeStamp.text = "Time:" + Code.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             _qrTimeStamp.color = Color.yellow;
-            Debug.Log("Id= " + qrCode.Id + "NodeId= " + qrCode.SpatialGraphNodeId + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + qrCode.SystemRelativeLastDetectedTime.Ticks + " QRVersion = " + qrCode.Version + " QRData = " + CodeText);
+            Debug.Log("Id= " + Code.Id + "NodeId= " + Code.SpatialGraphNodeId + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + Code.SystemRelativeLastDetectedTime.Ticks + " QRVersion = " + Code.Version + " QRData = " + CodeText);
         }
 
         void UpdatePropertiesDisplay()
         {
+            if (Code == null || _lastTimeStamp == Code.SystemRelativeLastDetectedTime.Ticks) return;
+
             // Update properties that change
-            if (qrCode != null && _lastTimeStamp != qrCode.SystemRelativeLastDetectedTime.Ticks)
-            {
-                _qrSize.text = "Size:" + qrCode.PhysicalSideLength.ToString("F04") + "m";
+            _qrSize.text = "Size:" + Code.PhysicalSideLength.ToString("F04") + "m";
 
-                _qrTimeStamp.text = "Time:" + qrCode.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                _qrTimeStamp.color = _qrTimeStamp.color==Color.yellow? Color.white: Color.yellow;
-                PhysicalSize = qrCode.PhysicalSideLength;
-                Debug.Log("Id= " + qrCode.Id + "NodeId= " + qrCode.SpatialGraphNodeId + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + qrCode.SystemRelativeLastDetectedTime.Ticks + " Time = " + qrCode.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            _qrTimeStamp.text = "Time:" + Code.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            _qrTimeStamp.color = _qrTimeStamp.color==Color.yellow? Color.white: Color.yellow;
+            PhysicalSize = Code.PhysicalSideLength;
+            Debug.Log("Id= " + Code.Id + "NodeId= " + Code.SpatialGraphNodeId + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + Code.SystemRelativeLastDetectedTime.Ticks + " Time = " + Code.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
 
-                _qrCodeCube.transform.localPosition = new Vector3(PhysicalSize / 2.0f, PhysicalSize / 2.0f, 0.0f);
-                _qrCodeCube.transform.localScale = new Vector3(PhysicalSize, PhysicalSize, 0.005f);
-                _lastTimeStamp = qrCode.SystemRelativeLastDetectedTime.Ticks;
-                _qrInfo.transform.localScale = new Vector3(PhysicalSize/0.2f, PhysicalSize / 0.2f, PhysicalSize / 0.2f);
-            }
+            _qrCodeCube.transform.localPosition = new Vector3(PhysicalSize / 2.0f, PhysicalSize / 2.0f, 0.0f);
+            _qrCodeCube.transform.localScale = new Vector3(PhysicalSize, PhysicalSize, 0.005f);
+            _lastTimeStamp = Code.SystemRelativeLastDetectedTime.Ticks;
+            _qrInfo.transform.localScale = new Vector3(PhysicalSize/0.2f, PhysicalSize / 0.2f, PhysicalSize / 0.2f);
         }
 
         // Update is called once per frame

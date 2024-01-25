@@ -152,7 +152,7 @@ MonoBehaviour:
       - m_Target: {fileID: -8105501080278872149}
         m_TargetAssemblyTypeName: Svanesjo.MRIoT.DataVisualizers.QRTileVisualizer,
           Assembly-CSharp
-        m_MethodName: tapped
+        m_MethodName: Tapped
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

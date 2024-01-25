@@ -356,7 +356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5845766260964558755, guid: 402d6c0c40eb88846813ebd89b58f7b3, type: 3}
       propertyPath: OnTap.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: tapped
+      value: Tapped
       objectReference: {fileID: 0}
     - target: {fileID: 5845766260964558755, guid: 402d6c0c40eb88846813ebd89b58f7b3, type: 3}
       propertyPath: OnTap.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

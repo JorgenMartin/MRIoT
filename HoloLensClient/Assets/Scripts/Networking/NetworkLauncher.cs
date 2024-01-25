@@ -4,6 +4,8 @@ using Unity.Netcode;
 using UnityEngine;
 using Application = UnityEngine.Device.Application;
 
+#nullable enable
+
 namespace Svanesjo.MRIoT
 {
     public enum StartType
@@ -15,9 +17,9 @@ namespace Svanesjo.MRIoT
 
     public class NetworkLauncher : MonoBehaviour
     {
-        [Required] public Material serverMaterial;
-        [Required] public Material hostMaterial;
-        [Required] public Material clientMaterial = null;
+        [Required] public Material serverMaterial = null!;
+        [Required] public Material hostMaterial = null!;
+        [Required] public Material clientMaterial = null!;
 
         public StartType editorStartType = StartType.Server;
         public StartType deviceStartType = StartType.Client;

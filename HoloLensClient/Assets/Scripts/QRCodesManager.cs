@@ -5,6 +5,8 @@ using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.Utility;
 using UnityEngine;
 
+#nullable enable
+
 namespace Svanesjo.MRIoT
 {
     public static class QRCodeEventArgs
@@ -28,21 +30,21 @@ namespace Svanesjo.MRIoT
 
     public class QRCodesManager : Singleton<QRCodesManager>
     {
-        private DateTime _initTime = DateTime.Now;
-        public bool AutoStartQRTracking = true;
+        private readonly DateTime _initTime = DateTime.Now;
+        public bool autoStartQRTracking = true;
         public bool IsTrackerRunning { get; private set; }
         public bool IsSupported { get; private set; }
 
-        public event EventHandler<bool> QRCodesTrackingStateChanged;
-        public event EventHandler<QRCodeEventArgs<QRCode>> QRCodeAdded;
-        public event EventHandler<QRCodeEventArgs<QRCode>> QRCodeUpdated;
-        public event EventHandler<QRCodeEventArgs<QRCode>> QRCodeRemoved;
-        private SortedDictionary<Guid, QRCode> _qrCodesList = new();
+        public event EventHandler<bool>? QRCodesTrackingStateChanged;
+        public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeAdded;
+        public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeUpdated;
+        public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeRemoved;
+        private readonly SortedDictionary<Guid, QRCode> _qrCodesList = new();
 
-        private QRCodeWatcher _qrTracker;
+        private QRCodeWatcher? _qrTracker;
         private bool _capabilityInitialized = false;
         private QRCodeWatcherAccessStatus _accessStatus;
-        private Task<QRCodeWatcherAccessStatus> _capabilityTask;
+        private Task<QRCodeWatcherAccessStatus>? _capabilityTask;
 
         public Guid GetIdForQRCode(string qrCodeData)
         {
@@ -91,7 +93,7 @@ namespace Svanesjo.MRIoT
                 Debug.Log("QRCodesManager : exception starting the tracker " + ex);
             }
 
-            if (AutoStartQRTracking)
+            if (autoStartQRTracking)
             {
                 StartQRTracking();
             }
@@ -152,7 +154,7 @@ namespace Svanesjo.MRIoT
                 QRCodeRemoved?.Invoke(this, QRCodeEventArgs.Create(args.Code));
             }
         }
-        
+
         private void QRCodeWatcher_Updated(object sender, QRCodeUpdatedEventArgs args)
         {
             Debug.Log("QRCodesManager QRCodeWatcher_Updated : " + args.Code.Data);
@@ -172,17 +174,17 @@ namespace Svanesjo.MRIoT
             }
             else
             {
-                addQRCode(sender, args.Code);
+                AddQRCode(args.Code);
             }
         }
 
         private void QRCodeWatcher_Added(object sender, QRCodeAddedEventArgs args)
         {
             Debug.Log("QRCodesManager QRCodeWatcher_Added : " + args.Code.Data);
-            addQRCode(sender, args.Code);
+            AddQRCode(args.Code);
         }
 
-        private void addQRCode(object sender, QRCode code)
+        private void AddQRCode(QRCode code)
         {
             if (code.LastDetectedTime < _initTime)
             {

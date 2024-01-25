@@ -4,6 +4,8 @@ using Exact.Example;
 using UnityEngine;
 using System.Collections;
 
+#nullable enable
+
 namespace Svanesjo.MRIoT.Things
 {
     [RequireComponent(typeof(ExactManager))]
@@ -11,19 +13,23 @@ namespace Svanesjo.MRIoT.Things
     {
         [SerializeField] private int minimumConnectedBeforeStart = 1;
         [SerializeField] private float intensity = 0.5f;
-        [SerializeField] private Color[] colors;
+        [SerializeField] private Color[] colors = {};
         [SerializeField] private int colorIndex = 0;
 
-        private ExactManager _exactManager;
-        private Device _active;
+        private ExactManager _exactManager = null!;
+        private Device? _active;
 
-        void Start()
+        private void Start()
         {
             if (colorIndex >= colors.Length)
             {
                 throw new Exception($"colorIndex {colorIndex} out of bounds for color list of length {colors.Length}");
             }
             _exactManager = GetComponent<ExactManager>();
+            if (_exactManager is null)
+            {
+                throw new Exception("Component ExactManager not found");
+            }
             StartCoroutine(Startup());
         }
 
@@ -78,7 +84,10 @@ namespace Svanesjo.MRIoT.Things
         private void SetNewColor()
         {
             StopAllCoroutines();
-            _active.GetComponent<LedRing>().SetColorAndIntensity(NextColor(), intensity);
+            if (_active is not null && _active.isActiveAndEnabled) // TODO
+            {
+                _active.GetComponent<LedRing>().SetColorAndIntensity(NextColor(), intensity);
+            }
         }
     }
 }

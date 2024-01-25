@@ -4,29 +4,39 @@ using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.DataVisualizers;
 using UnityEngine;
 
+#nullable enable
+
 namespace Svanesjo.MRIoT
 {
     [Serializable]
     public class StringGameObjectPair
     {
-        public string key;
-        public GameObject value;
+        public string? key;
+        public GameObject? value;
     }
 
     public class QRCodesVisualizer : MonoBehaviour
     {
         [SerializeField]
         private List<StringGameObjectPair> visualizerPrefabsList = new();
-        private Dictionary<string, GameObject> _visualizerPrefabsMap = new();
+        private readonly Dictionary<string, GameObject?> _visualizerPrefabsMap = new();
 
-        public GameObject fallbackPrefab;
+        [SerializeField]
+        private GameObject? fallbackPrefab;
+
+        private readonly SortedDictionary<Guid, GameObject> _visualizersList = new();
+        private bool _clearExisting = false;
 
         // Awake is called when the script instance is being loaded
         private void Awake()
         {
             foreach (var pair in visualizerPrefabsList)
             {
-                if (pair.value.GetComponent<QRDataVisualizer>() == null)
+                if (pair.key is null)
+                {
+                    throw new Exception("Prefab key cannot be null");
+                }
+                if (pair.value is not null && pair.value.GetComponent<QRDataVisualizer>() == null)
                 {
                     throw new Exception("Prefab must extend QRDataVisualizer");
                 }
@@ -34,25 +44,22 @@ namespace Svanesjo.MRIoT
             }
         }
 
-        private SortedDictionary<Guid, GameObject> _visualizersList;
-        private bool _clearExisting = false;
-
         private struct ActionData
         {
-            public enum Type
+            public enum ActionType
             {
                 Added,
                 Updated,
                 Removed
             }
 
-            public readonly Type type;
-            public readonly QRCode qrCode;
+            public readonly ActionType Type;
+            public readonly QRCode Code;
 
-            public ActionData(Type type, QRCode qrCode) : this()
+            public ActionData(ActionType type, QRCode qrCode) : this()
             {
-                this.type = type;
-                this.qrCode = qrCode;
+                Type = type;
+                Code = qrCode;
             }
         }
 
@@ -62,19 +69,13 @@ namespace Svanesjo.MRIoT
         void Start()
         {
             Debug.Log("QRCodesVisualizer start");
-            _visualizersList = new SortedDictionary<Guid, GameObject>();
 
             QRCodesManager.Instance.QRCodesTrackingStateChanged += Instance_QRCodesTrackingStateChanged;
             QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
             QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
             QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
-
-            if (fallbackPrefab == null)
-            {
-                throw new Exception("Fallback Prefab not assigned");
-            }
         }
-        
+
         private void Instance_QRCodesTrackingStateChanged(object sender, bool status)
         {
             if (!status)
@@ -89,7 +90,7 @@ namespace Svanesjo.MRIoT
 
             lock (_pendingActions)
             {
-                _pendingActions.Enqueue(new ActionData(ActionData.Type.Added, e.Data));
+                _pendingActions.Enqueue(new ActionData(ActionData.ActionType.Added, e.Data));
             }
         }
 
@@ -99,7 +100,7 @@ namespace Svanesjo.MRIoT
 
             lock (_pendingActions)
             {
-                _pendingActions.Enqueue(new ActionData(ActionData.Type.Updated, e.Data));
+                _pendingActions.Enqueue(new ActionData(ActionData.ActionType.Updated, e.Data));
             }
         }
 
@@ -109,18 +110,18 @@ namespace Svanesjo.MRIoT
 
             lock (_pendingActions)
             {
-                _pendingActions.Enqueue(new ActionData(ActionData.Type.Removed, e.Data));
+                _pendingActions.Enqueue(new ActionData(ActionData.ActionType.Removed, e.Data));
             }
         }
 
-        private GameObject GetPrefabFromMap(QRCode qrCode)
+        private GameObject? GetPrefabFromMap(QRCode qrCode)
         {
-            if (_visualizerPrefabsMap.TryGetValue(qrCode.Data, out GameObject prefab))
+            if (_visualizerPrefabsMap.TryGetValue(qrCode.Data, out GameObject? prefab))
             {
                 return prefab;
             }
 
-            Debug.LogWarning("QRCodesVisualizer no prefab found for QRDdata = '" + qrCode.Data +"', using fallback prefab.");
+            Debug.LogWarning($"QRCodesVisualizer no prefab found for QRData = '{qrCode.Data}', using fallback prefab.");
             return fallbackPrefab;
         }
 
@@ -131,46 +132,43 @@ namespace Svanesjo.MRIoT
                 while (_pendingActions.Count > 0)
                 {
                     var action = _pendingActions.Dequeue();
-                    if (action.type == ActionData.Type.Added)
+                    if (action.Type == ActionData.ActionType.Added)
                     {
-                        GameObject prefab = GetPrefabFromMap(action.qrCode);
+                        GameObject? prefab = GetPrefabFromMap(action.Code);
+                        if (prefab is null)
+                        {
+                            Debug.Log($"QRCodesVisualizer prefab for '{action.Code.Data}' is null and it will not be added");
+                            return;
+                        }
                         GameObject visualizerObject = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
 
-                        visualizerObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                        visualizerObject.GetComponent<QRDataVisualizer>().qrCode = action.qrCode;
-                        Debug.Log("QRCodesVisualizer adding code with data = " + action.qrCode.Data);
-                        _visualizersList.Add(action.qrCode.Id, visualizerObject);
+                        visualizerObject.GetComponent<SpatialGraphNodeTracker>().Id = action.Code.SpatialGraphNodeId;
+                        visualizerObject.GetComponent<QRDataVisualizer>().Code = action.Code;
+                        Debug.Log("QRCodesVisualizer adding code with data = " + action.Code.Data);
+                        _visualizersList.Add(action.Code.Id, visualizerObject);
                     }
-                    else if (action.type == ActionData.Type.Updated)
+                    else if (action.Type == ActionData.ActionType.Updated)
                     {
-                        if (!_visualizersList.ContainsKey(action.qrCode.Id))
+                        if (!_visualizersList.ContainsKey(action.Code.Id))
                         {
-                            GameObject prefab = GetPrefabFromMap(action.qrCode);
-                            GameObject visualizerObject =
-                                    Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-
-                            visualizerObject.GetComponent<SpatialGraphNodeTracker>().Id =
-                                action.qrCode.SpatialGraphNodeId;
-                            visualizerObject.GetComponent<QRDataVisualizer>().qrCode = action.qrCode;
-                            Debug.Log("QRCodesVisualizer adding updated code with data = " + action.qrCode.Data);
-                            _visualizersList.Add(action.qrCode.Id, visualizerObject);
+                            Debug.LogError($"QRCodesVisualizer updating non-existent visualizer for data = '{action.Code.Data}', ignoring");
                         }
                         else
                         {
-                            Debug.Log("QRCodesVisualizer updating code with data = " + action.qrCode.Data);
+                            Debug.Log("QRCodesVisualizer updating code with data = " + action.Code.Data);
                         }
                     }
-                    else if (action.type == ActionData.Type.Removed)
+                    else if (action.Type == ActionData.ActionType.Removed)
                     {
-                        if (_visualizersList.ContainsKey(action.qrCode.Id))
+                        if (_visualizersList.ContainsKey(action.Code.Id))
                         {
-                            Debug.Log("QRCodesVisualizer destroying code with data = " + action.qrCode.Data);
-                            Destroy(_visualizersList[action.qrCode.Id]);
-                            _visualizersList.Remove(action.qrCode.Id);
+                            Debug.Log("QRCodesVisualizer destroying code with data = " + action.Code.Data);
+                            Destroy(_visualizersList[action.Code.Id]);
+                            _visualizersList.Remove(action.Code.Id);
                         }
                         else
                         {
-                            Debug.Log("QRCodesVisualizer has already destroyed code with data = " + action.qrCode.Data);
+                            Debug.Log("QRCodesVisualizer has already destroyed code with data = " + action.Code.Data);
                         }
                     }
                 }

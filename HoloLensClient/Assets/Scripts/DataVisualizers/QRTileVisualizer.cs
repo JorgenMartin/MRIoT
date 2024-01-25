@@ -3,52 +3,52 @@ using Exact;
 using Svanesjo.MRIoT.Things;
 using UnityEngine;
 
+#nullable enable
+
 namespace Svanesjo.MRIoT.DataVisualizers
 {
     public class QRTileVisualizer : QRDataVisualizer
     {
-        private Device _device;
-        private ExactManager _exactManager;
-        private Demo01 _game;
+        private Device _device = null!;
+        private ExactManager _exactManager = null!;
+        private Demo01 _game = null!;
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            if (qrCode == null)
+            if (Code == null)
             {
                 throw new Exception("QR Code Empty");
             }
 
-            GameObject exactManager = GameObject.Find("ExactManager");
-            if (exactManager == null)
-            {
-                throw new Exception("Could not find ExactManager");
-            }
-
-            _exactManager = exactManager.GetComponent<ExactManager>();
+            _exactManager = FindFirstObjectByType<ExactManager>();
             if (_exactManager == null)
             {
-                throw new Exception("ExactManager is missing script ExactManager");
+                throw new Exception("Component ExactManager not found");
             }
 
-            _game = exactManager.GetComponent<Demo01>();
+            _game = _exactManager.GetComponent<Demo01>();
             if (_game == null)
             {
-                throw new Exception("Could not find game");
+                throw new Exception("Component Demo01 not found");
             }
 
             _device = GetComponent<Device>();
+            if (_device is null)
+            {
+                throw new Exception("Component Device not found");
+            }
             _device.useDeviceName = true;
-            _device.SetDeviceName(qrCode.Data);
+            _device.SetDeviceName(Code.Data);
 
             Debug.Log($"QRTileVisualizer adding device {_device.GetDeviceName()}");
             _exactManager.AddDevice(_device);
         }
 
-        public void tapped()
+        public void Tapped()
         {
             Device device = GetComponent<Device>();
-            Debug.Log($"RedTile3DVisualizer tapped on {device.GetDeviceName()}, calling {_game}");
+            Debug.Log($"QRTileVisualizer tapped on {device.GetDeviceName()}, calling {_game}");
             _game.OnTapped(device);
         }
     }

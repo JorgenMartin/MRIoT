@@ -4,58 +4,54 @@ using Exact.Example;
 using Svanesjo.MRIoT.DataVisualizers;
 using UnityEngine;
 
+#nullable enable
+
 namespace Svanesjo.MRIoT
 {
 
     public class RedTile3DVisualizer : QRDataVisualizer
     {
-        private Device _device;
-        private ExactManager _exactManager;
-        private FollowTheRedDot _game;
+        private Device _device = null!;
+        private ExactManager _exactManager = null!;
+        private FollowTheRedDot _game = null!;
         
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            if (qrCode == null)
+            if (Code == null)
             {
                 throw new Exception("QR Code Empty");
             }
 
-            GameObject exactManager = GameObject.Find("ExactManager");
-            if (exactManager == null)
-            {
-                throw new Exception("Could not find ExactManager");
-            }
-
-            _exactManager = exactManager.GetComponent<ExactManager>();
+            _exactManager = FindFirstObjectByType<ExactManager>();
             if (_exactManager == null)
             {
-                throw new Exception("ExactManager is missing script ExactManager");
+                throw new Exception("Component ExactManager not found");
             }
 
-            _game = exactManager.GetComponent<FollowTheRedDot>();
+            _game = _exactManager.GetComponent<FollowTheRedDot>();
             if (_game == null)
             {
-                throw new Exception("Could not find game");
+                throw new Exception("Component FollowTheRedDot not found");
             }
 
             _device = GetComponent<Device>();
+            if (_device is null)
+            {
+                throw new Exception("Component Device not found");
+            }
             _device.useDeviceName = true;
-            _device.SetDeviceName(qrCode.Data);
+            _device.SetDeviceName(Code.Data);
 
             Debug.Log($"RedTile3DVisualizer adding device {_device.GetDeviceName()}");
             _exactManager.AddDevice(_device);
-            
-            // TODO: unnecessary?
-            // _game.AddedNewDevice();
         }
 
-        public void tapped()
+        public void Tapped()
         {
             Device device = GetComponent<Device>();
-            FollowTheRedDot game = _exactManager.GetComponent<FollowTheRedDot>();
-            Debug.Log($"RedTile3DVisualizer tapped on {device.GetDeviceName()}, calling {game}");
-            game.OnTapped(device);
+            Debug.Log($"RedTile3DVisualizer tapped on {device.GetDeviceName()}, calling {_game}");
+            _game.OnTapped(device);
         }
     }
 }
