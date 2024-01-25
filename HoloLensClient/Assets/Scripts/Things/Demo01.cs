@@ -4,7 +4,7 @@ using Exact.Example;
 using UnityEngine;
 using System.Collections;
 
-namespace Svanesjo.MRIoT.DemoLogic
+namespace Svanesjo.MRIoT.Things
 {
     [RequireComponent(typeof(ExactManager))]
     public class Demo01 : MonoBehaviour

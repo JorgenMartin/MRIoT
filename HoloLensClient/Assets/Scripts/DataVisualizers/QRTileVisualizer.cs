@@ -1,6 +1,6 @@
 using System;
 using Exact;
-using Svanesjo.MRIoT.DemoLogic;
+using Svanesjo.MRIoT.Things;
 using UnityEngine;
 
 namespace Svanesjo.MRIoT.DataVisualizers
