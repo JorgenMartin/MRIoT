@@ -24,7 +24,7 @@ namespace Svanesjo.MRIoT.Utility
                     if (m_Instance == null)
                     {
                         // Try to find an existing instance
-                        m_Instance = (T)FindObjectOfType(typeof(T));
+                        m_Instance = FindFirstObjectByType<T>();
 
                         // Create a new instance if none exist
                         if (m_Instance == null)
