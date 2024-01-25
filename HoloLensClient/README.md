@@ -131,3 +131,16 @@ specific prefab.
    - Key: the text-value of the QR Code
    - Value: the `QRCodePrefab` to use
 4. Save the Scene
+
+
+# Known Issues
+
+
+## Meta XR Feature Group
+
+The Feature Group for Meta XR must be __disabled__ under `OpenXR Feature Groups` for `Windows, Mac, Linux settings`-tab (aka. standalone) in `Project Settings > XR Plug-in Management > OpenXR`.
+
+> _not tested_: This probably doesn't affect building for Android (Meta Quest), but the project will likely not work with QuestLink.
+> However, this is necessary in order to run in-editor for the HoloLens (using Holographic Remoting).
+>
+> __NB:__ The code needs to check for UWP vs. Android when using libraries from each...
