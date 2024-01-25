@@ -9,7 +9,7 @@ using System.Collections;
 namespace Svanesjo.MRIoT.Things
 {
     [RequireComponent(typeof(ExactManager))]
-    public class Demo01 : MonoBehaviour
+    public class Demo01 : DemoGame
     {
         [SerializeField] private int minimumConnectedBeforeStart = 1;
         [SerializeField] private float intensity = 0.5f;
@@ -76,7 +76,7 @@ namespace Svanesjo.MRIoT.Things
             return colors[index];
         }
 
-        public void OnTapped(Device device)
+        public override void OnTapped(Device device)
         {
             SetNewColor();
         }

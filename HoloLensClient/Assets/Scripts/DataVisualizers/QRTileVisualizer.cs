@@ -11,7 +11,7 @@ namespace Svanesjo.MRIoT.DataVisualizers
     {
         private Device _device = null!;
         private ExactManager _exactManager = null!;
-        private Demo01 _game = null!;
+        private DemoGame _game = null!;
 
         // Start is called before the first frame update
         private void Start()
@@ -27,10 +27,10 @@ namespace Svanesjo.MRIoT.DataVisualizers
                 throw new Exception("Component ExactManager not found");
             }
 
-            _game = _exactManager.GetComponent<Demo01>();
+            _game = _exactManager.GetComponent<DemoGame>();
             if (_game == null)
             {
-                throw new Exception("Component Demo01 not found");
+                throw new Exception("Component DemoGame not found");
             }
 
             _device = GetComponent<Device>();

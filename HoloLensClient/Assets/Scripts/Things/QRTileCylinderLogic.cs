@@ -8,9 +8,10 @@ namespace Svanesjo.MRIoT.Things
 {
 
     [RequireComponent(typeof(Device))]
-    public class QRTileLogic : MonoBehaviour
+    public class QRTileCylinderLogic : MonoBehaviour
     {
         private Device _device = null!;
+        private DemoGame _game = null!;
 
         private void Awake()
         {
@@ -19,13 +20,18 @@ namespace Svanesjo.MRIoT.Things
             {
                 throw new Exception("Component Device not found");
             }
+
+            _game = FindFirstObjectByType<DemoGame>();
+            if (_game is null)
+            {
+                throw new Exception("Component DemoGame not found");
+            }
         }
 
         public void VirtualTap()
         {
             Debug.Log("QRTileLogic virtual tap registered");
-            Demo01 game = FindFirstObjectByType<Demo01>();
-            game.OnTapped(_device);
+            _game.OnTapped(_device);
         }
     }
 }
