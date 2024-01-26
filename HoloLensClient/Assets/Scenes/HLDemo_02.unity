@@ -130,7 +130,7 @@ PrefabInstance:
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: fallbackPrefab
       value: 
-      objectReference: {fileID: 1200717071578424, guid: 8b62604eb67ff464088ab7ff5cd00a7d, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.size
       value: 3
@@ -442,7 +442,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimumConnectedBeforeStart: 1
   lightIntensity: 0.5
-  lampColor: {r: 1, g: 1, b: 1, a: 1}
+  lampColor: {r: 1, g: 0, b: 0.87771463, a: 1}
   onColor: {r: 0, g: 1, b: 0, a: 1}
   offColor: {r: 1, g: 0, b: 0, a: 1}
   toggleColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}

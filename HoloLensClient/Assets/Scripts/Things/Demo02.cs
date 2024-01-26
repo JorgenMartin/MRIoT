@@ -3,7 +3,6 @@ using Exact;
 using Exact.Example;
 using UnityEngine;
 using System.Collections;
-using System.Linq;
 
 #nullable enable
 
@@ -33,7 +32,7 @@ namespace Svanesjo.MRIoT.Things
             StartCoroutine(Startup());
         }
 
-        IEnumerator Startup()
+        private IEnumerator Startup()
         {
             Debug.Log($"Demo02 Startup waiting for {minimumConnectedBeforeStart} devices to connect");
             while (true)
@@ -161,7 +160,7 @@ namespace Svanesjo.MRIoT.Things
         private void TurnOffLight(Device device)
         {
             Debug.Log($"Demo02 turn off light '{device}'");
-            if (device == _devices[0])
+            if (_devices.Length > 0 && device == _devices[0])
             {
                 _lampOn = false;
             }
