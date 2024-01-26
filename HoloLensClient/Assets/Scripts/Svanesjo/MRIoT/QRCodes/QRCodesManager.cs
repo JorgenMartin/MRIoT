@@ -1,3 +1,5 @@
+#if UNITY_WSA
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -220,3 +222,5 @@ namespace Svanesjo.MRIoT.QRCodes
         }
     }
 }
+
+#endif

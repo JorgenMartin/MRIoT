@@ -1,3 +1,5 @@
+#if UNITY_WSA
+
 using System;
 using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.QRCodes;
@@ -21,3 +23,5 @@ namespace Svanesjo.MRIoT.DataVisualizers
         }
     }
 }
+
+#endif

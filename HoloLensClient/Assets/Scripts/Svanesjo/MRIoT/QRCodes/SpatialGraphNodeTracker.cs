@@ -1,3 +1,5 @@
+#if UNITY_WSA
+
 using System;
 using Microsoft.MixedReality.OpenXR;
 using Svanesjo.MRIoT.DataVisualizers;
@@ -66,3 +68,5 @@ namespace Svanesjo.MRIoT.QRCodes
         }
     }
 }
+
+#endif

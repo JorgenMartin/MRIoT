@@ -1,3 +1,5 @@
+#if UNITY_WSA
+
 using System;
 using Exact;
 using Svanesjo.MRIoT.Things;
@@ -53,3 +55,5 @@ namespace Svanesjo.MRIoT.DataVisualizers
         }
     }
 }
+
+#endif

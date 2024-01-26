@@ -1,3 +1,5 @@
+#if UNITY_WSA
+
 using System;
 using UnityEngine;
 
@@ -83,3 +85,5 @@ namespace Svanesjo.MRIoT.DataVisualizers
         }
     }
 }
+
+#endif

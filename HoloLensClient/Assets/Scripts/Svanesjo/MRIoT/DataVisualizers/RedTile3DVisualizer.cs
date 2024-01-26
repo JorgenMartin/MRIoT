@@ -1,3 +1,5 @@
+#if UNITY_WSA
+
 using System;
 using Exact;
 using Exact.Example;
@@ -53,3 +55,5 @@ namespace Svanesjo.MRIoT.DataVisualizers
         }
     }
 }
+
+#endif
