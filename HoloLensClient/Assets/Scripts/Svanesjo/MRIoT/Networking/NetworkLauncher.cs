@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using Unity.Netcode;
@@ -17,15 +18,22 @@ namespace Svanesjo.MRIoT.Networking
 
     public class NetworkLauncher : MonoBehaviour
     {
-        [Required] public Material serverMaterial = null!;
-        [Required] public Material hostMaterial = null!;
-        [Required] public Material clientMaterial = null!;
+        [Required, SerializeField] private Material serverMaterial = null!;
+        [Required, SerializeField] private Material hostMaterial = null!;
+        [Required, SerializeField] private Material clientMaterial = null!;
 
-        public StartType editorStartType = StartType.Server;
-        public StartType deviceStartType = StartType.Client;
+        [SerializeField] private StartType editorStartType = StartType.Server;
+        [SerializeField] private StartType deviceStartType = StartType.Client;
+
+        [Required, SerializeField] private MeshRenderer floor = null!;
 
         private void Start()
         {
+            if (serverMaterial is null || hostMaterial is null || clientMaterial is null || floor is null)
+            {
+                throw new Exception("Required fields are null");
+            }
+
             Debug.Log("NetworkLauncher starting...");
             StartAs(Application.isEditor ? editorStartType : deviceStartType);
         }
@@ -38,24 +46,21 @@ namespace Svanesjo.MRIoT.Networking
                 case StartType.Server:
                 {
                     Debug.Log("Starting Server...");
-                    GameObject.Find("FloorPlane").GetComponent<MeshRenderer>()
-                        .SetMaterials(new List<Material> { serverMaterial });
+                    floor.SetMaterials(new List<Material> { serverMaterial });
                     networkManager.StartServer();
                     break;
                 }
                 case StartType.Host:
                 {
                     Debug.Log("Starting Host...");
-                    GameObject.Find("FloorPlane").GetComponent<MeshRenderer>()
-                        .SetMaterials(new List<Material> { hostMaterial });
+                    floor.SetMaterials(new List<Material> { hostMaterial });
                     networkManager.StartHost();
                     break;
                 }
                 case StartType.Client:
                 {
                     Debug.Log("Starting Client...");
-                    GameObject.Find("FloorPlane").GetComponent<MeshRenderer>()
-                        .SetMaterials(new List<Material> { clientMaterial });
+                    floor.SetMaterials(new List<Material> { clientMaterial });
                     networkManager.StartClient();
                     break;
                 }
