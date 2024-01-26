@@ -14,7 +14,7 @@ namespace Svanesjo.MRIoT.Things
         [SerializeField] private int minimumConnectedBeforeStart = 1;
         [SerializeField] private float intensity = 0.5f;
         [SerializeField] private Color[] colors = {};
-        [SerializeField] private int colorIndex = 0;
+        [SerializeField] private int colorIndex; // = 0;
 
         private ExactManager _exactManager = null!;
         private Device? _active;

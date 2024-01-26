@@ -8,7 +8,6 @@ namespace Svanesjo.MRIoT.Things
     public class LightColorChanger : ColorRingBase
     {
         [SerializeField] private Light[] lights = {};
-        private static readonly int Color1 = Shader.PropertyToID("_Color");
 
         public override void SetUniformColor(Color color)
         {

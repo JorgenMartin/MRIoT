@@ -24,8 +24,8 @@ namespace Svanesjo.MRIoT.Things
 
         private Device _device = null!;
         private DemoGame _game = null!;
-        private Role? _role = null;
-        private Role? _newRole = null;
+        private Role? _role; // = null;
+        private Role? _newRole; // = null;
 
         private void Awake()
         {

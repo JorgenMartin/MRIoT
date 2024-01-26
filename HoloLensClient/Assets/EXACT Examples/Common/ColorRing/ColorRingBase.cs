@@ -49,26 +49,26 @@ namespace Exact.Example
             return segmentColors[segment];
         }
 
-        public virtual void SetIntensity(float intensity)
+        public virtual void SetIntensity(float newIntensity)
         {
-            this.intensity = intensity;
+            this.intensity = newIntensity;
 
             for (int i = 0; i < numSegments; i++)
             {
-                Color displayColor = segmentColors[i] * intensity;
+                Color displayColor = segmentColors[i] * newIntensity;
                 displayColor.a = 1;
                 SetSegmentColorInternal(GetSegmentIndex(numSegments, i, rotation), displayColor);
             }
         }
 
-        public virtual void SetRotation(float rotation)
+        public virtual void SetRotation(float newRotation)
         {
-            this.rotation = rotation;
+            this.rotation = newRotation;
             for (int i = 0; i < numSegments; i++)
             {
                 Color displayColor = segmentColors[i] * intensity;
                 displayColor.a = 1;
-                SetSegmentColorInternal(GetSegmentIndex(numSegments, i, rotation), displayColor);
+                SetSegmentColorInternal(GetSegmentIndex(numSegments, i, newRotation), displayColor);
             }
         }
 

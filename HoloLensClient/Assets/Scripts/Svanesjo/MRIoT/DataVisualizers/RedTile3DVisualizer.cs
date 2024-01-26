@@ -1,14 +1,12 @@
 using System;
 using Exact;
 using Exact.Example;
-using Svanesjo.MRIoT.DataVisualizers;
 using UnityEngine;
 
 #nullable enable
 
-namespace Svanesjo.MRIoT
+namespace Svanesjo.MRIoT.DataVisualizers
 {
-
     public class RedTile3DVisualizer : QRDataVisualizer
     {
         private Device _device = null!;

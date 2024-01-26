@@ -71,11 +71,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16519dea1d7d85144a7ae124e01ab3c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _receiveText: {fileID: 102766893078868052}
-  _sendText: {fileID: 7110727918129690209}
-  _background: {fileID: 5921419298644586434}
-  _serverMaterial: {fileID: 2100000, guid: 129455b02433570498cc5712114f844b, type: 2}
-  _clientMaterial: {fileID: 2100000, guid: ad9a194a7e9dce14aa2186f78e4ff66d, type: 2}
+  receiveText: {fileID: 102766893078868052}
+  sendText: {fileID: 7110727918129690209}
+  background: {fileID: 5921419298644586434}
+  serverMaterial: {fileID: 2100000, guid: 129455b02433570498cc5712114f844b, type: 2}
+  clientMaterial: {fileID: 2100000, guid: ad9a194a7e9dce14aa2186f78e4ff66d, type: 2}
 --- !u!114 &8263819234985466262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,9 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 456fbb096600ad6428de710b98377b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textMesh: {fileID: 5275307074928974096}
-  _networkManager: {fileID: 0}
-  _unityTransport: {fileID: 0}
+  textMesh: {fileID: 5275307074928974096}
+  networkManager: {fileID: 0}
+  unityTransport: {fileID: 0}
 --- !u!1 &1559439839026844
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,6 +141,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -247,6 +249,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -344,6 +348,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -441,6 +447,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:

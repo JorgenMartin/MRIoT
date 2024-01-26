@@ -1,5 +1,6 @@
 using System;
 using Microsoft.MixedReality.QR;
+using Svanesjo.MRIoT.QRCodes;
 using UnityEngine;
 
 #nullable enable

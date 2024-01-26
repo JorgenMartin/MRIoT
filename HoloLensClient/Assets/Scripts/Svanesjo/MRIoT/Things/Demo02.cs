@@ -20,7 +20,7 @@ namespace Svanesjo.MRIoT.Things
 
         private ExactManager _exactManager = null!;
         private Device[] _devices = {};
-        private bool _lampOn = false;
+        private bool _lampOn; // = false;
 
         private void Start()
         {

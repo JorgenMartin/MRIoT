@@ -5,17 +5,17 @@ using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
-namespace MRIoT.Scripts.Networking
+namespace Svanesjo.MRIoT.Networking
 {
     public class ShowIP : MonoBehaviour
     {
-        [Required] [SerializeField] private TextMesh _textMesh;
-        [Required] [SerializeField] private NetworkManager _networkManager;
-        [Required] [SerializeField] private UnityTransport _unityTransport;
+        [Required] [SerializeField] private TextMesh textMesh;
+        [Required] [SerializeField] private NetworkManager networkManager;
+        [Required] [SerializeField] private UnityTransport unityTransport;
 
         void Update()
         {
-            _textMesh.text = $"{GetLocalIPAddress()} connecting to {_unityTransport.ConnectionData.Address} as {(_networkManager.IsServer ? "Server" : "Client")}: {_networkManager.LocalClientId}";
+            textMesh.text = $"{GetLocalIPAddress()} connecting to {unityTransport.ConnectionData.Address} as {(networkManager.IsServer ? "Server" : "Client")}: {networkManager.LocalClientId}";
         }
 
         private static string GetLocalIPAddress()

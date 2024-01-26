@@ -5,7 +5,7 @@ using UnityEngine;
 
 #nullable enable
 
-namespace Svanesjo.MRIoT
+namespace Svanesjo.MRIoT.QRCodes
 {
     [RequireComponent(typeof(QRDataVisualizer))]
     public class SpatialGraphNodeTracker : MonoBehaviour
@@ -13,9 +13,9 @@ namespace Svanesjo.MRIoT
         private Guid _id;
         private SpatialGraphNode? _node;
 
-        [SerializeField] private float xCorrection = 0f;
+        [SerializeField] private float xCorrection; // = 0f
         [SerializeField] private float yCorrection = 1.6f;
-        [SerializeField] private float zCorrection = 0f;
+        [SerializeField] private float zCorrection; // = 0f
 
         public Guid Id
         {

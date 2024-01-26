@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Svanesjo.MRIoT.Exact
+namespace Exact
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class NumberTextPro : MonoBehaviour

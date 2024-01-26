@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NaughtyAttributes;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -12,11 +13,11 @@ namespace Svanesjo.MRIoT.Networking
     /// </summary>
     public class UnnamedStringMessageHandler : CustomUnnamedMessageHandler<string>
     {
-        [SerializeField] private TextMesh _receiveText;
-        [SerializeField] private TextMesh _sendText;
-        [SerializeField] private MeshRenderer _background;
-        [SerializeField] private Material _serverMaterial;
-        [SerializeField] private Material _clientMaterial;
+        [Required, SerializeField] private TextMesh receiveText;
+        [Required, SerializeField] private TextMesh sendText;
+        [Required, SerializeField] private MeshRenderer background;
+        [Required, SerializeField] private Material serverMaterial;
+        [Required, SerializeField] private Material clientMaterial;
         
         /// <summary>
         /// We override this method to define the unique message type
@@ -38,13 +39,13 @@ namespace Svanesjo.MRIoT.Networking
                 // Server broadcasts to all clients when a new client connects
                 // (just for example purposes)
                 NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
-                _background.SetMaterials(new List<Material> { _serverMaterial });
+                background.SetMaterials(new List<Material> { serverMaterial });
             }
             else
             {
                 // Clients send a greeting string message to the server
                 SendUnnamedMessage("I am a client connecting!");
-                _background.SetMaterials(new List<Material> { _clientMaterial });
+                background.SetMaterials(new List<Material> { clientMaterial });
             }
         }
 
@@ -70,13 +71,12 @@ namespace Svanesjo.MRIoT.Networking
         /// </summary>
         protected override void OnReceivedUnnamedMessage(ulong clientId, FastBufferReader reader)
         {
-            var stringMessage = string.Empty;
-            reader.ReadValueSafe(out stringMessage);
+            reader.ReadValueSafe(out string stringMessage);
             if (IsServer)
             {
                 var msg = ($"Server received unnamed message of type ({MessageType()}) from client " +
                           $"({clientId}) that contained the string: \"{stringMessage}\"");
-                _receiveText.text = msg;
+                receiveText.text = msg;
                 Debug.Log(msg);
 
                 // As an example, we can also broadcast the client message to everyone
@@ -84,7 +84,7 @@ namespace Svanesjo.MRIoT.Networking
             }
             else
             {
-                _receiveText.text = stringMessage;
+                receiveText.text = stringMessage;
                 Debug.Log(stringMessage);
             }
         }
@@ -113,14 +113,14 @@ namespace Svanesjo.MRIoT.Networking
                 writer.WriteValueSafe(dataToSend);
                 if (IsServer)
                 {
-                    _sendText.text = writer.ToString();
+                    sendText.text = writer.ToString();
                     // This is a server-only method that will broadcast the unnamed message.
                     // Caution: Invoking this method on a client will throw an exception!
                     customMessagingManager.SendUnnamedMessageToAll(writer);
                 }
                 else
                 {
-                    _sendText.text = writer.ToString();
+                    sendText.text = writer.ToString();
                     // This method can be used by a client or server (client to server or server to client)
                     customMessagingManager.SendUnnamedMessage(NetworkManager.ServerClientId, writer);
                 }
@@ -178,10 +178,9 @@ namespace Svanesjo.MRIoT.Networking
         /// </summary>
         private void ReceiveMessage(ulong clientId, FastBufferReader reader)
         {
-            var messageType = (byte)0;
             // Read the message type value that is written first when we send
             // this unnamed message.
-            reader.ReadValueSafe(out messageType);
+            reader.ReadValueSafe(out byte messageType);
             // Example purposes only, you might handle this in a more optimal way
             if (messageType == MessageType())
             {

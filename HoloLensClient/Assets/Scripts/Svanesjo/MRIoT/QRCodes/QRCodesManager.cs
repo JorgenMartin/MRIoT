@@ -7,7 +7,7 @@ using UnityEngine;
 
 #nullable enable
 
-namespace Svanesjo.MRIoT
+namespace Svanesjo.MRIoT.QRCodes
 {
     public static class QRCodeEventArgs
     {

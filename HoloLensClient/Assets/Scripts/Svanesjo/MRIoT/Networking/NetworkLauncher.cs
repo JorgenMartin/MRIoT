@@ -6,7 +6,7 @@ using Application = UnityEngine.Device.Application;
 
 #nullable enable
 
-namespace Svanesjo.MRIoT
+namespace Svanesjo.MRIoT.Networking
 {
     public enum StartType
     {

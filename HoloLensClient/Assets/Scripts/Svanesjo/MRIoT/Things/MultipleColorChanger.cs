@@ -60,19 +60,19 @@ namespace Svanesjo.MRIoT.Things
             }
         }
 
-        public override void SetIntensity(float intensity)
+        public override void SetIntensity(float newIntensity)
         {
             foreach (var ring in colorRings)
             {
-                ring.SetIntensity(intensity);
+                ring.SetIntensity(newIntensity);
             }
         }
 
-        public override void SetRotation(float rotation)
+        public override void SetRotation(float newRotation)
         {
             foreach (var ring in colorRings)
             {
-                ring.SetRotation(rotation);
+                ring.SetRotation(newRotation);
             }
         }
     }

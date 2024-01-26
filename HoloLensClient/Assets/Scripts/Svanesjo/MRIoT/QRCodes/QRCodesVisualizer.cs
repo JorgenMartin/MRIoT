@@ -6,7 +6,7 @@ using UnityEngine;
 
 #nullable enable
 
-namespace Svanesjo.MRIoT
+namespace Svanesjo.MRIoT.QRCodes
 {
     [Serializable]
     public class StringGameObjectPair
@@ -25,7 +25,7 @@ namespace Svanesjo.MRIoT
         private GameObject? fallbackPrefab;
 
         private readonly SortedDictionary<Guid, GameObject> _visualizersList = new();
-        private bool _clearExisting = false;
+        private bool _clearExisting; // = false
 
         // Awake is called when the script instance is being loaded
         private void Awake()
