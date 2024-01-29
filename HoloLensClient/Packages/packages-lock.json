@@ -34,11 +34,10 @@
       "url": "https://packages.unity.com"
     },
     "com.meta.xr.sdk.core": {
-      "version": "60.0.0",
+      "version": "file:../LocalPackages/com.meta.xr.sdk.core-60.0.0.tgz",
       "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
+      "source": "local-tarball",
+      "dependencies": {}
     },
     "com.meta.xr.sdk.haptics": {
       "version": "60.0.0",

@@ -4,7 +4,7 @@
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.meta.xr.mrutilitykit": "file:../LocalPackages/com.meta.xr.mrutilitykit-60.0.0.tar.gz",
     "com.meta.xr.sdk.audio": "60.0.0",
-    "com.meta.xr.sdk.core": "60.0.0",
+    "com.meta.xr.sdk.core": "file:../LocalPackages/com.meta.xr.sdk.core-60.0.0.tgz",
     "com.meta.xr.sdk.haptics": "60.0.0",
     "com.meta.xr.sdk.interaction": "file:../LocalPackages/com.meta.xr.sdk.interaction-60.0.0.tar.gz",
     "com.microsoft.mixedreality.openxr": "file:MixedReality/com.microsoft.mixedreality.openxr-1.10.0.tgz",
