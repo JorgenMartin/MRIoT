@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.DataVisualizers;
+using Unity.Netcode;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 
 #nullable enable
@@ -11,20 +13,20 @@ using UnityEngine;
 namespace Svanesjo.MRIoT.QRCodes
 {
     [Serializable]
-    public class StringGameObjectPair
+    public class QRCodePrefabEntry
     {
         public string? key;
-        public GameObject? value;
+        public QRDataVisualizer? prefab;
     }
 
     public class QRCodesVisualizer : MonoBehaviour
     {
         [SerializeField]
-        private List<StringGameObjectPair> visualizerPrefabsList = new();
-        private readonly Dictionary<string, GameObject?> _visualizerPrefabsMap = new();
+        private List<QRCodePrefabEntry> visualizerPrefabsList = new();
+        private readonly Dictionary<string, QRDataVisualizer?> _visualizerPrefabsMap = new();
 
         [SerializeField]
-        private GameObject? fallbackPrefab;
+        private QRDataVisualizer? fallbackPrefab;
 
         private readonly SortedDictionary<Guid, GameObject> _visualizersList = new();
         private bool _clearExisting; // = false
@@ -32,17 +34,14 @@ namespace Svanesjo.MRIoT.QRCodes
         // Awake is called when the script instance is being loaded
         private void Awake()
         {
-            foreach (var pair in visualizerPrefabsList)
+            foreach (var entry in visualizerPrefabsList)
             {
-                if (pair.key is null)
+                if (entry.key is null)
                 {
                     throw new Exception("Prefab key cannot be null");
                 }
-                if (pair.value is not null && pair.value.GetComponent<QRDataVisualizer>() == null)
-                {
-                    throw new Exception("Prefab must extend QRDataVisualizer");
-                }
-                _visualizerPrefabsMap.Add(pair.key, pair.value);
+
+                _visualizerPrefabsMap.Add(entry.key, entry.prefab);
             }
         }
 
@@ -116,9 +115,9 @@ namespace Svanesjo.MRIoT.QRCodes
             }
         }
 
-        private GameObject? GetPrefabFromMap(QRCode qrCode)
+        private QRDataVisualizer? GetPrefabFromMap(QRCode qrCode)
         {
-            if (_visualizerPrefabsMap.TryGetValue(qrCode.Data, out GameObject? prefab))
+            if (_visualizerPrefabsMap.TryGetValue(qrCode.Data, out QRDataVisualizer? prefab))
             {
                 return prefab;
             }
@@ -136,12 +135,14 @@ namespace Svanesjo.MRIoT.QRCodes
                     var action = _pendingActions.Dequeue();
                     if (action.Type == ActionData.ActionType.Added)
                     {
-                        GameObject? prefab = GetPrefabFromMap(action.Code);
-                        if (prefab is null)
+                        QRDataVisualizer? visualizer = GetPrefabFromMap(action.Code);
+                        if (visualizer is null)
                         {
                             Debug.Log($"QRCodesVisualizer prefab for '{action.Code.Data}' is null and it will not be added");
                             return;
                         }
+
+                        GameObject prefab = visualizer.gameObject;
                         GameObject visualizerObject = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
 
                         visualizerObject.GetComponent<SpatialGraphNodeTracker>().Id = action.Code.SpatialGraphNodeId;

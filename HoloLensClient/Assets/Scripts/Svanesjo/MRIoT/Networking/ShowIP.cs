@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Sockets;
 using NaughtyAttributes;
@@ -10,12 +11,27 @@ namespace Svanesjo.MRIoT.Networking
     public class ShowIP : MonoBehaviour
     {
         [Required] [SerializeField] private TextMesh textMesh;
-        [Required] [SerializeField] private NetworkManager networkManager;
-        [Required] [SerializeField] private UnityTransport unityTransport;
+        private NetworkManager _networkManager;
+        private UnityTransport _unityTransport;
+
+        private void Start()
+        {
+            _networkManager = FindFirstObjectByType<NetworkManager>();
+            if (_networkManager is null)
+            {
+                throw new Exception("Network Manager not found");
+            }
+
+            _unityTransport = FindFirstObjectByType<UnityTransport>();
+            if (_unityTransport is null)
+            {
+                throw new Exception("Unity Transport not found");
+            }
+        }
 
         void Update()
         {
-            textMesh.text = $"{GetLocalIPAddress()} connecting to {unityTransport.ConnectionData.Address} as {(networkManager.IsServer ? "Server" : "Client")}: {networkManager.LocalClientId}";
+            textMesh.text = $"{GetLocalIPAddress()} connecting to {_unityTransport.ConnectionData.Address} as {(_networkManager.IsServer ? "Server" : "Client")}: {_networkManager.LocalClientId}";
         }
 
         private static string GetLocalIPAddress()

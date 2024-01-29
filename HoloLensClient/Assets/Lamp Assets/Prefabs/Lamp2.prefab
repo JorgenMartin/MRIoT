@@ -442,7 +442,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2372427503445320313}
-  - component: {fileID: 6531789938205583690}
   m_Layer: 0
   m_Name: Lamp2
   m_TagString: Untagged
@@ -475,22 +474,6 @@ Transform:
   - {fileID: 2629159015903784911}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6531789938205583690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3932644602952142181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a69c7e559996af4ab2b32b11b5032a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lights:
-  - {fileID: 3216319751170550269}
-  - {fileID: 7824286238585736735}
-  - {fileID: 633133882874195118}
 --- !u!1 &4043828458605043756
 GameObject:
   m_ObjectHideFlags: 0

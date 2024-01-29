@@ -47,24 +47,34 @@ namespace Svanesjo.MRIoT.Networking
                 {
                     Debug.Log("Starting Server...");
                     floor.SetMaterials(new List<Material> { serverMaterial });
-                    networkManager.StartServer();
+                    var state = networkManager.StartServer();
+                    Debug.LogWarning($"NetworkLauncher Started: {state}");
                     break;
                 }
                 case StartType.Host:
                 {
                     Debug.Log("Starting Host...");
                     floor.SetMaterials(new List<Material> { hostMaterial });
-                    networkManager.StartHost();
+                    var state = networkManager.StartHost();
+                    Debug.LogWarning($"NetworkLauncher Started: {state}");
                     break;
                 }
                 case StartType.Client:
                 {
                     Debug.Log("Starting Client...");
                     floor.SetMaterials(new List<Material> { clientMaterial });
-                    networkManager.StartClient();
+                    var state = networkManager.StartClient();
+                    Debug.LogWarning($"NetworkLauncher  Started: {state}");
                     break;
                 }
             }
+        }
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            Debug.Log($"NetworkLauncher onApplicationPause({pauseStatus})");
+            if (pauseStatus) return;
+            Start();
         }
     }
 }
