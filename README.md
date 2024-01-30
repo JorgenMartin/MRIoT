@@ -1,5 +1,3 @@
 # Mixed Reality - Internet of Things
 
-Project is split in two clients:
-- [HoloLensClient](./HoloLensClient)
-- [MetaQuestClient](./MetaQuestClient)
+The Unity project can be found in [MRIoTClient](./MRIoTClient)
