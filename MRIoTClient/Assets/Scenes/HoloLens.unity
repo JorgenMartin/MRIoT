@@ -129,32 +129,14 @@ GameObject:
   m_Component:
   - component: {fileID: 14295990}
   - component: {fileID: 14295989}
-  - component: {fileID: 14295988}
+  - component: {fileID: 14295991}
   m_Layer: 0
   m_Name: ExactManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &14295988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14295987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19c704cb4ec35324687b91966a66b387, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minimumConnectedBeforeStart: 1
-  lightIntensity: 0.5
-  lampColor: {r: 1, g: 0, b: 0.87771463, a: 1}
-  onColor: {r: 0, g: 1, b: 0, a: 1}
-  offColor: {r: 1, g: 0, b: 0, a: 1}
-  toggleColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_IsActive: 1
 --- !u!114 &14295989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +165,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &14295991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14295987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56db4ffa5dd34a59b2f90076721d6158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minimumConnectedBeforeStart: 1
+  lightIntensity: 0.5
+  lampColor: {r: 1, g: 0, b: 1, a: 1}
+  onColor: {r: 0, g: 1, b: 0, a: 1}
+  offColor: {r: 1, g: 0, b: 0, a: 1}
+  toggleColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1001 &30273594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -192,12 +192,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
-      propertyPath: fallbackPrefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.size
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[0].key
@@ -209,15 +205,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[2].key
-      value: 0080
+      value: 007
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[3].key
-      value: 0080
+      value: 010
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[4].key
-      value: 0080
+      value: 021
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[5].key
@@ -263,6 +259,18 @@ PrefabInstance:
       propertyPath: visualizerPrefabsList.Array.data[1].prefab
       value: 
       objectReference: {fileID: -7597022499740062530, guid: fca6fbe21d3e1254e88d2cfecfa5a89a, type: 3}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[2].prefab
+      value: 
+      objectReference: {fileID: 6627925019342175728, guid: 33f8095a8d33baf45977bc12e5ea3834, type: 3}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[3].prefab
+      value: 
+      objectReference: {fileID: 6627925019342175728, guid: 33f8095a8d33baf45977bc12e5ea3834, type: 3}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[4].prefab
+      value: 
+      objectReference: {fileID: 6627925019342175728, guid: 33f8095a8d33baf45977bc12e5ea3834, type: 3}
     - target: {fileID: 6917500754848938893, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: m_Name
       value: QRCodesManager
@@ -387,7 +395,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &673174215
 MeshCollider:
   m_ObjectHideFlags: 0

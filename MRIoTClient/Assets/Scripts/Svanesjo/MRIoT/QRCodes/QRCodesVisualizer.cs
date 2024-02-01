@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.DataVisualizers;
-using Unity.Netcode;
-using Unity.XR.CoreUtils;
 using UnityEngine;
 
 #nullable enable

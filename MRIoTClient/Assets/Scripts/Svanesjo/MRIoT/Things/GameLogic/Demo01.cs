@@ -1,12 +1,12 @@
+#nullable enable
+
 using System;
+using System.Collections;
 using Exact;
 using Exact.Example;
 using UnityEngine;
-using System.Collections;
 
-#nullable enable
-
-namespace Svanesjo.MRIoT.Things
+namespace Svanesjo.MRIoT.Things.GameLogic
 {
     [RequireComponent(typeof(ExactManager))]
     public class Demo01 : DemoGame

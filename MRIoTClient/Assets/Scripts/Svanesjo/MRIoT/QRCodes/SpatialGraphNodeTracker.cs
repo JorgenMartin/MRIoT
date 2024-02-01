@@ -14,6 +14,7 @@ namespace Svanesjo.MRIoT.QRCodes
     {
         private Guid _id;
         private SpatialGraphNode? _node;
+        private QRDataVisualizer _dataVisualizer = null!;
 
         [SerializeField] private float xCorrection; // = 0f
         [SerializeField] private float yCorrection = 1.6f;
@@ -35,6 +36,12 @@ namespace Svanesjo.MRIoT.QRCodes
         // Initialize
         private void Start()
         {
+            _dataVisualizer = GetComponent<QRDataVisualizer>();
+            if (_dataVisualizer is null)
+            {
+                throw new Exception("QR Data Visualizer not found");
+            }
+
             InitializeSpatialGraphNode();
         }
 
@@ -52,8 +59,10 @@ namespace Svanesjo.MRIoT.QRCodes
                 {
                     Vector3 position = new Vector3(pose.position.x + xCorrection, pose.position.y + yCorrection, pose.position.z + zCorrection);
                     gameObject.transform.SetPositionAndRotation(position, pose.rotation);
-                    Debug.Log("Tracker : Id= " + Id + " QRPose =" + position.ToString("F7") + " QRRot = " +
-                              pose.rotation.ToString("F7"));
+                    // Call on QRDataVisualizer to update transform for NetworkObject
+                    _dataVisualizer.SetPositionAndRotation(position, pose.rotation);
+                    // Debug.Log("Tracker : Id= " + Id + " QRPose =" + position.ToString("F7") + " QRRot = " +
+                    //           pose.rotation.ToString("F7"));
                 }
             }
         }

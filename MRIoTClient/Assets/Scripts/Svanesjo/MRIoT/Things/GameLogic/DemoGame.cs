@@ -1,7 +1,7 @@
 using Exact;
 using UnityEngine;
 
-namespace Svanesjo.MRIoT.Things
+namespace Svanesjo.MRIoT.Things.GameLogic
 {
 
     [RequireComponent(typeof(ExactManager))]

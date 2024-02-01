@@ -12,6 +12,7 @@ namespace Svanesjo.MRIoT.Things
 
         public override void SetUniformColor(Color color)
         {
+            Debug.Log($"MeshColorChanger setting uniform color to {color}");
             foreach (var meshRenderer in meshRenderers)
             {
                 meshRenderer.material.SetColor(Color1, color);

@@ -1,12 +1,12 @@
+#nullable enable
+
 using System;
+using System.Collections;
 using Exact;
 using Exact.Example;
 using UnityEngine;
-using System.Collections;
 
-#nullable enable
-
-namespace Svanesjo.MRIoT.Things
+namespace Svanesjo.MRIoT.Things.GameLogic
 {
     [RequireComponent(typeof(ExactManager))]
     public class Demo02 : DemoGame
@@ -78,18 +78,18 @@ namespace Svanesjo.MRIoT.Things
             {
                 case >= 3:
                     _devices = new[] { devices[0], devices[1], devices[2] };
-                    SetDeviceRoleAndColor(_devices[0], Role.Lamp, lampColor);
-                    SetDeviceRoleAndColor(_devices[1], Role.On, onColor);
-                    SetDeviceRoleAndColor(_devices[2], Role.Off, offColor);
+                    SetDeviceRoleAndColor(_devices[0], TileLampRole.Lamp, lampColor);
+                    SetDeviceRoleAndColor(_devices[1], TileLampRole.On, onColor);
+                    SetDeviceRoleAndColor(_devices[2], TileLampRole.Off, offColor);
                     break;
                 case 2:
                     _devices = new[] { devices[0], devices[1] };
-                    SetDeviceRoleAndColor(_devices[0], Role.Lamp, lampColor);
-                    SetDeviceRoleAndColor(_devices[1], Role.Toggle, toggleColor);
+                    SetDeviceRoleAndColor(_devices[0], TileLampRole.Lamp, lampColor);
+                    SetDeviceRoleAndColor(_devices[1], TileLampRole.Toggle, toggleColor);
                     break;
                 case 1:
                     _devices = new[] { devices[0] };
-                    SetDeviceRoleAndColor(_devices[0], Role.ToggleLamp, lampColor);
+                    SetDeviceRoleAndColor(_devices[0], TileLampRole.ToggleLamp, lampColor);
                     break;
                 default:
                     throw new Exception($"Demo02 Unsupported minimumConnectedBeforeStart: {devices.Count} connected, {minimumConnectedBeforeStart} required");
@@ -98,9 +98,9 @@ namespace Svanesjo.MRIoT.Things
             StartCoroutine(CheckConnections(count));
         }
 
-        private void SetDeviceRoleAndColor(Device device, Role role, Color color)
+        private void SetDeviceRoleAndColor(Device device, TileLampRole tileLampRole, Color color)
         {
-            device.GetComponent<QRTileLampLogic>().SetRole(role);
+            device.GetComponent<QRTileLampLogic>().SetRole(tileLampRole);
             device.GetComponent<LedRing>().SetColorAndIntensity(color, lightIntensity);
         }
 

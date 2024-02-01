@@ -1,21 +1,13 @@
 using System;
 using Exact;
 using NaughtyAttributes;
+using Svanesjo.MRIoT.Things.GameLogic;
 using UnityEngine;
 
 #nullable enable
 
 namespace Svanesjo.MRIoT.Things
 {
-    public enum Role
-    {
-        Lamp,
-        On,
-        Off,
-        Toggle,
-        ToggleLamp
-    }
-
     [RequireComponent(typeof(Device))]
     public class QRTileLampLogic : MonoBehaviour
     {
@@ -24,8 +16,8 @@ namespace Svanesjo.MRIoT.Things
 
         private Device _device = null!;
         private DemoGame _game = null!;
-        private Role? _role; // = null;
-        private Role? _newRole; // = null;
+        private TileLampRole? _role; // = null;
+        private TileLampRole? _newRole; // = null;
 
         private void Awake()
         {
@@ -53,9 +45,9 @@ namespace Svanesjo.MRIoT.Things
             _game.OnTapped(_device);
         }
 
-        public void SetRole(Role role)
+        public void SetRole(TileLampRole tileLampRole)
         {
-            _newRole = role;
+            _newRole = tileLampRole;
         }
 
         private void Update()
@@ -67,17 +59,17 @@ namespace Svanesjo.MRIoT.Things
 
             switch (_newRole)
             {
-                case Role.Lamp:
+                case TileLampRole.Lamp:
                     button.SetActive(false);
                     lamp.SetActive(true);
                     break;
-                case Role.On:
-                case Role.Off:
-                case Role.Toggle:
+                case TileLampRole.On:
+                case TileLampRole.Off:
+                case TileLampRole.Toggle:
                     button.SetActive(true);
                     lamp.SetActive(false);
                     break;
-                case Role.ToggleLamp:
+                case TileLampRole.ToggleLamp:
                     button.SetActive(true);
                     lamp.SetActive(true);
                     break;

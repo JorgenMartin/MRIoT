@@ -3,6 +3,7 @@
 using System;
 using Exact;
 using Svanesjo.MRIoT.Things;
+using Svanesjo.MRIoT.Things.GameLogic;
 using UnityEngine;
 
 #nullable enable
