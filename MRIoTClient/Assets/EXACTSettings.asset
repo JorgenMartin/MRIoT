@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96fc09b642d2a5a4e9745dd31c8004a7, type: 3}
   m_Name: EXACTSettings
   m_EditorClassIdentifier: 
-  host: 192.168.2.141
+  host: 192.168.3.141
   port: 1883
