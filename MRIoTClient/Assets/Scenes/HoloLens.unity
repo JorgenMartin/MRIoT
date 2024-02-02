@@ -767,21 +767,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 760780499634385789, guid: d966b20333362f649b1ddd6e6fff8468, type: 3}
+      propertyPath: floor
+      value: 
+      objectReference: {fileID: 673174216}
+    - target: {fileID: 760780499634385789, guid: d966b20333362f649b1ddd6e6fff8468, type: 3}
+      propertyPath: deviceStartType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 760780499634385789, guid: d966b20333362f649b1ddd6e6fff8468, type: 3}
+      propertyPath: editorStartType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 910464719839496905, guid: d966b20333362f649b1ddd6e6fff8468, type: 3}
       propertyPath: m_Name
       value: NetworkManager
       objectReference: {fileID: 0}
     - target: {fileID: 4390422706753903442, guid: d966b20333362f649b1ddd6e6fff8468, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.46317738
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4390422706753903442, guid: d966b20333362f649b1ddd6e6fff8468, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.0435619
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4390422706753903442, guid: d966b20333362f649b1ddd6e6fff8468, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5960671
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4390422706753903442, guid: d966b20333362f649b1ddd6e6fff8468, type: 3}
       propertyPath: m_LocalRotation.w
