@@ -1,5 +1,4 @@
-_builds/
-_build.apk
+*.local
 *~
 
 # Created by https://www.toptal.com/developers/gitignore/api/unity,windows,macos,c++
