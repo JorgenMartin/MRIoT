@@ -86,6 +86,7 @@ namespace Svanesjo.MRIoT.Networking
 
         private void OnApplicationPause(bool pauseStatus)
         {
+            if (_networkManager == null) return;
             var isServer = _networkManager.IsServer;
             var connected = _networkManager.IsConnectedClient;
             Debug.Log($"NetworkLauncher onApplicationPause paused: {pauseStatus}, connected: {connected}, isServer: {isServer}");

@@ -23,9 +23,7 @@ namespace Svanesjo.MRIoT.DataVisualizers
         protected void Start()
         {
             if (Code == null)
-            {
                 throw new Exception("QR Code Empty");
-            }
 
             if (networkPrefab != null)
             {

@@ -24,12 +24,11 @@ namespace Svanesjo.MRIoT.DataVisualizers
         private long _lastTimeStamp = 0;
 
         // Start is called before the first frame update
-        void Start()
+        protected new void Start()
         {
+            base.Start();
             if (Code == null)
-            {
                 throw new Exception("QR Code Empty");
-            }
 
             PhysicalSize = Code.PhysicalSideLength;
             CodeText = Code.Data;

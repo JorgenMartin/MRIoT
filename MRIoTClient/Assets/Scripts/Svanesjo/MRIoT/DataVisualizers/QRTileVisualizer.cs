@@ -2,7 +2,6 @@
 
 using System;
 using Exact;
-using Svanesjo.MRIoT.Things;
 using Svanesjo.MRIoT.Things.GameLogic;
 using UnityEngine;
 
@@ -17,12 +16,11 @@ namespace Svanesjo.MRIoT.DataVisualizers
         private DemoGame _game = null!;
 
         // Start is called before the first frame update
-        private void Start()
+        protected new void Start()
         {
+            base.Start();
             if (Code == null)
-            {
                 throw new Exception("QR Code Empty");
-            }
 
             _exactManager = FindFirstObjectByType<ExactManager>();
             if (_exactManager == null)
