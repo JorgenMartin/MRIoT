@@ -1,0 +1,129 @@
+@startuml sequenceDiagramMRIoT
+
+title Sequence Diagram for MRIoT
+
+
+!pragma teoz true
+box "RealWorld" #LightPink
+    actor User
+
+    box "IoT Device" #LightGreen
+        participant QRCode as QR
+        participant PhysicalDevice as PD
+    end box
+end box
+
+box "HoloLens" #LightSteelBlue
+    participant NetworkManager as NMHL
+    participant QRCodesManager as QRCM
+    participant ExactManager as Exact
+    participant Game
+    box "DigitalTwin" #LightBlue
+        participant NetworkDevice as ND
+        participant NetworkThing as NTHL
+    end box
+end box
+
+box "MetaQuest" #LightSkyBlue
+    participant NetworkManager as NMMQ
+    box "DigitalTwin" #LightBlue
+        participant NetworkThing as NTMQ
+    end box
+end box
+
+== Startup ==
+
+rnote across
+    Using liftime only for instances created after startup for a cleaner diagram
+endnote
+
+NMHL -> NMHL : StartServer()
+NMMQ -> NMMQ : StartClient()
+NMMQ -> NMHL : Connect()
+
+||100||
+== Add Device ==
+
+rnote across
+    Using `<<QRCodeAdded>>` to show event triggered by OS when looking at a new QRCode
+    Using `[NGO]` for Netcode for GameObjects-messages
+    Using `[MQTT]` for MQTT messages (sent through ExactManager)
+endnote
+
+User -> QR : LookAt
+QR -> QRCM : <<QRCodeAdded>>
+QRCM -> QR : GetData
+QR --> QRCM : data
+QRCM -> ND ++ #Gold : Instantiate()
+ND -> NTHL ++ #Gold : Spawn()
+NTHL -> NTMQ ++ #Gold : [NGO] Spawn()
+ND -> Exact : AddDevice(device)
+Exact -> PD : [MQTT] /.../are_you_connected
+PD --> Exact : [MQTT] /.../connected/<mac>
+
+||100||
+== Move Device ==
+
+rnote across
+    `Pose` is a Unity class containing Position and Rotation
+endnote
+
+User -> QR : Move
+ND -> QR : GetPose
+QR --> ND : pose
+ND -> NTHL : SetPositionAndRotation(pose.position, pose.rotation)
+NTHL -> NTMQ : [NGO] NetworkTransform
+
+||100||
+== Physical Tap ==
+
+User -> PD : Tap
+PD -> ND : [MQTT] /.../<mac>/event/imu/tapped
+ND -> Game : OnTapped(device)
+Game -> ND : SetColor(color)
+ND -> PD : [MQTT] /.../<mac>/action/led_ring/set_color_all_leds "255/0/255"
+
+'over ND, NTMQ
+group ref: Setting color
+    ND -> NTHL : SetUniformColor(color)
+    NTHL -> NTHL : _color = color
+    NTHL -> NTMQ : [NGO] NetworkVariable(_color)
+end
+
+||100||
+== Virtual Tap on HoloLens ==
+
+rnote across
+    Using `<<Select>>` for the event when a user interacts with the virtual object
+    Using `<<VirtualTapHappened>>` for the event fired by NetworkThing
+endnote
+
+User -> NTHL : <<Select>>
+NTHL -> NTHL : VirtualTap()
+NTHL -> ND : <<VirtualTapHappened>>
+
+'over PD, NTMQ
+group ref: VirtualTapHappened handling
+    ND -> ND : OnTap()
+    ND -> Game : OnTapped(device)
+    Game -> ND : SetColor(color)
+    ND -> PD : [MQTT] /.../<mac>/action/led_ring/set_color_all_leds "0/0/0"
+    hnote over ND, NTMQ #GoldenRod
+        Same as 'ref: Setting color' in 'Physical Tap'
+    endnote
+end
+
+||100||
+== Virtual Tap on Meta Quest ==
+
+User -> NTMQ : <<Select>>
+NTMQ -> NTMQ : VirtualTap()
+NTMQ -> NTHL : VirtualTapServerRpc()
+NTHL -> NTHL : VirtualTap()
+NTHL -> ND : <<VirtualTapHappened>>
+
+hnote over PD, NTMQ #GoldenRod
+    Same as 'ref: VirtualTapHappened handling' for 'Virtual Tap on HoloLens'
+endnote
+
+@end
