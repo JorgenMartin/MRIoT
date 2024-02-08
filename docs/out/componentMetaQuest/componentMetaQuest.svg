@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="631px" preserveAspectRatio="none" style="width:536px;height:631px;background:#FFFFFF;" version="1.1" viewBox="0 0 536 631" width="536px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="27.6094" id="_title" style="stroke:none;stroke-width:1.0;" width="306" x="108" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="296" x="113" y="24.5332">Component Diagram for Meta Quest Client</text><!--MD5=[1976b55dff140e203e957867ffe017fe]
+cluster MQC--><g id="cluster_MQC"><path d="M8.5,203.1094 L127.5,203.1094 A3.75,3.75 0 0 1 130,205.6094 L137,226.7188 L526.5,226.7188 A2.5,2.5 0 0 1 529,229.2188 L529,405.6094 A2.5,2.5 0 0 1 526.5,408.1094 L8.5,408.1094 A2.5,2.5 0 0 1 6,405.6094 L6,205.6094 A2.5,2.5 0 0 1 8.5,203.1094 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="6" x2="137" y1="226.7188" y2="226.7188"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="118" x="10" y="219.6426">MetaQuestClient</text></g><!--MD5=[46567e2c2eadfc5f63103f42fe458f9a]
+cluster HL--><g id="cluster_HL"><polygon fill="none" points="153,484.1094,163,474.1094,435,474.1094,435,604.1094,425,614.1094,153,614.1094,153,484.1094" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="425" x2="435" y1="484.1094" y2="474.1094"/><line style="stroke:#181818;stroke-width:1.0;" x1="153" x2="425" y1="484.1094" y2="484.1094"/><line style="stroke:#181818;stroke-width:1.0;" x1="425" x2="425" y1="484.1094" y2="614.1094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="118" x="229" y="501.6426">HoloLens Server</text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="4" x="347" y="501.6426"> </text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="4" x="214" y="519.252"> </text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" font-weight="bold" lengthAdjust="spacing" textLength="148" x="218" y="519.252">[Microsoft HoloLens 2]</text></g><!--MD5=[0526270536059857d4b68f0c5fc61c4c]
+entity NMMQ--><g id="elem_NMMQ"><rect fill="#F1F1F1" height="135.6563" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="248" x="22" y="247.6094"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="250" y="252.6094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="248" y="254.6094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="248" y="258.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="124" x="37" y="282.1426">Network Manager</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="168" x="37" y="299.752">[Component: GameObject]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="37" y="317.3613"> </text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="208" x="37" y="334.9707">Handles the NGO communication</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5" x="37" y="352.5801">(</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="164" x="42" y="352.5801">Netcode for GameObjects</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5" x="206" y="352.5801">)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="203" x="37" y="370.1895">for cross-device communication.</text></g><!--MD5=[6858149632d691d5efc9eb51a85a30c3]
+entity NTMQ--><g id="elem_NTMQ"><rect fill="#F1F1F1" height="153.2656" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="208" x="305" y="239.1094"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="493" y="244.1094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="491" y="246.1094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="491" y="250.1094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="101" x="320" y="273.6426">Network Thing</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="168" x="320" y="291.252">[Component: GameObject]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="320" y="308.8613"> </text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="161" x="320" y="326.4707">The visual representation</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="320" y="344.0801">of the digital twin.</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="137" x="320" y="361.6895">Synchronizes its state</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="119" x="320" y="379.2988">between all clients.</text></g><!--MD5=[34eaa8f4537399e9ec3e47f2425256f7]
+entity HLS--><g id="elem_HLS"><rect fill="#F1F1F1" height="65.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="250" x="169" y="533.1094"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="399" y="538.1094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="397" y="540.1094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="397" y="544.1094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="114" x="184" y="567.6426">HoloLensServer</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="210" x="184" y="585.252">[Container: UnityEngine, MRTK3]</text></g><!--MD5=[fee662a292a0353a69bd162820bae93b]
+entity User--><g id="elem_User"><ellipse cx="409" cy="52.6094" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M409,60.6094 L409,87.6094 M396,68.6094 L422,68.6094 M409,87.6094 L396,102.6094 M409,87.6094 L422,102.6094 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="33" x="382.5" y="118.6426">User</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="53" x="382.5" y="136.252">[Person]</text></g><!--MD5=[ea0661e82bcb771090f5742d23e61fd3]
+link User to NTMQ--><g id="link_User_NTMQ"><path codeLine="37" d="M409,139.1494 C409,166.5394 409,201.9594 409,233.7894 " fill="none" id="User-to-NTMQ" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="409,238.8594,413,229.8594,409,233.8594,405,229.8594,409,238.8594" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="77" x="410" y="183.6045">Interacts with</text></g><!--MD5=[f7f31394f87430ec0052c0df54db58b9]
+link NMMQ to HLS--><g id="link_NMMQ_HLS"><path codeLine="38" d="M164.84,383.8094 C173.15,408.1494 184.21,435.2494 198,458.1094 C213.67,484.0894 236.18,509.4694 255.46,528.9294 " fill="none" id="NMMQ-to-HLS" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="259.27,532.7394,255.7345,523.547,255.7345,529.2038,250.0776,529.2038,259.27,532.7394" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="70" x="199" y="438.6045">Connects to</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="37" x="219.5" y="454.9561">[NGO]</text></g><!--MD5=[f7024e623ec028f8f3bf17ed3308997e]
+link NTMQ to HLS--><g id="link_NTMQ_HLS"><path codeLine="39" d="M310.66,392.3994 C302.8,402.2194 295.98,412.8294 291,424.1094 C276.46,457.0194 279.67,498.6394 285,528.0094 " fill="none" id="NTMQ-to-HLS" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="285.94,532.9794,288.1994,523.3932,285.0117,528.0663,280.3385,524.8785,285.94,532.9794" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="69" x="292" y="438.6045">Sends input</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="37" x="312" y="454.9561">[NGO]</text></g><!--MD5=[ad372b919c9cdaa022474e07ed53029b]
+reverse link NTMQ to HLS--><g id="link_NTMQ_HLS"><path codeLine="40" d="M392.07,397.0794 C386.36,417.4994 379.08,439.0494 370,458.1094 C357.11,485.1794 337.31,512.6494 321.15,532.9094 " fill="none" id="NTMQ-backto-HLS" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="393.41,392.1894,387.181,399.8182,392.0932,397.0129,394.8986,401.9251,393.41,392.1894" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="60" x="384" y="438.6045">Sets state</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="37" x="399.5" y="454.9561">[NGO]</text></g><!--MD5=[d7f98ae4cd117a0fb96cd2381baa7af1]
+@startuml componentMetaQuest
+
+title Component Diagram for Meta Quest Client
+
+actor User [
+    <b>User</b>
+    <i>[Person]</i>
+]
+
+package MQC as "MetaQuestClient" {
+    component NMMQ [
+        <b>Network Manager</b>
+        <i>[Component: GameObject]</i>
+
+        Handles the NGO communication
+        (<i>Netcode for GameObjects</i>)
+        for cross-device communication.
+    ]
+    component NTMQ [
+        <b>Network Thing</b>
+        <i>[Component: GameObject]</i>
+
+        The visual representation
+        of the digital twin.
+        Synchronizes its state
+        between all clients.
+    ]
+
+}
+
+node HL as "<b>HoloLens Server</b> \n <i>[Microsoft HoloLens 2]</i>" {
+    component HLS [
+        <b>HoloLensServer</b>
+        <i>[Container: UnityEngine, MRTK3]</i>
+    ]
+}
+
+User - -> NTMQ : Interacts with
+NMMQ - -> HLS : Connects to \n [NGO]
+NTMQ - -> HLS : Sends input \n [NGO]
+NTMQ <- - HLS : Sets state \n [NGO]
+
+@end
+
+PlantUML version 1.2022.7(Mon Aug 22 19:01:30 CEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+Language: en
+Country: GB
+--></g></svg>

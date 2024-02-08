@@ -1,0 +1,86 @@
+@startuml componentHoloLens
+
+title Component Diagram for HoloLens Server
+
+package HLS as "HoloLensServer" {
+    component Exact [
+        <b>Exact Manager</b>
+        <i>[Component: GameObject]</i>
+
+        Handles the MQTT communication
+        for the digital twin (<i>Network Device</i>).
+    ]
+    component NMHL [
+        <b>Network Manager</b>
+        <i>[Component: GameObject]</i>
+
+        Handles the NGO communication
+        (<i>Netcode for GameObjects</i>)
+        for cross-device communication.
+    ]
+    component QRCM [
+        <b>QR Codes Manager</b>
+        <i>[Component: GameObject]</i>
+
+        Handles the detection of new QR codes
+        and instantiation of new GameObjects
+        (<i>NetworkDevice</i>) based on QR data.
+    ]
+    component Game [
+        <b>Game</b>
+        <i>[Component: GameObject]</i>
+
+        Runs the game logic and determines which
+        state the game objects should have.
+    ]
+    component NDHL [
+        <b>Network Device</b>
+        <i>[Component: GameObject]</i>
+
+        The logic-only representation of the
+        digital twin running on the HoloLens
+        and communicating with the IoT device.
+    ]
+    component NTHL [
+        <b>Network Thing</b>
+        <i>[Component: GameObject]</i>
+
+        The visual representation
+        of the digital twin.
+        Synchronizes its state
+        between all clients.
+    ]
+}
+
+node MQ as "<b>Meta Quest Client</b> \n <i>[Meta Quest Pro]</i>" {
+    component MQC [
+        <b>MetaQuestClient</b>
+        <i>[Container: UnityEngine, Meta XR SDK]</i>
+    ]
+}
+
+node RT as "<b>Red Tile</b> \n <i>[IoT Device]</i>" {
+    component TQR [
+        <b>QR Code</b>
+        <i>[Micro QR]</i>
+    ]
+    component TFW [
+        <b>Tile Firmware</b>
+        <i>[Container: Arduino, Unity-Things]</i>
+    ]
+}
+
+MQC --> NMHL : Connects to \n [NGO]
+QRCM --> TQR : Discovers \n [Camera]
+NDHL --> TFW : Sets state \n [MQTT]
+NDHL <-- TFW : Sends input \n [MQTT]
+NTHL <-- NDHL : Sets state
+NTHL --> NDHL : Sends input
+MQC --> NTHL : Sends input \n [NGO]
+MQC <-- NTHL : Sets state \n [NGO]
+Game <- NDHL : Sends input
+Game -> NDHL : Sets state
+Exact <-- TFW : Connects to \n [MQTT]
+QRCM --> NDHL : Instantiates
+
+@end

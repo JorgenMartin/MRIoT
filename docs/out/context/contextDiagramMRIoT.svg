@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="579px" preserveAspectRatio="none" style="width:475px;height:579px;background:#FFFFFF;" version="1.1" viewBox="0 0 475 579" width="475px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="27.6094" id="_title" style="stroke:none;stroke-width:1.0;" width="252" x="104.75" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="242" x="109.75" y="24.5332">System Context Diagram for MRIoT</text><!--MD5=[fee662a292a0353a69bd162820bae93b]
+entity User--><g id="elem_User"><ellipse cx="51.5" cy="65.6094" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M51.5,73.6094 L51.5,100.6094 M38.5,81.6094 L64.5,81.6094 M51.5,100.6094 L38.5,115.6094 M51.5,100.6094 L64.5,115.6094 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="33" x="25" y="131.6426">User</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="53" x="25" y="149.252">[Person]</text></g><!--MD5=[9988c23aa076aae41018410b787b33db]
+entity HL--><g id="elem_HL"><rect fill="#F1F1F1" height="135.6563" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="296" x="165.5" y="241.6094"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="441.5" y="246.6094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="439.5" y="248.6094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="439.5" y="252.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="118" x="180.5" y="276.1426">HoloLens Server</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="113" x="180.5" y="293.752">[Software System]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="180.5" y="311.3613"> </text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="256" x="180.5" y="328.9707">Authorative server for the game session.</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="151" x="180.5" y="346.5801">Handles tracking and all</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="205" x="180.5" y="364.1895">interactions with the IoT devices.</text></g><!--MD5=[ec9693746a5ae180405a351f013c402e]
+entity MQ--><g id="elem_MQ"><rect fill="#F1F1F1" height="118.0469" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="210" x="259.5" y="45.6094"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="449.5" y="50.6094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="447.5" y="52.6094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="447.5" y="56.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="126" x="274.5" y="80.1426">Meta Quest Client</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="113" x="274.5" y="97.752">[Software System]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="274.5" y="115.3613"> </text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="156" x="274.5" y="132.9707">User client handling user</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="170" x="274.5" y="150.5801">interaction with the system.</text></g><!--MD5=[21c4f067ea39b24444517ddbeba0b8e4]
+entity RT--><g id="elem_RT"><rect fill="#F1F1F1" height="118.0469" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="373" x="7" y="455.6094"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="360" y="460.6094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="358" y="462.6094"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="358" y="466.6094"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="57" x="22" y="490.1426">Red Tile</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="75" x="22" y="507.752">[IoT Device]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="22" y="525.3613"> </text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="300" x="22" y="542.9707">State changed based on subscribed messages.</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="333" x="22" y="560.5801">Takes and publishes user input as MQTT messages.</text></g><!--MD5=[be5e874f3c2686b7937407ba3b315491]
+link User to MQ--><g id="link_User_MQ"><path codeLine="34" d="M78.19,104.6094 C116.94,104.6094 191.06,104.6094 254.17,104.6094 " fill="none" id="User-to-MQ" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="259.47,104.6094,250.47,100.6094,254.47,104.6094,250.47,108.6094,259.47,104.6094" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="141" x="96.25" y="82.1045">Views and interacts with</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="137" x="102.25" y="98.4561">the virtual content using</text></g><!--MD5=[1f39461e4173e79027f78cd0772c1291]
+link User to RT--><g id="link_User_RT"><path codeLine="35" d="M45.24,152.5194 C39.8,208.5094 37.06,303.8294 68.5,377.6094 C80.21,405.0794 99.93,430.5594 120.3,451.8594 " fill="none" id="User-to-RT" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="123.84,455.5194,120.4722,446.2642,120.3693,451.9202,114.7134,451.8173,123.84,455.5194" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="77" x="69.5" y="315.1045">Interacts with</text></g><!--MD5=[d88c1e8459d870673eaf0bf1ad80831d]
+link MQ to HL--><g id="link_MQ_HL"><path codeLine="36" d="M278.92,163.8194 C270.72,172.8294 263.58,182.7794 258.5,193.6094 C251.95,207.5594 253.03,222.4294 258.08,236.6794 " fill="none" id="MQ-to-HL" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="259.94,241.4894,260.4365,231.653,258.1422,236.8238,252.9715,234.5295,259.94,241.4894" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="259.5" y="208.1045">Sends user input to</text></g><!--MD5=[b74b6a7c3c70dddae36d84d77dddc8a7]
+reverse link MQ to HL--><g id="link_MQ_HL"><path codeLine="37" d="M380.74,169.0294 C382.05,183.2294 381.56,198.0894 377.5,211.6094 C374.45,221.7494 369.97,231.8194 364.76,241.4094 " fill="none" id="MQ-backto-HL" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="380.18,163.8294,377.154,173.2018,380.7086,168.8014,385.1091,172.356,380.18,163.8294" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="78" x="381.5" y="208.1045">Sets state on</text></g><!--MD5=[fe3502e37e99daa275f7d1d6d4efa592]
+link HL to RT--><g id="link_HL_RT"><path codeLine="38" d="M210.89,377.8494 C202.78,386.9094 195.72,396.8394 190.5,407.6094 C184.2,420.5894 182.04,435.5594 182.08,450.0794 " fill="none" id="HL-to-RT" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="182.19,455.4094,185.9827,446.3201,182.0754,450.4107,177.9848,446.5034,182.19,455.4094" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="78" x="191.5" y="422.1045">Sets state on</text></g><!--MD5=[71da734b1fec68ea66da15de90cba2c5]
+reverse link HL to RT--><g id="link_HL_RT"><path codeLine="39" d="M294.19,382.7394 C288.86,397.4294 282.33,412.4194 274.5,425.6094 C268.46,435.7894 261.1,445.7994 253.29,455.2094 " fill="none" id="HL-backto-RT" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="295.96,377.7694,289.1564,384.8905,294.272,382.4758,296.6867,387.5914,295.96,377.7694" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="113" x="285.5" y="422.1045">Sends user input to</text></g><!--MD5=[e8a3d9869e60af0fa427f3c22343cd5e]
+@startuml contextDiagramMRIoT
+
+title System Context Diagram for MRIoT
+
+actor User [
+    <b>User</b>
+    <i>[Person]</i>
+]
+
+component HL [
+    <b>HoloLens Server</b>
+    <i>[Software System]</i>
+
+    Authorative server for the game session.
+    Handles tracking and all
+    interactions with the IoT devices.
+]
+
+component MQ [
+    <b>Meta Quest Client</b>
+    <i>[Software System]</i>
+
+    User client handling user
+    interaction with the system.
+]
+
+component RT [
+    <b>Red Tile</b>
+    <i>[IoT Device]</i>
+
+    State changed based on subscribed messages.
+    Takes and publishes user input as MQTT messages.
+]
+
+User -> MQ : Views and interacts with \n the virtual content using
+User - -> RT : Interacts with
+MQ - -> HL : Sends user input to
+MQ <- - HL : Sets state on
+HL - -> RT : Sets state on
+HL <- - RT : Sends user input to
+
+@end
+
+PlantUML version 1.2022.7(Mon Aug 22 19:01:30 CEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+Language: en
+Country: GB
+--></g></svg>

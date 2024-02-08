@@ -1,0 +1,42 @@
+@startuml contextDiagramMRIoT
+
+title System Context Diagram for MRIoT
+
+actor User [
+    <b>User</b>
+    <i>[Person]</i>
+]
+
+component HL [
+    <b>HoloLens Server</b>
+    <i>[Software System]</i>
+
+    Authorative server for the game session.
+    Handles tracking and all
+    interactions with the IoT devices.
+]
+
+component MQ [
+    <b>Meta Quest Client</b>
+    <i>[Software System]</i>
+
+    User client handling user
+    interaction with the system.
+]
+
+component RT [
+    <b>Red Tile</b>
+    <i>[IoT Device]</i>
+
+    State changed based on subscribed messages.
+    Takes and publishes user input as MQTT messages.
+]
+
+User -> MQ : Views and interacts with \n the virtual content using
+User --> RT : Interacts with
+MQ --> HL : Sends user input to
+MQ <-- HL : Sets state on
+HL --> RT : Sets state on
+HL <-- RT : Sends user input to
+
+@end

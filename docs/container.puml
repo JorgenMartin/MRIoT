@@ -1,0 +1,43 @@
+@startuml containerDiagramMRIoT
+
+title Container Diagram MRIoT
+
+actor User [
+    <b>User</b>
+    <i>[Person]</i>
+]
+
+node MQ as "<b>Meta Quest Client</b> \n <i>[Meta Quest Pro]</i>" {
+    component MQC [
+        <b>MetaQuestClient</b>
+        <i>[Container: UnityEngine, Meta XR SDK]</i>
+    ]
+}
+
+node HL as "<b>HoloLens Server</b> \n <i>[Microsoft HoloLens 2]</i>" {
+    component HLS [
+        <b>HoloLensServer</b>
+        <i>[Container: UnityEngine, MRTK3]</i>
+    ]
+}
+
+node RT as "<b>Red Tile</b> \n <i>[IoT Device]</i>" {
+    component TQR [
+        <b>QR Code</b>
+        <i>[Micro QR]</i>
+    ]
+    component TFW [
+        <b>Tile Firmware</b>
+        <i>[Container: Arduino, Unity-Things]</i>
+    ]
+}
+
+User -> MQC : Uses
+MQC --> HLS : Sends input \n [NGO]
+MQC <-- HLS: Updates game state \n [NGO]
+HLS --> TQR : Tracks \n [Camera]
+HLS --> TFW : Sets state \n [MQTT]
+TFW --> HLS : Sends input \n [MQTT]
+User --> RT : Interacts with
+
+@end

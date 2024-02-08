@@ -1,0 +1,43 @@
+@startuml componentMetaQuest
+
+title Component Diagram for Meta Quest Client
+
+actor User [
+    <b>User</b>
+    <i>[Person]</i>
+]
+
+package MQC as "MetaQuestClient" {
+    component NMMQ [
+        <b>Network Manager</b>
+        <i>[Component: GameObject]</i>
+
+        Handles the NGO communication
+        (<i>Netcode for GameObjects</i>)
+        for cross-device communication.
+    ]
+    component NTMQ [
+        <b>Network Thing</b>
+        <i>[Component: GameObject]</i>
+
+        The visual representation
+        of the digital twin.
+        Synchronizes its state
+        between all clients.
+    ]
+
+}
+
+node HL as "<b>HoloLens Server</b> \n <i>[Microsoft HoloLens 2]</i>" {
+    component HLS [
+        <b>HoloLensServer</b>
+        <i>[Container: UnityEngine, MRTK3]</i>
+    ]
+}
+
+User --> NTMQ : Interacts with
+NMMQ --> HLS : Connects to \n [NGO]
+NTMQ --> HLS : Sends input \n [NGO]
+NTMQ <-- HLS : Sets state \n [NGO]
+
+@end
