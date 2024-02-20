@@ -53,18 +53,16 @@ namespace Svanesjo.MRIoT.QRCodes
                 InitializeSpatialGraphNode();
             }
 
-            if (_node != null)
-            {
-                if (_node.TryLocate(FrameTime.OnUpdate, out Pose pose))
-                {
-                    Vector3 position = new Vector3(pose.position.x + xCorrection, pose.position.y + yCorrection, pose.position.z + zCorrection);
-                    gameObject.transform.SetPositionAndRotation(position, pose.rotation);
-                    // Call on QRDataVisualizer to update transform for NetworkObject
-                    _dataVisualizer.SetPositionAndRotation(position, pose.rotation);
-                    // Debug.Log("Tracker : Id= " + Id + " QRPose =" + position.ToString("F7") + " QRRot = " +
-                    //           pose.rotation.ToString("F7"));
-                }
-            }
+            if (_node == null || !_node.TryLocate(FrameTime.OnUpdate, out Pose pose)) return;
+
+            var position = new Vector3(pose.position.x + xCorrection,
+                pose.position.y + yCorrection,
+                pose.position.z + zCorrection);
+            gameObject.transform.SetPositionAndRotation(position, pose.rotation);
+            // Call on QRDataVisualizer to update transform for NetworkObject
+            _dataVisualizer.SetPositionAndRotation(position, pose.rotation);
+            // Debug.Log("Tracker : Id= " + Id + " QRPose =" + position.ToString("F7") + " QRRot = " +
+            //           pose.rotation.ToString("F7"));
         }
 
         private void InitializeSpatialGraphNode(bool force = false)

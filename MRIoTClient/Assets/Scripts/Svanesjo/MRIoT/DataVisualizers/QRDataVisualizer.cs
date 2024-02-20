@@ -20,7 +20,7 @@ namespace Svanesjo.MRIoT.DataVisualizers
 
         private NetworkObject? _spawnedNetworkObject;
 
-        protected void Start()
+        protected virtual void Start()
         {
             if (Code == null)
                 throw new Exception("QR Code Empty");
@@ -52,6 +52,13 @@ namespace Svanesjo.MRIoT.DataVisualizers
                 _spawnedNetworkObject = instance.GetComponent<NetworkObject>();
                 Debug.Log($"QRDataVisualizer spawning network object from {_spawnedNetworkObject}");
                 _spawnedNetworkObject.Spawn();
+
+                // Re-parent if CalibrationOrigin exists
+                var origin = FindFirstObjectByType<CalibrationOrigin>();
+                if (origin != null && origin.gameObject != instance)
+                {
+                    _spawnedNetworkObject.TrySetParent(origin.GetComponent<NetworkObject>(), false);
+                }
             }
             else
             {
@@ -61,10 +68,8 @@ namespace Svanesjo.MRIoT.DataVisualizers
 
         public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
         {
-            if (networkPrefab is not null && _spawnedNetworkObject != null)
-            {
-                _spawnedNetworkObject.transform.SetPositionAndRotation(position, rotation);
-            }
+            if (networkPrefab is null || _spawnedNetworkObject == null) return;
+            _spawnedNetworkObject.transform.SetPositionAndRotation(position, rotation);
         }
     }
 }

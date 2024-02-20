@@ -112,6 +112,8 @@ namespace Svanesjo.MRIoT.Things.Network
             _tileLampNetwork = thing;
             thing.LampStateChanged += LampStateChanged;
             thing.VirtualTapHappened += VirtualTapHappened;
+
+            // TODO: Call an initialize-method instead? Encapsulation?
             GetComponent<NetworkedColorRing>().networkColorRing = thing.GetComponent<NetworkColorRing>();
         }
     }

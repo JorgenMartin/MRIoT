@@ -16,7 +16,7 @@ namespace Svanesjo.MRIoT.DataVisualizers
         private FollowTheRedDot _game = null!;
         
         // Start is called before the first frame update
-        protected new void Start()
+        protected override void Start()
         {
             base.Start();
             if (Code == null)
