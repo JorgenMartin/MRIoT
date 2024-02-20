@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: HoloLensClient
+  companyName: Svanesjo
+  productName: MRIoT
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -140,11 +140,6 @@ PlayerSettings:
   preloadedAssets:
   - {fileID: 11400000, guid: efb210f2bfaddea4392bd25ca08abba1, type: 2}
   - {fileID: 0}
-  - {fileID: 11400000, guid: c677e5c4eb85b7849a8da406775c299d, type: 2}
-  - {fileID: 11400000, guid: 66861a85ae3b44848951e0032f282295, type: 2}
-  - {fileID: 11400000, guid: 4eea1574a784ca543adfb73802221741, type: 2}
-  - {fileID: -4993626443633606748, guid: 459177a35450f3b489ff5a01e93bab25, type: 2}
-  - {fileID: 2337936704428693764, guid: a299d9579ec6ad343ae9ecdd6fbefc2e, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -165,7 +160,9 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   androidMinAspectRatio: 1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Android: com.Svanesjo.MRIoT
+    Standalone: com.Svanesjo.MRIoT
   buildNumber:
     Bratwurst: 0
     Standalone: 0
@@ -754,7 +751,7 @@ PlayerSettings:
   webGLWebAssemblyBigInt: 0
   webGLCloseOnQuit: 0
   scriptingDefineSymbols:
-    Android: USE_INPUT_SYSTEM_POSE_CONTROL;USE_INPUT_SYSTEM_POSE_CONTROL
+    Android: 
     Standalone: USE_INPUT_SYSTEM_POSE_CONTROL;USE_INPUT_SYSTEM_POSE_CONTROL
     Windows Store Apps: USE_INPUT_SYSTEM_POSE_CONTROL;USE_INPUT_SYSTEM_POSE_CONTROL
   additionalCompilerArguments: {}
@@ -791,14 +788,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: HoloLensClient
+  metroPackageName: MRIoT
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: DefaultCompany
-  metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 0069a3606168db01
-  metroApplicationDescription: HoloLensClient
+  metroCertificateSubject: Svanesjo
+  metroCertificateIssuer: Svanesjo
+  metroCertificateNotAfter: 803db7371183db01
+  metroApplicationDescription: Mixed Reality - Internet of Things
   wsaImages: {}
   metroTileShortName: HoloLensClient
   metroTileShowName: 0
