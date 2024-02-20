@@ -2,9 +2,11 @@
 
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Svanesjo.MRIoT.Things.Network
 {
+    [RequireComponent(typeof(XRGrabInteractable))]
     public class CalibrationOrigin : NetworkBehaviour
     {
         private void Start()
@@ -21,6 +23,9 @@ namespace Svanesjo.MRIoT.Things.Network
         private void Initialize()
         {
             if (!IsServer) return;
+
+            // Disable interaction on the server, since it will use QR Codes instead
+            GetComponent<XRGrabInteractable>().enabled = false;
 
             var arr = FindObjectsByType<NetworkObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (var networkObject in arr)
