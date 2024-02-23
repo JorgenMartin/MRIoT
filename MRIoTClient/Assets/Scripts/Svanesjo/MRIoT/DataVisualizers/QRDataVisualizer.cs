@@ -3,6 +3,7 @@
 using System;
 using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.QRCodes;
+using Svanesjo.MRIoT.Things.Calibration;
 using Svanesjo.MRIoT.Things.Network;
 using Unity.Netcode;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Svanesjo.MRIoT.DataVisualizers
 
         public QRCode? Code;
 
-        private NetworkObject? _spawnedNetworkObject;
+        protected NetworkObject? SpawnedNetworkObject;
 
         protected virtual void Start()
         {
@@ -49,16 +50,14 @@ namespace Svanesjo.MRIoT.DataVisualizers
                 }
 
                 // Call Spawn on the NetworkObject to replicate on clients
-                _spawnedNetworkObject = instance.GetComponent<NetworkObject>();
-                Debug.Log($"QRDataVisualizer spawning network object from {_spawnedNetworkObject}");
-                _spawnedNetworkObject.Spawn();
+                SpawnedNetworkObject = instance.GetComponent<NetworkObject>();
+                Debug.Log($"QRDataVisualizer spawning network object from {SpawnedNetworkObject}");
+                SpawnedNetworkObject.Spawn();
 
                 // Re-parent if CalibrationOrigin exists
                 var origin = FindFirstObjectByType<CalibrationOrigin>();
-                if (origin != null && origin.gameObject != instance)
-                {
-                    _spawnedNetworkObject.TrySetParent(origin.GetComponent<NetworkObject>(), false);
-                }
+                if (origin != null)
+                    origin.ReParentIfValid(SpawnedNetworkObject);
             }
             else
             {
@@ -68,8 +67,13 @@ namespace Svanesjo.MRIoT.DataVisualizers
 
         public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
         {
-            if (networkPrefab is null || _spawnedNetworkObject == null) return;
-            _spawnedNetworkObject.transform.SetPositionAndRotation(position, rotation);
+            if (networkPrefab is null || SpawnedNetworkObject == null) return;
+
+            var tile = SpawnedNetworkObject.GetComponent<CalibrationTile>();
+            if (tile != null)
+                tile.SetPositionAndRotation(position, rotation);
+            else
+                SpawnedNetworkObject.transform.SetPositionAndRotation(position, rotation);
         }
     }
 }

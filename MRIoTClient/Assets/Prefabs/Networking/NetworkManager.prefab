@@ -70,7 +70,7 @@ MonoBehaviour:
     EnableNetworkLogs: 1
     OldPrefabList: []
   RunInBackground: 1
-  LogLevel: 1
+  LogLevel: 0
 --- !u!114 &3772929640052528342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,9 +110,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd034873e9746e448a287e2ce4c385b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverMaterial: {fileID: 2100000, guid: 129455b02433570498cc5712114f844b, type: 2}
-  hostMaterial: {fileID: 2100000, guid: 2bbf8784cbc115b478160464baabc0a9, type: 2}
-  clientMaterial: {fileID: 2100000, guid: ad9a194a7e9dce14aa2186f78e4ff66d, type: 2}
+  serverMaterial: {fileID: 2100000, guid: 469331047b349b548b23df1e31207efa, type: 2}
+  hostMaterial: {fileID: 2100000, guid: 10255886840d7e54bbd75889b864b498, type: 2}
+  clientMaterial: {fileID: 2100000, guid: 58eaa679b1b4b424ea31195d1665c22a, type: 2}
   editorStartType: 2
   deviceStartType: 2
   floor: {fileID: 0}
+  checkConnectionInterval: 10
+  reinitializeIfConnectionLostFor: 30
