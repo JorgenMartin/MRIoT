@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.DataVisualizers;
+using Svanesjo.MRIoT.Utility;
 using UnityEngine;
 
 #nullable enable
@@ -18,6 +19,7 @@ namespace Svanesjo.MRIoT.QRCodes
         private Guid _id;
         private SpatialGraphNode? _node;
         private QRDataVisualizer _dataVisualizer = null!;
+        private string? _filePath = null;
 
         [SerializeField] private float xCorrection; // = 0f
         [SerializeField] private float yCorrection = 1.6f;
@@ -34,12 +36,12 @@ namespace Svanesjo.MRIoT.QRCodes
             if (!QRCodesManager.Instance.runningEvaluation)
                 return;
 
-            var filePath = Path.Combine(Application.persistentDataPath, "MRIoTSpatialGraphNodeTracker.log");
-            if (!File.Exists(filePath))
-                Debug.LogError($"Creating log file: {filePath}");
-            using var file = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
+            if (_filePath == null)
+                throw new Exception("FilePath is null!");
+
+            using var file = new FileStream(_filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
             using var writer = new StreamWriter(file, Encoding.UTF8);
-            writer.WriteLineAsync($"{DateTime.Now} {message}");
+            writer.WriteLineAsync($"{DateTime.Now}; {message}");
         }
 
         public Guid Id
@@ -60,9 +62,14 @@ namespace Svanesjo.MRIoT.QRCodes
         {
             _dataVisualizer = GetComponent<QRDataVisualizer>();
             if (_dataVisualizer is null)
-            {
                 throw new Exception("QR Data Visualizer not found");
-            }
+
+            var initialFilePath = QRCodesManager.Instance.FilePath;
+            if (initialFilePath == null)
+                throw new Exception("FilePath is null");
+
+            _filePath = $"{initialFilePath}.spatialGraphNodeTracker.log";
+            DebugLog($"Using log file '{_filePath}'");
 
             InitializeSpatialGraphNode();
         }
@@ -81,16 +88,17 @@ namespace Svanesjo.MRIoT.QRCodes
                 pose.position.y + yCorrection,
                 pose.position.z + zCorrection);
 
-            var oldPos = gameObject.transform.position;
-            var oldRot = gameObject.transform.rotation;
+            var gameObjectTransform = gameObject.transform;
+            var oldPos = gameObjectTransform.position;
+            var oldRot = gameObjectTransform.rotation;
+            var distance = newPos.DistanceFrom(oldPos);
+            var diffPosition = newPos.DifferanceFrom(oldPos);
+            var diffRotation = pose.rotation.DifferenceFrom(oldRot);
 
-            gameObject.transform.SetPositionAndRotation(newPos, pose.rotation);
+            gameObjectTransform.SetPositionAndRotation(newPos, pose.rotation);
             // Call on QRDataVisualizer to update transform for NetworkObject
             _dataVisualizer.SetPositionAndRotation(newPos, pose.rotation);
 
-            var distance = Vector3.Distance(oldPos, newPos);
-            var diffPosition = newPos - oldPos;
-            var diffRotation = Quaternion.Inverse(oldRot) * pose.rotation;
             LogStr($"{Id}; {newPos.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {diffPosition.ToString("F7")}; {diffRotation.ToString("F7")}");
         }
 

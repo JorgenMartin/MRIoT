@@ -18,5 +18,15 @@ namespace Svanesjo.MRIoT.Utility
 
             return mean / arr.Count;
         }
+
+        public static float DistanceFrom(this Vector3 to, Vector3 from)
+        {
+            return Vector3.Distance(from, to);
+        }
+
+        public static Vector3 DifferanceFrom(this Vector3 to, Vector3 from)
+        {
+            return to - from;
+        }
     }
 }

@@ -42,6 +42,9 @@ namespace Svanesjo.MRIoT.QRCodes
         public bool IsSupported { get; private set; }
         public bool runningEvaluation = false;
 
+        public string? FilePath { get; private set; } = null;
+        private string FileName { get; set; } = "QRTracking0001.log";
+
         public event EventHandler<bool>? QRCodesTrackingStateChanged;
         public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeAdded;
         public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeUpdated;
@@ -59,6 +62,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private AudioSource _audioSource = null!;
         private bool _popped = false;
+        private Camera _camera = null!;
 
         private void DebugLog(string message)
         {
@@ -71,15 +75,10 @@ namespace Svanesjo.MRIoT.QRCodes
             if (_writer != null) return;
             if (_stream == null)
             {
-                var filePath = Path.Combine(Application.persistentDataPath, "MRIoTQRTesting.log");
-                if (!File.Exists(filePath))
-                    Debug.LogError($"Creating log file: {filePath}");
-                else if (_firstLog)
-                {
-                    Debug.LogError($"Using log file: {filePath}");
-                    _firstLog = false;
-                }
-                _stream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
+                if (FilePath == null)
+                    throw new Exception("FilePath is null!");
+
+                _stream = new FileStream(FilePath, FileMode.Append, FileAccess.Write, FileShare.Write);
             }
             _writer = new StreamWriter(_stream, Encoding.UTF8);
         }
@@ -108,10 +107,15 @@ namespace Svanesjo.MRIoT.QRCodes
             if (node == null || !node.TryLocate(FrameTime.OnUpdate, out Pose pose)) return;
             if (_firstQRLog)
             {
-                LogStr("Id; SpatialGraphNodeId; Position; Rotation; Version; PhysicalSideLength; RawDataSize; Data");
+                LogStr("Id; SpatialGraphNodeId; Position; Rotation; Distance; PositionFromCamera; RotationFromCamera; Version; PhysicalSideLength; RawDataSize; Data; LastDetectedTime");
                 _firstQRLog = false;
             }
-            LogStr($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}");
+
+            var camPos = _camera.transform.position;
+            var distance = pose.position.DistanceFrom(camPos);
+            var diffPos = pose.position.DifferanceFrom(camPos);
+            var diffRot = pose.rotation.DifferenceFrom(_camera.transform.rotation);
+            LogStr($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {diffPos.ToString("F7")}; {diffRot.ToString("F7")}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}, {code.LastDetectedTime}");
         }
 
         public Guid GetIdForQRCode(string qrCodeData)
@@ -142,14 +146,41 @@ namespace Svanesjo.MRIoT.QRCodes
             _audioSource = GetComponent<AudioSource>();
             if (_audioSource == null)
                 throw new MissingComponentException(nameof(_audioSource));
+
+            _camera = Camera.main;
+            if (_camera == null)
+                throw new Exception("Camera not found");
         }
 
-        protected virtual async void Start()
+        private async void Start()
         {
             IsSupported = QRCodeWatcher.IsSupported();
             _capabilityTask = QRCodeWatcher.RequestAccessAsync();
             _accessStatus = await _capabilityTask;
             _capabilityInitialized = true;
+
+            FileName = "QRCodeManager0001.log";
+            FilePath = Path.Combine(Application.persistentDataPath, FileName);
+            while (File.Exists(FilePath))
+            {
+                var start = FileName.IndexOf('0');
+                var end = FileName.IndexOf('.');
+                if (start < 0 || end > FileName.Length || start >= end)
+                    throw new IndexOutOfRangeException();
+                var intString = FileName.Substring(start, end - start);
+
+                var parsed = int.TryParse(intString, out var val);
+                if (!parsed)
+                    throw new FormatException("Could not parse file name, should be '[A-Za-z]*[0-9]+\\.[A-Za-z0-9]+'");
+
+                var newString = $"{(val+1).ToString($"D{intString.Length}")}";
+                if (newString.Length > intString.Length)
+                    throw new IndexOutOfRangeException("Incrementing would extend the file name!");
+
+                FileName = $"{FileName[..start]}{newString}{FileName[end..]}";
+                FilePath = Path.Combine(Application.persistentDataPath, FileName);
+            }
+            DebugLog($"Using new log file '{FilePath}'");
             EnsureOpenWriter();
         }
 
