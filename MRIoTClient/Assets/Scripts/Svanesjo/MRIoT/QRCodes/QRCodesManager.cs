@@ -111,11 +111,14 @@ namespace Svanesjo.MRIoT.QRCodes
                 _firstQRLog = false;
             }
 
-            var camPos = _camera.transform.position;
-            var distance = pose.position.DistanceFrom(camPos);
-            var diffPos = pose.position.DifferanceFrom(camPos);
-            var diffRot = pose.rotation.DifferenceFrom(_camera.transform.rotation);
-            LogStr($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {diffPos.ToString("F7")}; {diffRot.ToString("F7")}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}, {code.LastDetectedTime}");
+            // var camPos = _camera.transform.position;
+            // var distance = pose.position.DistanceFrom(camPos);
+            // var diffPosStr = pose.position.DifferanceFrom(camPos).ToString("F7");
+            // var diffRotStr = pose.rotation.DifferenceFrom(_camera.transform.rotation).ToString("F7");
+            var distance = "-";
+            var diffPosStr = "-";
+            var diffRotStr = "-";
+            LogStr($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {diffPosStr}; {diffRotStr}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}, {code.LastDetectedTime}");
         }
 
         public Guid GetIdForQRCode(string qrCodeData)
