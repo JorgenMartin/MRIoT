@@ -1,7 +1,10 @@
 #if UNITY_WSA
 
 using System;
+using System.IO;
+using System.Text;
 using Microsoft.MixedReality.OpenXR;
+using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.DataVisualizers;
 using UnityEngine;
 
@@ -19,6 +22,25 @@ namespace Svanesjo.MRIoT.QRCodes
         [SerializeField] private float xCorrection; // = 0f
         [SerializeField] private float yCorrection = 1.6f;
         [SerializeField] private float zCorrection; // = 0f
+
+        private void DebugLog(string message)
+        {
+            Debug.Log(message);
+            LogStr($"[DEBUG] {message}");
+        }
+
+        private void LogStr(string message)
+        {
+            if (!QRCodesManager.Instance.runningEvaluation)
+                return;
+
+            var filePath = Path.Combine(Application.persistentDataPath, "MRIoTSpatialGraphNodeTracker.log");
+            if (!File.Exists(filePath))
+                Debug.LogError($"Creating log file: {filePath}");
+            using var file = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
+            using var writer = new StreamWriter(file, Encoding.UTF8);
+            writer.WriteLineAsync($"{DateTime.Now} {message}");
+        }
 
         public Guid Id
         {
@@ -61,8 +83,7 @@ namespace Svanesjo.MRIoT.QRCodes
             gameObject.transform.SetPositionAndRotation(position, pose.rotation);
             // Call on QRDataVisualizer to update transform for NetworkObject
             _dataVisualizer.SetPositionAndRotation(position, pose.rotation);
-            // Debug.Log("Tracker : Id= " + Id + " QRPose =" + position.ToString("F7") + " QRRot = " +
-            //           pose.rotation.ToString("F7"));
+            LogStr($"{Id}; {position.ToString("F7")}; {pose.rotation.ToString("F7")}");
         }
 
         private void InitializeSpatialGraphNode(bool force = false)
@@ -70,7 +91,7 @@ namespace Svanesjo.MRIoT.QRCodes
             if (_node == null || force)
             {
                 _node = Id != Guid.Empty ? SpatialGraphNode.FromStaticNodeId(Id) : null;
-                Debug.Log("Initialize SpatialGraphNode Id= " + Id);
+                DebugLog("Initialize SpatialGraphNode Id= " + Id);
             }
         }
     }
