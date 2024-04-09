@@ -304,6 +304,8 @@ namespace Svanesjo.MRIoT.QRCodes
                 _popped = false;
                 _audioSource.PlayOneShot(_audioSource.clip);
             }
+
+            _writer?.FlushAsync();
         }
 
         private void OnDestroy()

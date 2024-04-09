@@ -77,13 +77,21 @@ namespace Svanesjo.MRIoT.QRCodes
 
             if (_node == null || !_node.TryLocate(FrameTime.OnUpdate, out Pose pose)) return;
 
-            var position = new Vector3(pose.position.x + xCorrection,
+            var newPos = new Vector3(pose.position.x + xCorrection,
                 pose.position.y + yCorrection,
                 pose.position.z + zCorrection);
-            gameObject.transform.SetPositionAndRotation(position, pose.rotation);
+
+            var oldPos = gameObject.transform.position;
+            var oldRot = gameObject.transform.rotation;
+
+            gameObject.transform.SetPositionAndRotation(newPos, pose.rotation);
             // Call on QRDataVisualizer to update transform for NetworkObject
-            _dataVisualizer.SetPositionAndRotation(position, pose.rotation);
-            LogStr($"{Id}; {position.ToString("F7")}; {pose.rotation.ToString("F7")}");
+            _dataVisualizer.SetPositionAndRotation(newPos, pose.rotation);
+
+            var distance = Vector3.Distance(oldPos, newPos);
+            var diffPosition = newPos - oldPos;
+            var diffRotation = Quaternion.Inverse(oldRot) * pose.rotation;
+            LogStr($"{Id}; {newPos.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {diffPosition.ToString("F7")}; {diffRotation.ToString("F7")}");
         }
 
         private void InitializeSpatialGraphNode(bool force = false)
