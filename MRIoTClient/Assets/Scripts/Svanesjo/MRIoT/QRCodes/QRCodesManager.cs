@@ -61,7 +61,8 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private AudioSource _audioSource = null!;
         private bool _popped = false;
-        private Camera _camera = null!;
+        private Vector3? _lastCameraPosition = null;
+        private Quaternion? _lastCameraRotation = null;
 
         private void DebugLog(string message)
         {
@@ -106,18 +107,22 @@ namespace Svanesjo.MRIoT.QRCodes
             if (node == null || !node.TryLocate(FrameTime.OnUpdate, out Pose pose)) return;
             if (_firstQRLog)
             {
-                LogStr("Id; SpatialGraphNodeId; Position; Rotation; Distance; PositionFromCamera; RotationFromCamera; Version; PhysicalSideLength; RawDataSize; Data; LastDetectedTime");
+                LogStr("Id; SpatialGraphNodeId; Position; Rotation; CameraPosition; CameraRotation; DistanceFromCamera; PositionFromCamera; RotationFromCamera; Version; PhysicalSideLength; RawDataSize; Data; LastDetectedTime");
                 _firstQRLog = false;
             }
 
-            // var camPos = _camera.transform.position;
-            // var distance = pose.position.DistanceFrom(camPos);
-            // var diffPosStr = pose.position.DifferanceFrom(camPos).ToString("F7");
-            // var diffRotStr = pose.rotation.DifferenceFrom(_camera.transform.rotation).ToString("F7");
-            var distance = "-";
-            var diffPosStr = "-";
-            var diffRotStr = "-";
-            LogStr($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {diffPosStr}; {diffRotStr}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}, {code.LastDetectedTime}");
+            string distanceStr = "-", diffPosStr = "-", diffRotStr = "-";
+            string camPosStr = "-", camRotStr = "-";
+            if (_lastCameraPosition != null && _lastCameraRotation != null)
+            {
+                distanceStr = pose.position.DistanceFrom((Vector3)_lastCameraPosition).ToString("F7");
+                diffPosStr = pose.position.DifferanceFrom((Vector3)_lastCameraPosition).ToString("F7");
+                diffRotStr = pose.rotation.DifferenceFrom((Quaternion)_lastCameraRotation).ToString("F7");
+                camPosStr = ((Vector3)_lastCameraPosition).ToString("F7");
+                camRotStr = ((Quaternion)_lastCameraRotation).ToString("F7");
+            }
+
+            LogStr($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {camPosStr}; {camRotStr}; {distanceStr}; {diffPosStr}; {diffRotStr}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}, {code.LastDetectedTime}");
         }
 
         public Guid GetIdForQRCode(string qrCodeData)
@@ -148,10 +153,6 @@ namespace Svanesjo.MRIoT.QRCodes
             _audioSource = GetComponent<AudioSource>();
             if (_audioSource == null)
                 throw new MissingComponentException(nameof(_audioSource));
-
-            _camera = Camera.main;
-            if (_camera == null)
-                throw new Exception("Camera not found");
         }
 
         private async void Start()
@@ -319,17 +320,19 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void Update()
         {
-            if (_qrTracker == null && _capabilityInitialized && IsSupported)
+            var cam = Camera.main;
+            if (cam != null)
             {
-                if (_accessStatus == QRCodeWatcherAccessStatus.Allowed)
-                {
-                    SetupQRTracking();
-                }
-                else
-                {
-                    DebugLog("Capability access status : " + _accessStatus);
-                }
+                var camTransform = cam.transform;
+                _lastCameraPosition = camTransform.position;
+                _lastCameraRotation = camTransform.rotation;
             }
+
+            if (_qrTracker == null && _capabilityInitialized && IsSupported)
+                if (_accessStatus == QRCodeWatcherAccessStatus.Allowed)
+                    SetupQRTracking();
+                else
+                    DebugLog("Capability access status : " + _accessStatus);
 
             // If instructed to pop since last frame (QR event occurred)
             if (_popped)
