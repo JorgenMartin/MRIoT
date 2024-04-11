@@ -49,8 +49,12 @@ namespace Svanesjo.MRIoT.QRCodes
             // If not assigned, determine file path now!
             _filePath ??= DetermineFilePath();
 
+            var firstLog = !File.Exists(_filePath);
+
             using var file = new FileStream(_filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
             using var writer = new StreamWriter(file, Encoding.UTF8);
+            if (firstLog)
+                writer.WriteLineAsync("Id; Position; Rotation; Distance; PositionDelta; RotationDelta");
             writer.WriteLineAsync($"{DateTime.Now}; {message}");
         }
 
@@ -98,14 +102,14 @@ namespace Svanesjo.MRIoT.QRCodes
             var oldPos = gameObjectTransform.position;
             var oldRot = gameObjectTransform.rotation;
             var distance = newPos.DistanceFrom(oldPos);
-            var diffPosition = newPos.DifferanceFrom(oldPos);
-            var diffRotation = pose.rotation.DifferenceFrom(oldRot);
+            var postDelta = newPos.DifferanceFrom(oldPos);
+            var rotDelta = pose.rotation.DifferenceFrom(oldRot);
 
             gameObject.transform.SetPositionAndRotation(newPos, pose.rotation);
             // Call on QRDataVisualizer to update transform for NetworkObject
             _dataVisualizer.SetPositionAndRotation(newPos, pose.rotation);
 
-            LogStr($"{Id}; {newPos.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {diffPosition.ToString("F7")}; {diffRotation.ToString("F7")}");
+            LogStr($"{Id}; {newPos.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {postDelta.ToString("F7")}; {rotDelta.ToString("F7")}");
         }
 
         private void InitializeSpatialGraphNode(bool force = false)
