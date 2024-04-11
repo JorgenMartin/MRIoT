@@ -57,7 +57,6 @@ namespace Svanesjo.MRIoT.QRCodes
         private Task<QRCodeWatcherAccessStatus>? _capabilityTask;
         private Stream? _stream;
         private StreamWriter? _writer;
-        private bool _firstLog = true;
         private bool _firstQRLog = true;
 
         private AudioSource _audioSource = null!;

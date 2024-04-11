@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.Text;
 using Microsoft.MixedReality.OpenXR;
-using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.DataVisualizers;
 using Svanesjo.MRIoT.Utility;
 using UnityEngine;
@@ -20,10 +19,21 @@ namespace Svanesjo.MRIoT.QRCodes
         private SpatialGraphNode? _node;
         private QRDataVisualizer _dataVisualizer = null!;
         private string? _filePath = null;
+        private const string DefaultFileName = "SpatialGraphNodeTracker.log";
 
         [SerializeField] private float xCorrection; // = 0f
         [SerializeField] private float yCorrection = 1.6f;
         [SerializeField] private float zCorrection; // = 0f
+
+        private static string DetermineFilePath()
+        {
+            var initialFilePath = QRCodesManager.Instance.FilePath;
+            var filePath = initialFilePath == null
+                ? Path.Combine(Application.persistentDataPath, DefaultFileName)
+                : $"{initialFilePath}.spatialGraphNodeTracker.log";
+            Debug.Log($"Using filePath {filePath}");
+            return filePath;
+        }
 
         private void DebugLog(string message)
         {
@@ -36,8 +46,8 @@ namespace Svanesjo.MRIoT.QRCodes
             if (!QRCodesManager.Instance.runningEvaluation)
                 return;
 
-            if (_filePath == null)
-                throw new Exception("FilePath is null!");
+            // If not assigned, determine file path now!
+            _filePath ??= DetermineFilePath();
 
             using var file = new FileStream(_filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
             using var writer = new StreamWriter(file, Encoding.UTF8);
@@ -64,12 +74,8 @@ namespace Svanesjo.MRIoT.QRCodes
             if (_dataVisualizer is null)
                 throw new Exception("QR Data Visualizer not found");
 
-            var initialFilePath = QRCodesManager.Instance.FilePath;
-            if (initialFilePath == null)
-                throw new Exception("FilePath is null");
-
-            _filePath = $"{initialFilePath}.spatialGraphNodeTracker.log";
-            DebugLog($"Using log file '{_filePath}'");
+            // Always define filepath on start, in case a temp-file has been used previously
+            _filePath = DetermineFilePath();
 
             InitializeSpatialGraphNode();
         }
@@ -95,7 +101,7 @@ namespace Svanesjo.MRIoT.QRCodes
             var diffPosition = newPos.DifferanceFrom(oldPos);
             var diffRotation = pose.rotation.DifferenceFrom(oldRot);
 
-            gameObjectTransform.SetPositionAndRotation(newPos, pose.rotation);
+            gameObject.transform.SetPositionAndRotation(newPos, pose.rotation);
             // Call on QRDataVisualizer to update transform for NetworkObject
             _dataVisualizer.SetPositionAndRotation(newPos, pose.rotation);
 
