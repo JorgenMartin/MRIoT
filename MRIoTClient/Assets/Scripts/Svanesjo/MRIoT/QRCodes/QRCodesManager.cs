@@ -113,13 +113,13 @@ namespace Svanesjo.MRIoT.QRCodes
 
             string distanceStr = "-", diffPosStr = "-", diffRotStr = "-";
             string camPosStr = "-", camRotStr = "-";
-            if (_lastCameraPosition != null && _lastCameraRotation != null)
+            if (_lastCameraPosition is {} camPos && _lastCameraRotation is {} camRot)
             {
-                distanceStr = pose.position.DistanceFrom((Vector3)_lastCameraPosition).ToString("F7");
-                diffPosStr = pose.position.DifferanceFrom((Vector3)_lastCameraPosition).ToString("F7");
-                diffRotStr = pose.rotation.DifferenceFrom((Quaternion)_lastCameraRotation).ToString("F7");
-                camPosStr = ((Vector3)_lastCameraPosition).ToString("F7");
-                camRotStr = ((Quaternion)_lastCameraRotation).ToString("F7");
+                distanceStr = pose.position.DistanceFrom(camPos).ToString("F7");
+                diffPosStr = pose.position.DifferanceFrom(camPos).ToString("F7");
+                diffRotStr = pose.rotation.DifferenceFrom(camRot).ToString("F7");
+                camPosStr = camPos.ToString("F7");
+                camRotStr = camRot.ToString("F7");
             }
 
             LogStr($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {camPosStr}; {camRotStr}; {distanceStr}; {diffPosStr}; {diffRotStr}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}, {code.LastDetectedTime}");
