@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3295187451321303488}
   - component: {fileID: 2737100573730992522}
   m_Layer: 0
-  m_Name: TileLampNetwork
+  m_Name: TileLampRepresentation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
