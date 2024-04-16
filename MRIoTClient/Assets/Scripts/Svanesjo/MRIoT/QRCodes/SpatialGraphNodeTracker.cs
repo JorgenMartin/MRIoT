@@ -1,14 +1,14 @@
+#nullable enable
+
 #if UNITY_WSA
 
 using System;
 using System.IO;
 using System.Text;
 using Microsoft.MixedReality.OpenXR;
-using Svanesjo.MRIoT.DataVisualizers;
+using Svanesjo.MRIoT.QRCodes.DataVisualizers;
 using Svanesjo.MRIoT.Utility;
 using UnityEngine;
-
-#nullable enable
 
 namespace Svanesjo.MRIoT.QRCodes
 {

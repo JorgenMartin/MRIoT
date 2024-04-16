@@ -3,7 +3,7 @@
 using Exact.Example;
 using UnityEngine;
 
-namespace Svanesjo.MRIoT.Things.ColorRing
+namespace Svanesjo.MRIoT.Multiplayer.Representation
 {
     public class MeshColorChanger : ColorRingBase
     {

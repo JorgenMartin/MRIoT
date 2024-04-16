@@ -7,7 +7,7 @@ using NaughtyAttributes;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Svanesjo.MRIoT.Networking
+namespace Svanesjo.MRIoT.NetcodeSetup
 {
     [Serializable]
     public enum PlayerType

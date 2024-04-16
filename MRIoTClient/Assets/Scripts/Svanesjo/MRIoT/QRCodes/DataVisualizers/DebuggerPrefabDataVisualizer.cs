@@ -1,11 +1,11 @@
+#nullable enable
+
 #if UNITY_WSA
 
 using System;
 using UnityEngine;
 
-#nullable enable
-
-namespace Svanesjo.MRIoT.DataVisualizers
+namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
 {
     public class DebuggerPrefabDataVisualizer : QRDataVisualizer
     {

@@ -1,4 +1,4 @@
-﻿namespace Svanesjo.MRIoT.Things.Network
+﻿namespace Svanesjo.MRIoT.Multiplayer.Representation
 {
     public enum TileLampState
     {

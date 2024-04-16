@@ -1,23 +1,22 @@
-using System;
-using Svanesjo.MRIoT.Things.Calibration;
+#nullable enable
+
+using Svanesjo.MRIoT.Multiplayer.Calibration;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Svanesjo.MRIoT.Networking
+namespace Svanesjo.MRIoT.NetcodeSetup
 {
     [RequireComponent(typeof(NetworkObject))]
-    class PlayerPosition : NetworkBehaviour
+    public class PlayerPosition : NetworkBehaviour
     {
         [SerializeField] private Vector3 offset = Vector3.zero;
 
-        private Camera _mainCamera;
+        private Camera _mainCamera = null!;
         private void Start()
         {
-            _mainCamera = Camera.main;
+            _mainCamera = Camera.main!;
             if (_mainCamera is null)
-            {
-                throw new Exception("Camera not found");
-            }
+                throw new MissingComponentException("Camera not found");
 
             if (!IsServer) return;
 

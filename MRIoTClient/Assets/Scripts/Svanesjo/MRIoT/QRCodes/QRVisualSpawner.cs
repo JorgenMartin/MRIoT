@@ -1,12 +1,12 @@
+#nullable enable
+
 #if UNITY_WSA
 
 using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.QR;
-using Svanesjo.MRIoT.DataVisualizers;
+using Svanesjo.MRIoT.QRCodes.DataVisualizers;
 using UnityEngine;
-
-#nullable enable
 
 namespace Svanesjo.MRIoT.QRCodes
 {
@@ -17,7 +17,7 @@ namespace Svanesjo.MRIoT.QRCodes
         public QRDataVisualizer? prefab;
     }
 
-    public class QRCodesVisualizer : MonoBehaviour
+    public class QRVisualSpawner : MonoBehaviour
     {
         [SerializeField]
         private List<QRCodePrefabEntry> visualizerPrefabsList = new();
@@ -67,7 +67,7 @@ namespace Svanesjo.MRIoT.QRCodes
         // Start is called before the first frame update
         void Start()
         {
-            Debug.Log("QRCodesVisualizer start");
+            Debug.Log("QRVisualSpawner start");
 
             QRCodesManager.Instance.QRCodesTrackingStateChanged += Instance_QRCodesTrackingStateChanged;
             QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
@@ -85,7 +85,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void Instance_QRCodeAdded(object sender, QRCodeEventArgs<QRCode> e)
         {
-            Debug.Log("QRCodesVisualizer Instance_QRCodeAdded");
+            Debug.Log("QRVisualSpawner Instance_QRCodeAdded");
 
             lock (_pendingActions)
             {
@@ -95,7 +95,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void Instance_QRCodeUpdated(object sender, QRCodeEventArgs<QRCode> e)
         {
-            Debug.Log("QRCodesVisualizer Instance_QRCodeUpdated");
+            Debug.Log("QRVisualSpawner Instance_QRCodeUpdated");
 
             lock (_pendingActions)
             {
@@ -105,7 +105,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void Instance_QRCodeRemoved(object sender, QRCodeEventArgs<QRCode> e)
         {
-            Debug.Log("QRCodesVisualizer Instance_QRCodeRemoved");
+            Debug.Log("QRVisualSpawner Instance_QRCodeRemoved");
 
             lock (_pendingActions)
             {
@@ -120,7 +120,7 @@ namespace Svanesjo.MRIoT.QRCodes
                 return prefab;
             }
 
-            Debug.LogWarning($"QRCodesVisualizer no prefab found for QRData = '{qrCode.Data}', using fallback prefab.");
+            Debug.LogWarning($"QRVisualSpawner no prefab found for QRData = '{qrCode.Data}', using fallback prefab.");
             return fallbackPrefab;
         }
 
@@ -136,7 +136,7 @@ namespace Svanesjo.MRIoT.QRCodes
                         QRDataVisualizer? visualizer = GetPrefabFromMap(action.Code);
                         if (visualizer is null)
                         {
-                            Debug.Log($"QRCodesVisualizer prefab for '{action.Code.Data}' is null and it will not be added");
+                            Debug.Log($"QRVisualSpawner prefab for '{action.Code.Data}' is null and it will not be added");
                             return;
                         }
 
@@ -145,31 +145,31 @@ namespace Svanesjo.MRIoT.QRCodes
 
                         visualizerObject.GetComponent<SpatialGraphNodeTracker>().Id = action.Code.SpatialGraphNodeId;
                         visualizerObject.GetComponent<QRDataVisualizer>().Code = action.Code;
-                        Debug.Log("QRCodesVisualizer adding code with data = " + action.Code.Data);
+                        Debug.Log("QRVisualSpawner adding code with data = " + action.Code.Data);
                         _visualizersList.Add(action.Code.Id, visualizerObject);
                     }
                     else if (action.Type == ActionData.ActionType.Updated)
                     {
                         if (!_visualizersList.ContainsKey(action.Code.Id))
                         {
-                            Debug.LogError($"QRCodesVisualizer updating non-existent visualizer for data = '{action.Code.Data}', ignoring");
+                            Debug.LogError($"QRVisualSpawner updating non-existent visualizer for data = '{action.Code.Data}', ignoring");
                         }
                         else
                         {
-                            Debug.Log("QRCodesVisualizer updating code with data = " + action.Code.Data);
+                            Debug.Log("QRVisualSpawner updating code with data = " + action.Code.Data);
                         }
                     }
                     else if (action.Type == ActionData.ActionType.Removed)
                     {
                         if (_visualizersList.ContainsKey(action.Code.Id))
                         {
-                            Debug.Log("QRCodesVisualizer destroying code with data = " + action.Code.Data);
+                            Debug.Log("QRVisualSpawner destroying code with data = " + action.Code.Data);
                             Destroy(_visualizersList[action.Code.Id]);
                             _visualizersList.Remove(action.Code.Id);
                         }
                         else
                         {
-                            Debug.Log("QRCodesVisualizer has already destroyed code with data = " + action.Code.Data);
+                            Debug.Log("QRVisualSpawner has already destroyed code with data = " + action.Code.Data);
                         }
                     }
                 }

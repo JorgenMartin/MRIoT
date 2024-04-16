@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Svanesjo.MRIoT.Things.Network
+namespace Svanesjo.MRIoT.Multiplayer.Representation
 {
     public class LampEventArgs : EventArgs
     {
@@ -22,8 +22,8 @@ namespace Svanesjo.MRIoT.Things.Network
     }
 
     // TODO: Implement INetworkColorRing
-    [RequireComponent(typeof(NetworkColorRing))]
-    public class TileLampNetwork : NetworkBehaviour, INetworkThing
+    [RequireComponent(typeof(ColorRingRepresentation))]
+    public class TileLampRepresentation : NetworkBehaviour, IMultiplayerRepresentation
     {
         [Required, SerializeField] private GameObject button = null!;
         [Required, SerializeField] private GameObject lamp = null!;

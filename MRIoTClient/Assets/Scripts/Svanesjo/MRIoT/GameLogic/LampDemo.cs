@@ -6,10 +6,11 @@ using System;
 using System.Collections;
 using Exact;
 using Exact.Example;
-using Svanesjo.MRIoT.Things.Network;
+using Svanesjo.MRIoT.Multiplayer.Device;
+using Svanesjo.MRIoT.Multiplayer.Representation;
 using UnityEngine;
 
-namespace Svanesjo.MRIoT.Things.GameLogic
+namespace Svanesjo.MRIoT.GameLogic
 {
     public class LampDemo : DemoGameLogic
     {

@@ -1,14 +1,14 @@
 ﻿#nullable enable
 
 using Exact.Example;
-using Svanesjo.MRIoT.Things.Network;
+using Svanesjo.MRIoT.Multiplayer.Representation;
 using UnityEngine;
 
-namespace Svanesjo.MRIoT.Things.ColorRing
+namespace Svanesjo.MRIoT.Multiplayer.Device
 {
     public class NetworkedColorRing : ColorRingBase
     {
-        public NetworkColorRing? networkColorRing;
+        public ColorRingRepresentation? networkColorRing;
 
         public override void SetUniformColor(Color color)
         {

@@ -1,16 +1,16 @@
+#nullable enable
+
 #if UNITY_WSA
 
 using System;
 using Microsoft.MixedReality.QR;
-using Svanesjo.MRIoT.QRCodes;
-using Svanesjo.MRIoT.Things.Calibration;
-using Svanesjo.MRIoT.Things.Network;
+using Svanesjo.MRIoT.Multiplayer.Calibration;
+using Svanesjo.MRIoT.Multiplayer.Device;
+using Svanesjo.MRIoT.Multiplayer.Representation;
 using Unity.Netcode;
 using UnityEngine;
 
-#nullable enable
-
-namespace Svanesjo.MRIoT.DataVisualizers
+namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
 {
     [RequireComponent(typeof(SpatialGraphNodeTracker))]
     public class QRDataVisualizer : MonoBehaviour
@@ -36,13 +36,13 @@ namespace Svanesjo.MRIoT.DataVisualizers
                 instance.transform.rotation = spawnerTransform.rotation;
 
                 // If the prefabs are INetworkDevice and INetworkThing, then connect them
-                var device = GetComponent<INetworkDevice>();
-                var thing = instance.GetComponent<INetworkThing>();
+                var device = GetComponent<IMultiplayerDevice>();
+                var thing = instance.GetComponent<IMultiplayerRepresentation>();
                 if (device != null && thing != null)
                 {
                     Debug.Log($"QRDataVisualizer connecting thing and device: {thing} and {device}");
                     // thing.SetNetworkDevice(device);
-                    device.SetNetworkThing(thing);
+                    device.SetMultiplayerRepresentation(thing);
                 }
                 else
                 {

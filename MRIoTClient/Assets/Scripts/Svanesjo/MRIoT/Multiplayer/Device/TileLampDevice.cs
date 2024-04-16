@@ -1,23 +1,23 @@
+#nullable enable
+
 #if UNITY_WSA
 
 using System;
 using Exact;
-using Svanesjo.MRIoT.DataVisualizers;
-using Svanesjo.MRIoT.Things.ColorRing;
-using Svanesjo.MRIoT.Things.GameLogic;
+using Svanesjo.MRIoT.QRCodes.DataVisualizers;
+using Svanesjo.MRIoT.GameLogic;
+using Svanesjo.MRIoT.Multiplayer.Representation;
 using Unity.VisualScripting;
 using UnityEngine;
 
-#nullable enable
-
-namespace Svanesjo.MRIoT.Things.Network
+namespace Svanesjo.MRIoT.Multiplayer.Device
 {
-    [RequireComponent(typeof(Device))]
+    [RequireComponent(typeof(Exact.Device))]
     [RequireComponent(typeof(NetworkedColorRing))]
-    public class TileLampDevice : QRDataVisualizer, INetworkDevice
+    public class TileLampDevice : QRDataVisualizer, IMultiplayerDevice
     {
-        private TileLampNetwork? _tileLampNetwork;
-        private Device _device = null!;
+        private TileLampRepresentation? _tileLampRepresentation;
+        private Exact.Device _device = null!;
         private ExactManager _exactManager = null!;
         private DemoGameLogic _gameLogic = null!;
 
@@ -25,7 +25,7 @@ namespace Svanesjo.MRIoT.Things.Network
         {
             base.Start();
 
-            _device = GetComponent<Device>();
+            _device = GetComponent<Exact.Device>();
             _exactManager = FindFirstObjectByType<ExactManager>();
             if (Code == null || _device == null || _exactManager == null)
                 throw new ArgumentNullException();
@@ -55,10 +55,10 @@ namespace Svanesjo.MRIoT.Things.Network
 
         public void SetLampRole(TileLampRole role)
         {
-            if (_tileLampNetwork != null)
+            if (_tileLampRepresentation != null)
             {
                 Debug.Log($"TileLampDevice setting lamp role: {role}");
-                _tileLampNetwork.SetRole(role);
+                _tileLampRepresentation.SetRole(role);
             }
             else
             {
@@ -86,10 +86,10 @@ namespace Svanesjo.MRIoT.Things.Network
 
         public void SetLampState(TileLampState state)
         {
-            if (_tileLampNetwork != null)
+            if (_tileLampRepresentation != null)
             {
                 Debug.Log($"TileLampDevice setting lamp state: {state}");
-                _tileLampNetwork.SetState(state);
+                _tileLampRepresentation.SetState(state);
             }
             else
             {
@@ -97,25 +97,25 @@ namespace Svanesjo.MRIoT.Things.Network
             }
         }
 
-        public void SetNetworkThing(INetworkThing networkThing)
+        public void SetMultiplayerRepresentation(IMultiplayerRepresentation multiplayerRepresentation)
         {
-            if (networkThing is not TileLampNetwork thing)
+            if (multiplayerRepresentation is not TileLampRepresentation representation)
                 throw new ArgumentException();
 
             // Unregister listener
-            if (_tileLampNetwork != null)
+            if (_tileLampRepresentation != null)
             {
-                _tileLampNetwork.LampStateChanged -= LampStateChanged;
-                _tileLampNetwork.VirtualTapHappened -= VirtualTapHappened;
+                _tileLampRepresentation.LampStateChanged -= LampStateChanged;
+                _tileLampRepresentation.VirtualTapHappened -= VirtualTapHappened;
             }
 
             Debug.Log("TileLampDevice setting NetworkThing");
-            _tileLampNetwork = thing;
-            thing.LampStateChanged += LampStateChanged;
-            thing.VirtualTapHappened += VirtualTapHappened;
+            _tileLampRepresentation = representation;
+            representation.LampStateChanged += LampStateChanged;
+            representation.VirtualTapHappened += VirtualTapHappened;
 
             // TODO: Call an initialize-method instead? Encapsulation?
-            GetComponent<NetworkedColorRing>().networkColorRing = thing.GetComponent<NetworkColorRing>();
+            GetComponent<NetworkedColorRing>().networkColorRing = representation.GetComponent<ColorRingRepresentation>();
         }
     }
 }

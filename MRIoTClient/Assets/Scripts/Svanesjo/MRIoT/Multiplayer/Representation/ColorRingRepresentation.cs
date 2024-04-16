@@ -6,9 +6,9 @@ using NaughtyAttributes;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Svanesjo.MRIoT.Things.Network
+namespace Svanesjo.MRIoT.Multiplayer.Representation
 {
-    public class NetworkColorRing : NetworkBehaviour
+    public class ColorRingRepresentation : NetworkBehaviour
     {
         private readonly NetworkVariable<Color> _color = new(Color.black);
         [Required, SerializeField] private ColorRingBase colorRing = null!;
@@ -23,7 +23,7 @@ namespace Svanesjo.MRIoT.Things.Network
 
         private void Start()
         {
-            Debug.Log($"NetworkColorRing starting with color {_color.Value}");
+            Debug.Log($"ColorRingRepresentation starting with color {_color.Value}");
             UpdateView(_color.Value);
         }
 
@@ -34,13 +34,13 @@ namespace Svanesjo.MRIoT.Things.Network
 
         private void OnColorChanged(Color previousValue, Color newValue)
         {
-            Debug.Log($"NetworkColorRing changed color to {_color.Value}");
+            Debug.Log($"ColorRingRepresentation changed color to {_color.Value}");
             UpdateView(newValue);
         }
 
         private void UpdateView(Color color)
         {
-            Debug.Log($"NetworkColorRing updating view with color {color}");
+            Debug.Log($"ColorRingRepresentation updating view with color {color}");
             colorRing.SetUniformColor(color);
         }
 

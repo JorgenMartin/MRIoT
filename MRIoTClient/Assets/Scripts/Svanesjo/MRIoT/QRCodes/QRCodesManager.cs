@@ -1,3 +1,5 @@
+#nullable enable
+
 #if UNITY_WSA
 
 using System;
@@ -9,8 +11,6 @@ using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.Utility;
 using UnityEngine;
-
-#nullable enable
 
 namespace Svanesjo.MRIoT.QRCodes
 {

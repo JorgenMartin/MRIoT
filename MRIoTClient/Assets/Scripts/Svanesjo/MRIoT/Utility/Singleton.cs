@@ -1,3 +1,7 @@
+// Based on Microsoft QR example: https://github.com/microsoft/MixedReality-QRCode-Sample
+
+#nullable enable
+
 using UnityEngine;
 
 namespace Svanesjo.MRIoT.Utility

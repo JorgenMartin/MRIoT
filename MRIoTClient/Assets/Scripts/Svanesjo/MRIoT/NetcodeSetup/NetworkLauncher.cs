@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,9 +8,7 @@ using Unity.Netcode;
 using UnityEngine;
 using Application = UnityEngine.Device.Application;
 
-#nullable enable
-
-namespace Svanesjo.MRIoT.Networking
+namespace Svanesjo.MRIoT.NetcodeSetup
 {
     public enum StartType
     {

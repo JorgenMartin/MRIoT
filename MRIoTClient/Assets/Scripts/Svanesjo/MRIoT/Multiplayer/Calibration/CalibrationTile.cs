@@ -7,7 +7,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Svanesjo.MRIoT.Things.Calibration
+namespace Svanesjo.MRIoT.Multiplayer.Calibration
 {
     [RequireComponent(typeof(NetworkObject))]
     [RequireComponent(typeof(XRGrabInteractable))]

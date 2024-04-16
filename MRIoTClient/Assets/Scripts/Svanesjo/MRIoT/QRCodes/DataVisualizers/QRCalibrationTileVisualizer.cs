@@ -1,11 +1,11 @@
-﻿#if UNITY_WSA
+﻿#nullable enable
 
-#nullable enable
+#if UNITY_WSA
 
 using System;
-using Svanesjo.MRIoT.Things.Calibration;
+using Svanesjo.MRIoT.Multiplayer.Calibration;
 
-namespace Svanesjo.MRIoT.DataVisualizers
+namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
 {
     public class QRCalibrationTileVisualizer : QRDataVisualizer
     {

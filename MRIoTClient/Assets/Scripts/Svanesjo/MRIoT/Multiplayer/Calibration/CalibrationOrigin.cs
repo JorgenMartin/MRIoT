@@ -2,12 +2,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Svanesjo.MRIoT.Utility;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Svanesjo.MRIoT.Things.Calibration
+namespace Svanesjo.MRIoT.Multiplayer.Calibration
 {
     [RequireComponent(typeof(NetworkObject))]
     public class CalibrationOrigin : NetworkBehaviour
