@@ -193,7 +193,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.size
-      value: 6
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[0].key
@@ -221,7 +221,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[6].key
-      value: 021
+      value: 020
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[7].key
+      value: 011
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[8].key
+      value: 012
       objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[0].value
@@ -277,6 +285,14 @@ PrefabInstance:
       objectReference: {fileID: 6627925019342175728, guid: 33f8095a8d33baf45977bc12e5ea3834, type: 3}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.data[6].prefab
+      value: 
+      objectReference: {fileID: 6627925019342175728, guid: 33f8095a8d33baf45977bc12e5ea3834, type: 3}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[7].prefab
+      value: 
+      objectReference: {fileID: 6627925019342175728, guid: 33f8095a8d33baf45977bc12e5ea3834, type: 3}
+    - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: visualizerPrefabsList.Array.data[8].prefab
       value: 
       objectReference: {fileID: 6627925019342175728, guid: 33f8095a8d33baf45977bc12e5ea3834, type: 3}
     - target: {fileID: 6917500754848938893, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
