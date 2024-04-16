@@ -1,30 +1,32 @@
+﻿#nullable enable
+
 using Exact.Example;
+using Svanesjo.MRIoT.Things.Network;
 using UnityEngine;
 
-#nullable enable
-
-namespace Svanesjo.MRIoT.Things
+namespace Svanesjo.MRIoT.Things.ColorRing
 {
-    public class LightColorChanger : ColorRingBase
+    public class NetworkedColorRing : ColorRingBase
     {
-        [SerializeField] private Light[] lights = {};
+        public NetworkColorRing? networkColorRing;
 
         public override void SetUniformColor(Color color)
         {
-            foreach (var light1 in lights)
+            if (networkColorRing != null)
             {
-                light1.color = color;
+                networkColorRing.SetUniformColor(color);
             }
         }
 
         public override void SetNumberOfSegments(int num)
         {
-            Debug.Log($"LightColorChanger ignoring SetNumberOfSegments({num})");
+            Debug.Log($"NetworkedColorRing ignoring SetNumberOfSegments({num})");
         }
 
         protected override void SetSegmentColorInternal(int segment, Color color)
         {
             throw new System.NotImplementedException();
         }
+
     }
 }

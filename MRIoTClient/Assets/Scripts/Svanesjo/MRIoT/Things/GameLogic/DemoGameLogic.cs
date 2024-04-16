@@ -5,7 +5,7 @@ namespace Svanesjo.MRIoT.Things.GameLogic
 {
 
     [RequireComponent(typeof(ExactManager))]
-    public abstract class DemoGame : MonoBehaviour
+    public abstract class DemoGameLogic : MonoBehaviour
     {
         public abstract void OnTapped(Device device);
     }

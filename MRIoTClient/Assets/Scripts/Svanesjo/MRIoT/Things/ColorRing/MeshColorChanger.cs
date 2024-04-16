@@ -1,9 +1,9 @@
+#nullable enable
+
 using Exact.Example;
 using UnityEngine;
 
-#nullable enable
-
-namespace Svanesjo.MRIoT.Things
+namespace Svanesjo.MRIoT.Things.ColorRing
 {
     public class MeshColorChanger : ColorRingBase
     {

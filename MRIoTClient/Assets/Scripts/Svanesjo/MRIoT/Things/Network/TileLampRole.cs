@@ -1,5 +1,4 @@
-﻿#nullable enable
-namespace Svanesjo.MRIoT.Things
+﻿namespace Svanesjo.MRIoT.Things.Network
 {
     public enum TileLampRole
     {

@@ -3,6 +3,7 @@
 using System;
 using Exact;
 using Svanesjo.MRIoT.DataVisualizers;
+using Svanesjo.MRIoT.Things.ColorRing;
 using Svanesjo.MRIoT.Things.GameLogic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Svanesjo.MRIoT.Things.Network
         private TileLampNetwork? _tileLampNetwork;
         private Device _device = null!;
         private ExactManager _exactManager = null!;
-        private DemoGame _game = null!;
+        private DemoGameLogic _gameLogic = null!;
 
         protected new void Start()
         {
@@ -29,8 +30,8 @@ namespace Svanesjo.MRIoT.Things.Network
             if (Code == null || _device == null || _exactManager == null)
                 throw new ArgumentNullException();
 
-            _game = _exactManager.GetComponent<DemoGame>();
-            if (_game == null)
+            _gameLogic = _exactManager.GetComponent<DemoGameLogic>();
+            if (_gameLogic == null)
                 throw new ArgumentNullException();
 
             _device.useDeviceName = true;
@@ -80,7 +81,7 @@ namespace Svanesjo.MRIoT.Things.Network
         public void OnTap()
         {
             Debug.Log("TileLampDevice forwarding tap to game");
-            _game.OnTapped(_device);
+            _gameLogic.OnTapped(_device);
         }
 
         public void SetLampState(TileLampState state)
