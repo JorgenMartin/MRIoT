@@ -1,0 +1,58 @@
+@startuml sequenceDiagramNARO
+
+!pragma teoz true
+box "RealWorld" #LightPink
+    actor User
+    participant Tile
+end box
+
+box "Host <<Meta Quest 3>>" #LightGreen
+    participant ExactManager as Exact
+    participant "Pocket (Digital Twin)" as DT
+    participant IotController as Controller
+    participant IotNetworkProxy as NPHost
+end box
+
+box "Client <<Meta Quest 3>>" #LightBlue
+    participant IotNetworkProxy as NPClient
+    participant Ball
+    participant PocketDetector as PDClient
+end box
+
+
+User -> Ball : <Pockets>
+Ball -> PDClient : <Collide>
+PDClient -> PDClient : OnTriggerEnter(ball)
+PDClient -> NPClient : Scored(ball, pocket)
+NPClient -> NPHost : ScoredServerRPC(ball, pocket)
+NPHost -> NPHost : ScoredInternal(ball, pocket)
+NPHost -> Controller : Scored(ball, pocket)
+Controller -> Controller : ScoredCoroutine(pocket, ball)
+Controller -> DT : Scored(ball)
+rnote over DT
+    Determines pulsing parameters
+    (E.g. colors and time)
+endnote
+DT -> DT : StartPulsing(color)
+group Handled by Unity-Things: Simplified overview
+    rnote over DT
+        Various calls handled by Unity-Things
+    endnote
+    DT -> Exact : SendAction("start_pulse", payload)
+    Exact -> Tile : <MQTT message>
+end
+Tile -> Tile : <Starts pulsing>
+Controller -> Controller : <yield WaitForSeconds(time)>
+Controller -> DT : ResetScored()
+DT -> DT : ResetModifications()
+DT -> DT : StopPulsing()
+group Handled by Unity-Things: Simplified overview
+    rnote over DT
+        Various calls handled by Unity-Things
+    endnote
+    DT -> Exact : SendAction("stop_pulse")
+    Exact -> Tile : <MQTT message>
+end
+Tile -> Tile : <Stops pulsing>
+
+@enduml
