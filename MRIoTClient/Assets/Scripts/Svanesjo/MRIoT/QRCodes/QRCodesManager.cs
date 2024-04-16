@@ -43,7 +43,7 @@ namespace Svanesjo.MRIoT.QRCodes
         public bool runningEvaluation = false;
 
         public string? FilePath { get; private set; } = null;
-        private string FileName { get; set; } = "QRTracking0001.log";
+        [SerializeField] private string fileName = "QRTracking0001.log";
 
         public event EventHandler<bool>? QRCodesTrackingStateChanged;
         public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeAdded;
@@ -162,15 +162,15 @@ namespace Svanesjo.MRIoT.QRCodes
             _accessStatus = await _capabilityTask;
             _capabilityInitialized = true;
 
-            FileName = "QRCodeManager0001.log";
-            FilePath = Path.Combine(Application.persistentDataPath, FileName);
+            fileName = "QRCodeManager0001.log";
+            FilePath = Path.Combine(Application.persistentDataPath, fileName);
             while (File.Exists(FilePath))
             {
-                var start = FileName.IndexOf('0');
-                var end = FileName.IndexOf('.');
-                if (start < 0 || end > FileName.Length || start >= end)
+                var start = fileName.IndexOf('0');
+                var end = fileName.IndexOf('.');
+                if (start < 0 || end > fileName.Length || start >= end)
                     throw new IndexOutOfRangeException();
-                var intString = FileName.Substring(start, end - start);
+                var intString = fileName.Substring(start, end - start);
 
                 var parsed = int.TryParse(intString, out var val);
                 if (!parsed)
@@ -180,8 +180,8 @@ namespace Svanesjo.MRIoT.QRCodes
                 if (newString.Length > intString.Length)
                     throw new IndexOutOfRangeException("Incrementing would extend the file name!");
 
-                FileName = $"{FileName[..start]}{newString}{FileName[end..]}";
-                FilePath = Path.Combine(Application.persistentDataPath, FileName);
+                fileName = $"{fileName[..start]}{newString}{fileName[end..]}";
+                FilePath = Path.Combine(Application.persistentDataPath, fileName);
             }
             DebugLog($"Using new log file '{FilePath}'");
             EnsureOpenWriter();
