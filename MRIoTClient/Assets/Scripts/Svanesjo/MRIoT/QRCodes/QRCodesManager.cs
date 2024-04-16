@@ -49,7 +49,7 @@ namespace Svanesjo.MRIoT.QRCodes
         public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeAdded;
         public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeUpdated;
         public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeRemoved;
-        private readonly SortedDictionary<Guid, QRCode> _qrCodesList = new();
+        private readonly SortedDictionary<string, QRCode> _qrCodesList = new();
 
         private QRCodeWatcher? _qrTracker;
         private bool _capabilityInitialized = false;
@@ -133,7 +133,7 @@ namespace Svanesjo.MRIoT.QRCodes
                 {
                     if (ite.Value.Data == qrCodeData)
                     {
-                        return ite.Key;
+                        return ite.Value.Id;
                     }
                 }
             }
@@ -253,9 +253,9 @@ namespace Svanesjo.MRIoT.QRCodes
             bool found = false;
             lock (_qrCodesList)
             {
-                if (_qrCodesList.ContainsKey(args.Code.Id))
+                if (_qrCodesList.ContainsKey(args.Code.Data))
                 {
-                    _qrCodesList.Remove(args.Code.Id);
+                    _qrCodesList.Remove(args.Code.Data);
                     found = true;
                 }
             }
@@ -271,23 +271,20 @@ namespace Svanesjo.MRIoT.QRCodes
             DebugLog("QRCodesManager QRCodeWatcher_Updated : " + args.Code.Data);
             LogQR(args.Code);
 
-            bool found = false;
+            var found = false;
             lock (_qrCodesList)
             {
-                if (_qrCodesList.ContainsKey(args.Code.Id))
+                if (_qrCodesList.ContainsKey(args.Code.Data))
                 {
                     found = true;
-                    _qrCodesList[args.Code.Id] = args.Code;
+                    _qrCodesList[args.Code.Data] = args.Code;
                 }
             }
+
             if (found)
-            {
                 QRCodeUpdated?.Invoke(this, QRCodeEventArgs.Create(args.Code));
-            }
             else
-            {
                 AddQRCode(args.Code);
-            }
         }
 
         private void QRCodeWatcher_Added(object sender, QRCodeAddedEventArgs args)
@@ -308,7 +305,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
             lock (_qrCodesList)
             {
-                _qrCodesList[code.Id] = code;
+                _qrCodesList[code.Data] = code;
             }
             QRCodeAdded?.Invoke(this, QRCodeEventArgs.Create(code));
         }

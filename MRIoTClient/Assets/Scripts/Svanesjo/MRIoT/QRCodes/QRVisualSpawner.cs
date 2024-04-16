@@ -26,7 +26,7 @@ namespace Svanesjo.MRIoT.QRCodes
         [SerializeField]
         private QRDataVisualizer? fallbackPrefab;
 
-        private readonly SortedDictionary<Guid, GameObject> _visualizersList = new();
+        private readonly SortedDictionary<string, GameObject> _visualizersList = new();
         private bool _clearExisting; // = false
 
         // Awake is called when the script instance is being loaded
@@ -131,46 +131,45 @@ namespace Svanesjo.MRIoT.QRCodes
                 while (_pendingActions.Count > 0)
                 {
                     var action = _pendingActions.Dequeue();
-                    if (action.Type == ActionData.ActionType.Added)
+                    switch (action.Type)
                     {
-                        QRDataVisualizer? visualizer = GetPrefabFromMap(action.Code);
-                        if (visualizer is null)
+                        case ActionData.ActionType.Added when _visualizersList.ContainsKey(action.Code.Data):
                         {
-                            Debug.Log($"QRVisualSpawner prefab for '{action.Code.Data}' is null and it will not be added");
-                            return;
+                            Debug.LogError($"QRVisualSpawner aborted adding already existing visualizer");
+                            break;
                         }
-
-                        GameObject prefab = visualizer.gameObject;
-                        GameObject visualizerObject = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-
-                        visualizerObject.GetComponent<SpatialGraphNodeTracker>().Id = action.Code.SpatialGraphNodeId;
-                        visualizerObject.GetComponent<QRDataVisualizer>().Code = action.Code;
-                        Debug.Log("QRVisualSpawner adding code with data = " + action.Code.Data);
-                        _visualizersList.Add(action.Code.Id, visualizerObject);
-                    }
-                    else if (action.Type == ActionData.ActionType.Updated)
-                    {
-                        if (!_visualizersList.ContainsKey(action.Code.Id))
+                        case ActionData.ActionType.Added:
                         {
+                            QRDataVisualizer? visualizer = GetPrefabFromMap(action.Code);
+                            if (visualizer is null)
+                            {
+                                Debug.Log($"QRVisualSpawner prefab for '{action.Code.Data}' is null and it will not be added");
+                                return;
+                            }
+
+                            GameObject prefab = visualizer.gameObject;
+                            GameObject visualizerObject = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+
+                            visualizerObject.GetComponent<SpatialGraphNodeTracker>().Id = action.Code.SpatialGraphNodeId;
+                            visualizerObject.GetComponent<QRDataVisualizer>().Code = action.Code;
+                            Debug.Log("QRVisualSpawner adding code with data = " + action.Code.Data);
+                            _visualizersList.Add(action.Code.Data, visualizerObject);
+                            break;
+                        }
+                        case ActionData.ActionType.Updated when !_visualizersList.ContainsKey(action.Code.Data):
                             Debug.LogError($"QRVisualSpawner updating non-existent visualizer for data = '{action.Code.Data}', ignoring");
-                        }
-                        else
-                        {
+                            break;
+                        case ActionData.ActionType.Updated:
                             Debug.Log("QRVisualSpawner updating code with data = " + action.Code.Data);
-                        }
-                    }
-                    else if (action.Type == ActionData.ActionType.Removed)
-                    {
-                        if (_visualizersList.ContainsKey(action.Code.Id))
-                        {
-                            Debug.Log("QRVisualSpawner destroying code with data = " + action.Code.Data);
-                            Destroy(_visualizersList[action.Code.Id]);
-                            _visualizersList.Remove(action.Code.Id);
-                        }
-                        else
-                        {
+                            break;
+                        case ActionData.ActionType.Removed when _visualizersList.ContainsKey(action.Code.Data):
+                            Debug.LogError("QRVisualSpawner destroying code with data = " + action.Code.Data);
+                            // Destroy(_visualizersList[action.Code.Data]);
+                            // _visualizersList.Remove(action.Code.Data);
+                            break;
+                        case ActionData.ActionType.Removed:
                             Debug.Log("QRVisualSpawner has already destroyed code with data = " + action.Code.Data);
-                        }
+                            break;
                     }
                 }
             }
