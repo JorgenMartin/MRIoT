@@ -3,7 +3,9 @@
 #if UNITY_WSA
 
 using System;
+using Svanesjo.MRIoT.Utility;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
 {
@@ -22,6 +24,8 @@ namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
         private TextMesh _qrSize = null!;
 
         private long _lastTimeStamp = 0;
+
+        private ILogger _logger = new DebugLogger(typeof(DebuggerPrefabDataVisualizer));
 
         // Start is called before the first frame update
         protected override void Start()
@@ -57,7 +61,7 @@ namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
             _qrSize.text = "Size:" + Code.PhysicalSideLength.ToString("F04") + "m";
             _qrTimeStamp.text = "Time:" + Code.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             _qrTimeStamp.color = Color.yellow;
-            Debug.Log("Id= " + Code.Id + "NodeId= " + Code.SpatialGraphNodeId + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + Code.SystemRelativeLastDetectedTime.Ticks + " QRVersion = " + Code.Version + " QRData = " + CodeText);
+            _logger.Log("Id= " + Code.Id + "NodeId= " + Code.SpatialGraphNodeId + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + Code.SystemRelativeLastDetectedTime.Ticks + " QRVersion = " + Code.Version + " QRData = " + CodeText);
         }
 
         void UpdatePropertiesDisplay()
@@ -70,7 +74,7 @@ namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
             _qrTimeStamp.text = "Time:" + Code.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             _qrTimeStamp.color = _qrTimeStamp.color==Color.yellow? Color.white: Color.yellow;
             PhysicalSize = Code.PhysicalSideLength;
-            Debug.Log("Id= " + Code.Id + "NodeId= " + Code.SpatialGraphNodeId + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + Code.SystemRelativeLastDetectedTime.Ticks + " Time = " + Code.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            _logger.Log("Id= " + Code.Id + "NodeId= " + Code.SpatialGraphNodeId + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + Code.SystemRelativeLastDetectedTime.Ticks + " Time = " + Code.LastDetectedTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
 
             _qrCodeCube.transform.localPosition = new Vector3(PhysicalSize / 2.0f, PhysicalSize / 2.0f, 0.0f);
             _qrCodeCube.transform.localScale = new Vector3(PhysicalSize, PhysicalSize, 0.005f);

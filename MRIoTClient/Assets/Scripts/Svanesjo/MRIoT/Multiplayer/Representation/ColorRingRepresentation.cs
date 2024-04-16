@@ -3,8 +3,10 @@
 using System;
 using Exact.Example;
 using NaughtyAttributes;
+using Svanesjo.MRIoT.Utility;
 using Unity.Netcode;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.Multiplayer.Representation
 {
@@ -12,6 +14,8 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
     {
         private readonly NetworkVariable<Color> _color = new(Color.black);
         [Required, SerializeField] private ColorRingBase colorRing = null!;
+
+        private ILogger _logger = new DebugLogger(typeof(ColorRingRepresentation));
 
         private void Awake()
         {
@@ -23,7 +27,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
 
         private void Start()
         {
-            Debug.Log($"ColorRingRepresentation starting with color {_color.Value}");
+            _logger.Log($"starting with color {_color.Value}");
             UpdateView(_color.Value);
         }
 
@@ -34,13 +38,13 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
 
         private void OnColorChanged(Color previousValue, Color newValue)
         {
-            Debug.Log($"ColorRingRepresentation changed color to {_color.Value}");
+            _logger.Log($"changed color to {_color.Value}");
             UpdateView(newValue);
         }
 
         private void UpdateView(Color color)
         {
-            Debug.Log($"ColorRingRepresentation updating view with color {color}");
+            _logger.Log($"updating view with color {color}");
             colorRing.SetUniformColor(color);
         }
 

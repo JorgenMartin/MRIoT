@@ -7,8 +7,10 @@ using Exact;
 using Svanesjo.MRIoT.QRCodes.DataVisualizers;
 using Svanesjo.MRIoT.GameLogic;
 using Svanesjo.MRIoT.Multiplayer.Representation;
+using Svanesjo.MRIoT.Utility;
 using Unity.VisualScripting;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.Multiplayer.Device
 {
@@ -20,6 +22,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Device
         private Exact.Device _device = null!;
         private ExactManager _exactManager = null!;
         private DemoGameLogic _gameLogic = null!;
+        private ILogger _logger = new DebugLogger(typeof(TileLampDevice));
 
         protected new void Start()
         {
@@ -37,19 +40,19 @@ namespace Svanesjo.MRIoT.Multiplayer.Device
             _device.useDeviceName = true;
             _device.SetDeviceName(Code.Data);
 
-            Debug.Log($"TileLampDevice adding device {_device.GetDeviceName()}");
+            _logger.Log($"adding device {_device.GetDeviceName()}");
             _exactManager.AddDevice(_device);
         }
 
         private void LampStateChanged(object sender, LampEventArgs e)
         {
-            Debug.Log($"TileLampDevice lampStateChanged, role: {e.Role}, state: {e.State}");
-            Debug.LogWarning("TODO: Doing nothing...");
+            _logger.Log($"lampStateChanged, role: {e.Role}, state: {e.State}");
+            _logger.LogWarning("TODO: Doing nothing...");
         }
 
         private void VirtualTapHappened(object sender, EmptyEventArgs e)
         {
-            Debug.Log("TileLampDevice virtualTapHappened");
+            _logger.Log("virtualTapHappened");
             OnTap();
         }
 
@@ -57,30 +60,30 @@ namespace Svanesjo.MRIoT.Multiplayer.Device
         {
             if (_tileLampRepresentation != null)
             {
-                Debug.Log($"TileLampDevice setting lamp role: {role}");
+                _logger.Log($"setting lamp role: {role}");
                 _tileLampRepresentation.SetRole(role);
             }
             else
             {
-                Debug.LogWarning("TileLampDevice tileLampNetwork not found");
+                _logger.LogWarning("tileLampNetwork not found");
             }
         }
 
         public void OnConnect()
         {
-            Debug.Log("TileLampDevice onConnect setting lamp state to off");
+            _logger.Log("onConnect setting lamp state to off");
             SetLampState(TileLampState.Off);
         }
 
         public void OnDisconnect()
         {
-            Debug.Log("TileLampDevice onDisconnect setting lamp state to undefined");
+            _logger.Log("onDisconnect setting lamp state to undefined");
             SetLampState(TileLampState.Undefined);
         }
 
         public void OnTap()
         {
-            Debug.Log("TileLampDevice forwarding tap to game");
+            _logger.Log("forwarding tap to game");
             _gameLogic.OnTapped(_device);
         }
 
@@ -88,12 +91,12 @@ namespace Svanesjo.MRIoT.Multiplayer.Device
         {
             if (_tileLampRepresentation != null)
             {
-                Debug.Log($"TileLampDevice setting lamp state: {state}");
+                _logger.Log($"setting lamp state: {state}");
                 _tileLampRepresentation.SetState(state);
             }
             else
             {
-                Debug.LogWarning("TileLampDevice tileLampNetwork not found");
+                _logger.LogWarning("tileLampNetwork not found");
             }
         }
 
@@ -109,7 +112,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Device
                 _tileLampRepresentation.VirtualTapHappened -= VirtualTapHappened;
             }
 
-            Debug.Log("TileLampDevice setting NetworkThing");
+            _logger.Log("setting MultiplayerRepresentation");
             _tileLampRepresentation = representation;
             representation.LampStateChanged += LampStateChanged;
             representation.VirtualTapHappened += VirtualTapHappened;

@@ -3,12 +3,11 @@
 #if UNITY_WSA
 
 using System;
-using System.IO;
-using System.Text;
 using Microsoft.MixedReality.OpenXR;
 using Svanesjo.MRIoT.QRCodes.DataVisualizers;
 using Svanesjo.MRIoT.Utility;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.QRCodes
 {
@@ -18,45 +17,12 @@ namespace Svanesjo.MRIoT.QRCodes
         private Guid _id;
         private SpatialGraphNode? _node;
         private QRDataVisualizer _dataVisualizer = null!;
-        private string? _filePath = null;
-        private const string DefaultFileName = "SpatialGraphNodeTracker.log";
+        private ILogger _logger = new DebugLogger(typeof(SpatialGraphNodeTracker));
+        private bool _firstLog = true;
 
         [SerializeField] private float xCorrection; // = 0f
         [SerializeField] private float yCorrection = 1.6f;
         [SerializeField] private float zCorrection; // = 0f
-
-        private static string DetermineFilePath()
-        {
-            var initialFilePath = QRCodesManager.Instance.FilePath;
-            var filePath = initialFilePath == null
-                ? Path.Combine(Application.persistentDataPath, DefaultFileName)
-                : $"{initialFilePath}.spatialGraphNodeTracker.log";
-            Debug.Log($"Using filePath {filePath}");
-            return filePath;
-        }
-
-        private void DebugLog(string message)
-        {
-            Debug.Log(message);
-            LogStr($"[DEBUG] {message}");
-        }
-
-        private void LogStr(string message)
-        {
-            if (!QRCodesManager.Instance.runningEvaluation)
-                return;
-
-            // If not assigned, determine file path now!
-            _filePath ??= DetermineFilePath();
-
-            var firstLog = !File.Exists(_filePath);
-
-            using var file = new FileStream(_filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
-            using var writer = new StreamWriter(file, Encoding.UTF8);
-            if (firstLog)
-                writer.WriteLineAsync("Id; Position; Rotation; Distance; PositionDelta; RotationDelta");
-            writer.WriteLineAsync($"{DateTime.Now}; {message}");
-        }
 
         public Guid Id
         {
@@ -78,8 +44,9 @@ namespace Svanesjo.MRIoT.QRCodes
             if (_dataVisualizer is null)
                 throw new Exception("QR Data Visualizer not found");
 
-            // Always define filepath on start, in case a temp-file has been used previously
-            _filePath = DetermineFilePath();
+            var qrLogger = QRCodesManager.Instance.Logger;
+            if (qrLogger is FileLogger fileLogger)
+                _logger = fileLogger.CreateSubLogger(typeof(SpatialGraphNodeTracker));
 
             InitializeSpatialGraphNode();
         }
@@ -109,7 +76,12 @@ namespace Svanesjo.MRIoT.QRCodes
             // Call on QRDataVisualizer to update transform for NetworkObject
             _dataVisualizer.SetPositionAndRotation(newPos, pose.rotation);
 
-            LogStr($"{Id}; {newPos.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {postDelta.ToString("F7")}; {rotDelta.ToString("F7")}");
+            if (_firstLog)
+            {
+                _firstLog = false;
+                _logger.Log("Id; Position; Rotation; Distance; PositionDelta; RotationDelta");
+            }
+            _logger.Log($"{Id}; {newPos.ToString("F7")}; {pose.rotation.ToString("F7")}; {distance}; {postDelta.ToString("F7")}; {rotDelta.ToString("F7")}");
         }
 
         private void InitializeSpatialGraphNode(bool force = false)
@@ -117,7 +89,7 @@ namespace Svanesjo.MRIoT.QRCodes
             if (_node == null || force)
             {
                 _node = Id != Guid.Empty ? SpatialGraphNode.FromStaticNodeId(Id) : null;
-                DebugLog("Initialize SpatialGraphNode Id= " + Id);
+                _logger.Log("Initialize SpatialGraphNode Id= " + Id);
             }
         }
     }

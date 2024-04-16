@@ -2,10 +2,12 @@
 
 using System;
 using NaughtyAttributes;
+using Svanesjo.MRIoT.Utility;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.Multiplayer.Representation
 {
@@ -37,6 +39,8 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
         public EventHandler<LampEventArgs>? LampStateChanged;
         public EventHandler<EmptyEventArgs>? VirtualTapHappened;
 
+        private ILogger _logger = new DebugLogger(typeof(TileLampRepresentation));
+
         private void Awake()
         {
             if (button == null || lamp == null)
@@ -45,7 +49,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
 
         private void Start()
         {
-            Debug.Log($"TileLampNetwork starting with role {_role.Value} and state {_state.Value}");
+            _logger.Log($"starting with role {_role.Value} and state {_state.Value}");
             UpdateView(_role.Value, _state.Value);
         }
 
@@ -58,20 +62,20 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
 
         private void OnRoleChanged(TileLampRole previousValue, TileLampRole newValue)
         {
-            Debug.Log($"TileLampNetwork role changed to {newValue}, with state {_state.Value}");
+            _logger.Log($"role changed to {newValue}, with state {_state.Value}");
             UpdateView(newValue, _state.Value);
         }
 
         private void OnStateChanged(TileLampState previousValue, TileLampState newValue)
         {
-            Debug.Log($"TileLampNetwork state changed to {newValue}, with role {_role.Value}");
+            _logger.Log($"state changed to {newValue}, with role {_role.Value}");
             LampStateChanged?.Invoke(this, new LampEventArgs(_role.Value, newValue));
             UpdateView(_role.Value, newValue);
         }
 
         private void UpdateView(TileLampRole role, TileLampState state)
         {
-            Debug.Log($"TileLampNetwork updating view with role {role} and state {state}");
+            _logger.Log($"updating view with role {role} and state {state}");
             switch (role)
             {
                 case TileLampRole.Undefined:
@@ -115,12 +119,12 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
         {
             if (IsServer)
             {
-                Debug.Log($"TileLampNetwork server setting role: {role}");
+                _logger.Log($"server setting role: {role}");
                 _role.Value = role;
             }
             else
             {
-                Debug.Log($"TileLampNetwork calling serverRPC to set role: {role}");
+                _logger.Log($"calling serverRPC to set role: {role}");
                 SetRoleServerRpc(role);
             }
         }
@@ -128,7 +132,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
         [ServerRpc]
         private void SetRoleServerRpc(TileLampRole role)
         {
-            Debug.Log($"TileLampNetwork serverRPC setting role: {role}");
+            _logger.Log($"serverRPC setting role: {role}");
             SetRole(role);
         }
 
@@ -136,12 +140,12 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
         {
             if (IsServer)
             {
-                Debug.Log($"TileLampNetwork server setting state: {state}");
+                _logger.Log($"server setting state: {state}");
                 _state.Value = state;
             }
             else
             {
-                Debug.Log($"TileLampNetwork calling serverRPC to set state: {state}");
+                _logger.Log($"calling serverRPC to set state: {state}");
                 SetStateServerRpc(state);
             }
         }
@@ -149,7 +153,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
         [ServerRpc]
         private void SetStateServerRpc(TileLampState state)
         {
-            Debug.Log($"TileLampNetwork serverRPC setting state: {state}");
+            _logger.Log($"serverRPC setting state: {state}");
             SetState(state);
         }
 
@@ -157,12 +161,12 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
         {
             if (IsServer)
             {
-                Debug.Log("TileLampNetwork server invoking VirtualTap");
+                _logger.Log("server invoking VirtualTap");
                 VirtualTapHappened?.Invoke(this, new EmptyEventArgs());
             }
             else
             {
-                Debug.Log("TileLampNetwork calling serverRPC VirtualTap");
+                _logger.Log("calling serverRPC VirtualTap");
                 VirtualTapServerRpc();
             }
         }
@@ -170,7 +174,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
         [ServerRpc(RequireOwnership = false)]
         private void VirtualTapServerRpc()
         {
-            Debug.Log("TileLampNetwork serverRPC VirtualTap");
+            _logger.Log("serverRPC VirtualTap");
             VirtualTap();
         }
     }

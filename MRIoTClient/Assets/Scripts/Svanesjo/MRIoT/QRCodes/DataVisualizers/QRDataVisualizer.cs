@@ -7,8 +7,10 @@ using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.Multiplayer.Calibration;
 using Svanesjo.MRIoT.Multiplayer.Device;
 using Svanesjo.MRIoT.Multiplayer.Representation;
+using Svanesjo.MRIoT.Utility;
 using Unity.Netcode;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
 {
@@ -21,6 +23,8 @@ namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
 
         protected NetworkObject? SpawnedNetworkObject;
 
+        private ILogger _logger = new DebugLogger(typeof(QRDataVisualizer));
+
         protected virtual void Start()
         {
             if (Code == null)
@@ -28,30 +32,29 @@ namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
 
             if (networkPrefab != null)
             {
-                Debug.Log($"QRDataVisualizer instantiating prefab from {networkPrefab}");
+                _logger.Log($"instantiating prefab from {networkPrefab}");
                 // Instantiate prefab and set same transform
                 var instance = Instantiate(networkPrefab.gameObject);
                 var spawnerTransform = transform;
                 instance.transform.position = spawnerTransform.position;
                 instance.transform.rotation = spawnerTransform.rotation;
 
-                // If the prefabs are INetworkDevice and INetworkThing, then connect them
+                // If the prefabs are IMultiplayerDevice and IMultiplayerRepresentation, then connect them
                 var device = GetComponent<IMultiplayerDevice>();
-                var thing = instance.GetComponent<IMultiplayerRepresentation>();
-                if (device != null && thing != null)
+                var representation = instance.GetComponent<IMultiplayerRepresentation>();
+                if (device != null && representation != null)
                 {
-                    Debug.Log($"QRDataVisualizer connecting thing and device: {thing} and {device}");
-                    // thing.SetNetworkDevice(device);
-                    device.SetMultiplayerRepresentation(thing);
+                    _logger.Log($"connecting representation and device: {representation} and {device}");
+                    device.SetMultiplayerRepresentation(representation);
                 }
                 else
                 {
-                    Debug.Log($"QRDataVisualizer could not connect thing and device: {thing} and {device}");
+                    _logger.Log($"could not connect representation and device: {representation} and {device}");
                 }
 
                 // Call Spawn on the NetworkObject to replicate on clients
                 SpawnedNetworkObject = instance.GetComponent<NetworkObject>();
-                Debug.Log($"QRDataVisualizer spawning network object from {SpawnedNetworkObject}");
+                _logger.Log($"spawning network object from {SpawnedNetworkObject}");
                 SpawnedNetworkObject.Spawn();
 
                 // Re-parent if CalibrationOrigin exists
@@ -61,7 +64,7 @@ namespace Svanesjo.MRIoT.QRCodes.DataVisualizers
             }
             else
             {
-                Debug.Log("QRDataVisualizer no network prefab defined");
+                _logger.Log("no network prefab defined");
             }
         }
 

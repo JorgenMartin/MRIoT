@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.QRCodes.DataVisualizers;
+using Svanesjo.MRIoT.Utility;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.QRCodes
 {
@@ -28,6 +30,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private readonly SortedDictionary<string, GameObject> _visualizersList = new();
         private bool _clearExisting; // = false
+        private ILogger _logger = new DebugLogger(typeof(QRVisualSpawner));
 
         // Awake is called when the script instance is being loaded
         private void Awake()
@@ -67,7 +70,11 @@ namespace Svanesjo.MRIoT.QRCodes
         // Start is called before the first frame update
         void Start()
         {
-            Debug.Log("QRVisualSpawner start");
+            var qrLogger = QRCodesManager.Instance.Logger;
+            if (qrLogger is FileLogger fileLogger)
+                _logger = fileLogger.CreateSubLogger(typeof(QRVisualSpawner));
+
+            _logger.Log("start");
 
             QRCodesManager.Instance.QRCodesTrackingStateChanged += Instance_QRCodesTrackingStateChanged;
             QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
@@ -85,7 +92,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void Instance_QRCodeAdded(object sender, QRCodeEventArgs<QRCode> e)
         {
-            Debug.Log("QRVisualSpawner Instance_QRCodeAdded");
+            _logger.Log("Instance_QRCodeAdded");
 
             lock (_pendingActions)
             {
@@ -95,7 +102,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void Instance_QRCodeUpdated(object sender, QRCodeEventArgs<QRCode> e)
         {
-            Debug.Log("QRVisualSpawner Instance_QRCodeUpdated");
+            _logger.Log("Instance_QRCodeUpdated");
 
             lock (_pendingActions)
             {
@@ -105,7 +112,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void Instance_QRCodeRemoved(object sender, QRCodeEventArgs<QRCode> e)
         {
-            Debug.Log("QRVisualSpawner Instance_QRCodeRemoved");
+            _logger.Log("Instance_QRCodeRemoved");
 
             lock (_pendingActions)
             {
@@ -120,7 +127,7 @@ namespace Svanesjo.MRIoT.QRCodes
                 return prefab;
             }
 
-            Debug.LogWarning($"QRVisualSpawner no prefab found for QRData = '{qrCode.Data}', using fallback prefab.");
+            _logger.LogWarning($"no prefab found for QRData = '{qrCode.Data}', using fallback prefab.");
             return fallbackPrefab;
         }
 
@@ -135,40 +142,40 @@ namespace Svanesjo.MRIoT.QRCodes
                     {
                         case ActionData.ActionType.Added when _visualizersList.ContainsKey(action.Code.Data):
                         {
-                            Debug.LogError($"QRVisualSpawner aborted adding already existing visualizer");
+                            _logger.LogError($"aborted adding already existing visualizer");
                             break;
                         }
                         case ActionData.ActionType.Added:
                         {
-                            QRDataVisualizer? visualizer = GetPrefabFromMap(action.Code);
+                            var visualizer = GetPrefabFromMap(action.Code);
                             if (visualizer is null)
                             {
-                                Debug.Log($"QRVisualSpawner prefab for '{action.Code.Data}' is null and it will not be added");
+                                _logger.Log($"prefab for '{action.Code.Data}' is null and it will not be added");
                                 return;
                             }
 
-                            GameObject prefab = visualizer.gameObject;
-                            GameObject visualizerObject = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+                            var prefab = visualizer.gameObject;
+                            var visualizerObject = Instantiate(prefab, Vector3.zero, Quaternion.identity);
 
                             visualizerObject.GetComponent<SpatialGraphNodeTracker>().Id = action.Code.SpatialGraphNodeId;
                             visualizerObject.GetComponent<QRDataVisualizer>().Code = action.Code;
-                            Debug.Log("QRVisualSpawner adding code with data = " + action.Code.Data);
+                            _logger.Log("adding code with data = " + action.Code.Data);
                             _visualizersList.Add(action.Code.Data, visualizerObject);
                             break;
                         }
                         case ActionData.ActionType.Updated when !_visualizersList.ContainsKey(action.Code.Data):
-                            Debug.LogError($"QRVisualSpawner updating non-existent visualizer for data = '{action.Code.Data}', ignoring");
+                            _logger.LogError($"updating non-existent visualizer for data = '{action.Code.Data}', ignoring");
                             break;
                         case ActionData.ActionType.Updated:
-                            Debug.Log("QRVisualSpawner updating code with data = " + action.Code.Data);
+                            _logger.Log("updating code with data = " + action.Code.Data);
                             break;
                         case ActionData.ActionType.Removed when _visualizersList.ContainsKey(action.Code.Data):
-                            Debug.LogError("QRVisualSpawner destroying code with data = " + action.Code.Data);
+                            _logger.LogError("destroying code with data = " + action.Code.Data);
                             // Destroy(_visualizersList[action.Code.Data]);
                             // _visualizersList.Remove(action.Code.Data);
                             break;
                         case ActionData.ActionType.Removed:
-                            Debug.Log("QRVisualSpawner has already destroyed code with data = " + action.Code.Data);
+                            _logger.Log("has already destroyed code with data = " + action.Code.Data);
                             break;
                     }
                 }

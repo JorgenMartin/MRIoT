@@ -191,6 +191,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7531369693761527896, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
+      propertyPath: runningEvaluation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4431451691170362308, guid: 07628db1a4c39a74fbbfaea77e70624d, type: 3}
       propertyPath: visualizerPrefabsList.Array.size
       value: 9

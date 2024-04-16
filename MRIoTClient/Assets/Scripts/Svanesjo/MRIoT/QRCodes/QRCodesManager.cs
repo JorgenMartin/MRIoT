@@ -4,13 +4,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.MixedReality.OpenXR;
 using Microsoft.MixedReality.QR;
 using Svanesjo.MRIoT.Utility;
 using UnityEngine;
+using Application = UnityEngine.Device.Application;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.QRCodes
 {
@@ -42,8 +42,9 @@ namespace Svanesjo.MRIoT.QRCodes
         public bool IsSupported { get; private set; }
         public bool runningEvaluation = false;
 
-        public string? FilePath { get; private set; } = null;
-        [SerializeField] private string fileName = "QRTracking0001.log";
+        public ILogger Logger { get; private set; } = new DebugLogger(typeof(QRCodesManager));
+        [SerializeField] private string defaultFileName = "QRTracking0001.log";
+        private bool _firstQRLog = true;
 
         public event EventHandler<bool>? QRCodesTrackingStateChanged;
         public event EventHandler<QRCodeEventArgs<QRCode>>? QRCodeAdded;
@@ -55,45 +56,11 @@ namespace Svanesjo.MRIoT.QRCodes
         private bool _capabilityInitialized = false;
         private QRCodeWatcherAccessStatus _accessStatus;
         private Task<QRCodeWatcherAccessStatus>? _capabilityTask;
-        private Stream? _stream;
-        private StreamWriter? _writer;
-        private bool _firstQRLog = true;
 
         private AudioSource _audioSource = null!;
         private bool _popped = false;
         private Vector3? _lastCameraPosition = null;
         private Quaternion? _lastCameraRotation = null;
-
-        private void DebugLog(string message)
-        {
-            Debug.Log(message);
-            LogStr($"[DEBUG] {message}");
-        }
-
-        private void EnsureOpenWriter()
-        {
-            if (_writer != null) return;
-            if (_stream == null)
-            {
-                if (FilePath == null)
-                    throw new Exception("FilePath is null!");
-
-                _stream = new FileStream(FilePath, FileMode.Append, FileAccess.Write, FileShare.Write);
-            }
-            _writer = new StreamWriter(_stream, Encoding.UTF8);
-        }
-
-        private void LogStr(string message)
-        {
-            if (!runningEvaluation)
-                return;
-
-            EnsureOpenWriter();
-            if (_writer == null)
-                throw new Exception("QRCodesManager: _writer still null");
-
-            _writer.WriteLineAsync($"{DateTime.Now}; {message}");
-        }
 
         private void LogQR(QRCode code, bool pop = true)
         {
@@ -107,7 +74,7 @@ namespace Svanesjo.MRIoT.QRCodes
             if (node == null || !node.TryLocate(FrameTime.OnUpdate, out Pose pose)) return;
             if (_firstQRLog)
             {
-                LogStr("Id; SpatialGraphNodeId; Position; Rotation; CameraPosition; CameraRotation; DistanceFromCamera; PositionFromCamera; RotationFromCamera; Version; PhysicalSideLength; RawDataSize; Data; LastDetectedTime");
+                Logger.Log("Id; SpatialGraphNodeId; Position; Rotation; CameraPosition; CameraRotation; DistanceFromCamera; PositionFromCamera; RotationFromCamera; Version; PhysicalSideLength; RawDataSize; Data; LastDetectedTime");
                 _firstQRLog = false;
             }
 
@@ -122,7 +89,7 @@ namespace Svanesjo.MRIoT.QRCodes
                 camRotStr = camRot.ToString("F7");
             }
 
-            LogStr($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {camPosStr}; {camRotStr}; {distanceStr}; {diffPosStr}; {diffRotStr}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}, {code.LastDetectedTime}");
+            Logger.Log($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {camPosStr}; {camRotStr}; {distanceStr}; {diffPosStr}; {diffRotStr}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}, {code.LastDetectedTime}");
         }
 
         public Guid GetIdForQRCode(string qrCodeData)
@@ -162,29 +129,13 @@ namespace Svanesjo.MRIoT.QRCodes
             _accessStatus = await _capabilityTask;
             _capabilityInitialized = true;
 
-            fileName = "QRCodeManager0001.log";
-            FilePath = Path.Combine(Application.persistentDataPath, fileName);
-            while (File.Exists(FilePath))
+            if (runningEvaluation)
             {
-                var start = fileName.IndexOf('0');
-                var end = fileName.IndexOf('.');
-                if (start < 0 || end > fileName.Length || start >= end)
-                    throw new IndexOutOfRangeException();
-                var intString = fileName.Substring(start, end - start);
-
-                var parsed = int.TryParse(intString, out var val);
-                if (!parsed)
-                    throw new FormatException("Could not parse file name, should be '[A-Za-z]*[0-9]+\\.[A-Za-z0-9]+'");
-
-                var newString = $"{(val+1).ToString($"D{intString.Length}")}";
-                if (newString.Length > intString.Length)
-                    throw new IndexOutOfRangeException("Incrementing would extend the file name!");
-
-                fileName = $"{fileName[..start]}{newString}{fileName[end..]}";
-                FilePath = Path.Combine(Application.persistentDataPath, fileName);
+                var filePath = FileLogger.NextAvailableFilePath(Application.persistentDataPath, defaultFileName);
+                Logger = new FileLogger(typeof(QRCodesManager), filePath);
             }
-            DebugLog($"Using new log file '{FilePath}'");
-            EnsureOpenWriter();
+
+            Logger.Log("finished Start");
         }
 
         private void SetupQRTracking()
@@ -200,7 +151,7 @@ namespace Svanesjo.MRIoT.QRCodes
             }
             catch (Exception ex)
             {
-                DebugLog("QRCodesManager : exception starting the tracker " + ex);
+                Logger.Log("exception starting the tracker " + ex);
             }
 
             if (autoStartQRTracking)
@@ -213,7 +164,7 @@ namespace Svanesjo.MRIoT.QRCodes
         {
             if (_qrTracker != null && !IsTrackerRunning)
             {
-                DebugLog("QRCodesManager starting QRCodeWatcher");
+                Logger.Log("starting QRCodeWatcher");
                 try
                 {
                     _qrTracker.Start();
@@ -222,7 +173,7 @@ namespace Svanesjo.MRIoT.QRCodes
                 }
                 catch (Exception ex)
                 {
-                    DebugLog("QRCodesManager starting QRCodeWatcher Exception: " + ex);
+                    Logger.Log("starting QRCodeWatcher Exception: " + ex);
                 }
             }
         }
@@ -247,7 +198,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void QRCodeWatcher_Removed(object sender, QRCodeRemovedEventArgs args)
         {
-            DebugLog("QRCodesManager QRCodeWatcher_Removed : " + args.Code.Data);
+            Logger.Log("QRCodeWatcher_Removed : " + args.Code.Data);
             LogQR(args.Code, false);
 
             bool found = false;
@@ -268,7 +219,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void QRCodeWatcher_Updated(object sender, QRCodeUpdatedEventArgs args)
         {
-            DebugLog("QRCodesManager QRCodeWatcher_Updated : " + args.Code.Data);
+            Logger.Log("QRCodeWatcher_Updated : " + args.Code.Data);
             LogQR(args.Code);
 
             var found = false;
@@ -289,7 +240,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void QRCodeWatcher_Added(object sender, QRCodeAddedEventArgs args)
         {
-            DebugLog("QRCodesManager QRCodeWatcher_Added : " + args.Code.Data);
+            Logger.Log("QRCodeWatcher_Added : " + args.Code.Data);
             LogQR(args.Code);
 
             AddQRCode(args.Code);
@@ -299,7 +250,7 @@ namespace Svanesjo.MRIoT.QRCodes
         {
             if (code.LastDetectedTime < _initTime)
             {
-                DebugLog($"QRCodesManager Code '{code.Data}' last detected prior to application start, aborting add");
+                Logger.Log($"Code '{code.Data}' last detected prior to application start, aborting add");
                 return;
             }
 
@@ -312,7 +263,7 @@ namespace Svanesjo.MRIoT.QRCodes
 
         private void QRCodeWatcher_EnumerationCompleted(object sender, object e)
         {
-            DebugLog("QRCodesManager QRCodeWatcher_EnumerationCompleted");
+            Logger.Log("QRCodeWatcher_EnumerationCompleted");
         }
 
         private void Update()
@@ -329,7 +280,7 @@ namespace Svanesjo.MRIoT.QRCodes
                 if (_accessStatus == QRCodeWatcherAccessStatus.Allowed)
                     SetupQRTracking();
                 else
-                    DebugLog("Capability access status : " + _accessStatus);
+                    Logger.Log("Capability access status : " + _accessStatus);
 
             // If instructed to pop since last frame (QR event occurred)
             if (_popped)
@@ -338,13 +289,12 @@ namespace Svanesjo.MRIoT.QRCodes
                 _audioSource.PlayOneShot(_audioSource.clip);
             }
 
-            _writer?.FlushAsync();
+            Logger.Flush();
         }
 
         private void OnDestroy()
         {
-            _writer?.Close();
-            _stream?.Close();
+            Logger.OnDestroy();
         }
     }
 }

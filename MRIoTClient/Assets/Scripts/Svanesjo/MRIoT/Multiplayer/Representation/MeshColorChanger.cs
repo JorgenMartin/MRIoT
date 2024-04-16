@@ -1,7 +1,9 @@
 #nullable enable
 
 using Exact.Example;
+using Svanesjo.MRIoT.Utility;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.Multiplayer.Representation
 {
@@ -9,10 +11,11 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
     {
         [SerializeField] private MeshRenderer[] meshRenderers = {};
         private static readonly int Color1 = Shader.PropertyToID("_Color");
+        private ILogger _logger = new DebugLogger(typeof(MeshColorChanger));
 
         public override void SetUniformColor(Color color)
         {
-            Debug.Log($"MeshColorChanger setting uniform color to {color}");
+            _logger.Log($"setting uniform color to {color}");
             foreach (var meshRenderer in meshRenderers)
             {
                 meshRenderer.material.SetColor(Color1, color);
@@ -21,7 +24,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Representation
 
         public override void SetNumberOfSegments(int num)
         {
-            Debug.Log($"MeshColorChanger ignoring SetNumberOfSegments({num})");
+            _logger.Log($"ignoring SetNumberOfSegments({num})");
         }
 
         protected override void SetSegmentColorInternal(int segment, Color color)

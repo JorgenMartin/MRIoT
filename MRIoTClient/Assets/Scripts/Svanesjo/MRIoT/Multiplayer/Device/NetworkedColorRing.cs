@@ -2,13 +2,16 @@
 
 using Exact.Example;
 using Svanesjo.MRIoT.Multiplayer.Representation;
+using Svanesjo.MRIoT.Utility;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.Multiplayer.Device
 {
     public class NetworkedColorRing : ColorRingBase
     {
         private ColorRingRepresentation? _colorRing;
+        private ILogger _logger = new DebugLogger(typeof(NetworkedColorRing));
 
         public void Initialize(ColorRingRepresentation colorRingRepresentation)
         {
@@ -25,7 +28,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Device
 
         public override void SetNumberOfSegments(int num)
         {
-            Debug.Log($"NetworkedColorRing ignoring SetNumberOfSegments({num})");
+            _logger.Log($"ignoring SetNumberOfSegments({num})");
         }
 
         protected override void SetSegmentColorInternal(int segment, Color color)

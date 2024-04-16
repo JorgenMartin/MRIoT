@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Svanesjo.MRIoT.Utility;
 using Unity.Netcode;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.Multiplayer.Calibration
 {
@@ -15,6 +16,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Calibration
         private readonly Dictionary<ulong, CalibrationTile> _tileInstances = new();
 
         private NetworkObject _networkObject = null!;
+        private ILogger _logger = new DebugLogger(typeof(CalibrationOrigin));
 
         private void Awake()
         {
@@ -60,7 +62,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Calibration
 
         private void OnTileIdsListChanged(NetworkListEvent<ulong> changeEvent)
         {
-            Debug.Log($"CalibrationOrigin OnTileIdsListChanged called with event {changeEvent.Type} {changeEvent.PreviousValue} -> {changeEvent.Value} at index {changeEvent.Index}");
+            _logger.Log($"OnTileIdsListChanged called with event {changeEvent.Type} {changeEvent.PreviousValue} -> {changeEvent.Value} at index {changeEvent.Index}");
             var networkId = changeEvent.Value;
 
             // This ReSharper warning is wrong... Disabling once
@@ -88,11 +90,11 @@ namespace Svanesjo.MRIoT.Multiplayer.Calibration
 
         private void RegisterCalibrationTile(ulong networkId)
         {
-            Debug.Log($"CalibrationOrigin RegisterCalibrationTile called with network id '{networkId}'");
+            _logger.Log($"RegisterCalibrationTile called with network id '{networkId}'");
             var tile = GetNetworkObject(networkId)?.GetComponent<CalibrationTile>();
             if (tile == null)
             {
-                Debug.LogError($"CalibrationOrigin RegisterCalibrationTileInstance calibration tile with network id '{networkId}' not found");
+                _logger.LogError($"RegisterCalibrationTileInstance calibration tile with network id '{networkId}' not found");
                 return;
             }
 
@@ -101,7 +103,7 @@ namespace Svanesjo.MRIoT.Multiplayer.Calibration
 
         public void RegisterCalibrationTile(CalibrationTile calibrationTile)
         {
-            Debug.Log($"CalibrationOrigin RegisterCalibrationTile called with '{calibrationTile}'");
+            _logger.Log($"RegisterCalibrationTile called with '{calibrationTile}'");
             var networkId = calibrationTile.GetComponent<NetworkObject>().NetworkObjectId;
 
             if (!_tileIds.Contains(networkId))
@@ -146,16 +148,16 @@ namespace Svanesjo.MRIoT.Multiplayer.Calibration
                 return;
 
             if (networkObject.TrySetParent(gameObject, false))
-                Debug.Log($"CalibrationOrigin ReParentIfValid successfully set parent of {networkObject}", this);
+                _logger.Log($"ReParentIfValid successfully set parent of {networkObject}");
             else
-                Debug.LogError($"CalibrationOrigin ReParentIfValid failed to set parent of {networkObject}");
+                _logger.LogError($"ReParentIfValid failed to set parent of {networkObject}");
         }
 
         private void Update()
         {
             if (_tileIds.Count != _tileInstances.Count)
             {
-                Debug.LogWarning($"CalibrationOrigin Update dictionary out of sync with list ({_tileInstances.Count} vs {_tileIds.Count})");
+                _logger.LogWarning($"Update dictionary out of sync with list ({_tileInstances.Count} vs {_tileIds.Count})");
             }
         }
     }

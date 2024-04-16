@@ -2,10 +2,12 @@
 
 using System;
 using NaughtyAttributes;
+using Svanesjo.MRIoT.Utility;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.Multiplayer.Calibration
 {
@@ -18,6 +20,8 @@ namespace Svanesjo.MRIoT.Multiplayer.Calibration
         public Action? OnMoved;
         private NetworkObject _networkObject = null!;
         private readonly NetworkVariable<int> _id = new();
+
+        private ILogger _logger = new DebugLogger(typeof(CalibrationTile));
 
         private void Awake()
         {
@@ -66,20 +70,20 @@ namespace Svanesjo.MRIoT.Multiplayer.Calibration
 
         public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
         {
-            Debug.Log("CalibrationTile SetPositionAndRotation called");
+            _logger.Log("SetPositionAndRotation called");
             transform.SetPositionAndRotation(position, rotation);
         }
 
         public void SetId(int id)
         {
-            Debug.Log($"CalibrationTile SetId {_id.Value} -> {id}");
+            _logger.Log($"SetId {_id.Value} -> {id}");
             _id.Value = id;
             text.text = id.ToString();
         }
 
         private void OnIdChanged(int previousValue, int newValue)
         {
-            Debug.Log($"CalibrationTile OnIdChanged {previousValue} -> {newValue}");
+            _logger.Log($"OnIdChanged {previousValue} -> {newValue}");
             text.text = newValue.ToString();
         }
 

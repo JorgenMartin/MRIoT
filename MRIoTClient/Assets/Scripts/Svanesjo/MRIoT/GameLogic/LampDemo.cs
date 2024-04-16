@@ -8,7 +8,9 @@ using Exact;
 using Exact.Example;
 using Svanesjo.MRIoT.Multiplayer.Device;
 using Svanesjo.MRIoT.Multiplayer.Representation;
+using Svanesjo.MRIoT.Utility;
 using UnityEngine;
+using ILogger = Svanesjo.MRIoT.Utility.ILogger;
 
 namespace Svanesjo.MRIoT.GameLogic
 {
@@ -24,6 +26,7 @@ namespace Svanesjo.MRIoT.GameLogic
         private ExactManager _exactManager = null!;
         private Device[] _devices = {};
         private bool _lampOn; // = false;
+        private ILogger _logger = new DebugLogger(typeof(LampDemo));
 
         private void Awake()
         {
@@ -39,26 +42,26 @@ namespace Svanesjo.MRIoT.GameLogic
 
         private IEnumerator Startup()
         {
-            Debug.Log($"LampDemo Startup waiting for {minimumConnectedBeforeStart} devices to connect");
+            _logger.Log($"Startup waiting for {minimumConnectedBeforeStart} devices to connect");
             while (true)
             {
                 // yield return null;
                 yield return new WaitForSeconds(5);
                 var devices = _exactManager.GetConnectedDevices();
                 var count = devices.Count;
-                Debug.Log($"LampDemo Startup: {count} connected, {minimumConnectedBeforeStart} required");
+                _logger.Log($"Startup: {count} connected, {minimumConnectedBeforeStart} required");
                 if (count >= minimumConnectedBeforeStart)
                 {
                     Restart();
                     break;
                 }
             }
-            Debug.Log("LampDemo Startup complete");
+            _logger.Log("Startup complete");
         }
 
         private void Restart()
         {
-            Debug.Log("LampDemo running restart");
+            _logger.Log("running restart");
             StopAllCoroutines();
 
             var devices = _exactManager.GetConnectedDevices();
@@ -70,7 +73,7 @@ namespace Svanesjo.MRIoT.GameLogic
 
             if (devices.Count < minimumConnectedBeforeStart)
             {
-                Debug.Log("LampDemo Not enough devices to start, returning to startup and waiting for additional devices");
+                _logger.Log("Not enough devices to start, returning to startup and waiting for additional devices");
                 _lampOn = false;
                 _devices = new Device[] { };
                 StartCoroutine(Startup());
@@ -97,7 +100,7 @@ namespace Svanesjo.MRIoT.GameLogic
                     SetDeviceRoleAndColor(_devices[0], TileLampRole.ToggleLamp, lampColor);
                     break;
                 default:
-                    throw new Exception($"LampDemo Unsupported minimumConnectedBeforeStart: {devices.Count} connected, {minimumConnectedBeforeStart} required");
+                    throw new Exception($"Unsupported minimumConnectedBeforeStart: {devices.Count} connected, {minimumConnectedBeforeStart} required");
             }
 
             StartCoroutine(CheckConnections(count));
@@ -114,14 +117,14 @@ namespace Svanesjo.MRIoT.GameLogic
             var logic = device.GetComponent<TileLampDevice>();
             if (logic is null)
             {
-                Debug.LogWarning($"LampDemo Logic component not found on device '{device}'");
+                _logger.LogWarning($"Logic component not found on device '{device}'");
                 return;
             }
             // TODO: Set lamp state in network
             switch (_devices.Length)
             {
                 case 0:
-                    Debug.Log("LampDemo No devices registered...");
+                    _logger.Log("No devices registered...");
                     return;
                 case 1:
                     if (device == _devices[0])
@@ -142,7 +145,7 @@ namespace Svanesjo.MRIoT.GameLogic
 
         private void ToggleLamp()
         {
-            Debug.Log($"LampDemo toggle lamp '{_devices[0]}'");
+            _logger.Log($"toggle lamp '{_devices[0]}'");
             if (_lampOn)
             {
                 TurnOffLight(_devices[0]);
@@ -155,7 +158,7 @@ namespace Svanesjo.MRIoT.GameLogic
 
         private void TurnOnLight(Device device, Color color, float intensity)
         {
-            Debug.Log($"LampDemo turn on light '{device}' ({color}, {intensity})");
+            _logger.Log($"turn on light '{device}' ({color}, {intensity})");
             if (device == _devices[0])
             {
                 _lampOn = true;
@@ -165,7 +168,7 @@ namespace Svanesjo.MRIoT.GameLogic
 
         private void TurnOffLight(Device device)
         {
-            Debug.Log($"LampDemo turn off light '{device}'");
+            _logger.Log($"turn off light '{device}'");
             if (_devices.Length > 0 && device == _devices[0])
             {
                 _lampOn = false;
@@ -181,7 +184,7 @@ namespace Svanesjo.MRIoT.GameLogic
             {
                 var connectedNow = _exactManager.GetConnectedDevices()!;
                 int count = connectedNow.Count;
-                Debug.Log($"LampDemo CheckConnections: {count} currently connected, was {connectedAtRestart} at last restart");
+                _logger.Log($"CheckConnections: {count} currently connected, was {connectedAtRestart} at last restart");
                 if (count < minimumConnectedBeforeStart || count > connectedAtRestart)
                 {
                     Restart();
