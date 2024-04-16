@@ -42,17 +42,17 @@ namespace Svanesjo.MRIoT.Utility
 
         public void Log(string message)
         {
-            LogStr($"DEBUG; {_type.Name}; {DateTime.Now}; {message}");
+            LogStr($"DEBUG; {_type.Name}; {message}");
         }
 
         public void LogWarning(string message)
         {
-            LogStr($"WARNING; {_type.Name}; {DateTime.Now}; {message}");
+            LogStr($"WARNING; {_type.Name}; {message}");
         }
 
         public void LogError(string message)
         {
-            LogStr($"ERROR; {_type.Name}; {DateTime.Now}; {message}");
+            LogStr($"ERROR; {_type.Name}; {message}");
         }
 
         public void Flush()
