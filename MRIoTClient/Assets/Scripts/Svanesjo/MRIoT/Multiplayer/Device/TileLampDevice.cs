@@ -114,8 +114,8 @@ namespace Svanesjo.MRIoT.Multiplayer.Device
             representation.LampStateChanged += LampStateChanged;
             representation.VirtualTapHappened += VirtualTapHappened;
 
-            // TODO: Call an initialize-method instead? Encapsulation?
-            GetComponent<NetworkedColorRing>().networkColorRing = representation.GetComponent<ColorRingRepresentation>();
+            GetComponent<NetworkedColorRing>()
+                .Initialize(representation.GetComponent<ColorRingRepresentation>());
         }
     }
 }

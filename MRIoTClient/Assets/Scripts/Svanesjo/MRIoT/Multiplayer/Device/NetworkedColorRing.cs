@@ -8,13 +8,18 @@ namespace Svanesjo.MRIoT.Multiplayer.Device
 {
     public class NetworkedColorRing : ColorRingBase
     {
-        public ColorRingRepresentation? networkColorRing;
+        private ColorRingRepresentation? _colorRing;
+
+        public void Initialize(ColorRingRepresentation colorRingRepresentation)
+        {
+            _colorRing = colorRingRepresentation;
+        }
 
         public override void SetUniformColor(Color color)
         {
-            if (networkColorRing != null)
+            if (_colorRing != null)
             {
-                networkColorRing.SetUniformColor(color);
+                _colorRing.SetUniformColor(color);
             }
         }
 
