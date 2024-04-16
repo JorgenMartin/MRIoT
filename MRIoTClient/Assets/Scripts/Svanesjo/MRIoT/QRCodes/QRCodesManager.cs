@@ -40,10 +40,10 @@ namespace Svanesjo.MRIoT.QRCodes
         public bool autoStartQRTracking = true;
         public bool IsTrackerRunning { get; private set; }
         public bool IsSupported { get; private set; }
-        public bool runningEvaluation = false;
+        public bool runningEvaluation; // = false;
 
         public ILogger Logger { get; private set; } = new DebugLogger(typeof(QRCodesManager));
-        [SerializeField] private string defaultFileName = "QRTracking0001.log";
+        [SerializeField] private string defaultLoggerName = "QREvaluation0001";
         private bool _firstQRLog = true;
 
         public event EventHandler<bool>? QRCodesTrackingStateChanged;
@@ -53,14 +53,14 @@ namespace Svanesjo.MRIoT.QRCodes
         private readonly SortedDictionary<string, QRCode> _qrCodesList = new();
 
         private QRCodeWatcher? _qrTracker;
-        private bool _capabilityInitialized = false;
+        private bool _capabilityInitialized; // = false;
         private QRCodeWatcherAccessStatus _accessStatus;
         private Task<QRCodeWatcherAccessStatus>? _capabilityTask;
 
         private AudioSource _audioSource = null!;
-        private bool _popped = false;
-        private Vector3? _lastCameraPosition = null;
-        private Quaternion? _lastCameraRotation = null;
+        private bool _popped; // = false;
+        private Vector3? _lastCameraPosition; // = null;
+        private Quaternion? _lastCameraRotation; // = null;
 
         private void LogQR(QRCode code, bool pop = true)
         {
@@ -131,8 +131,8 @@ namespace Svanesjo.MRIoT.QRCodes
 
             if (runningEvaluation)
             {
-                var filePath = FileLogger.NextAvailableFilePath(Application.persistentDataPath, defaultFileName);
-                Logger = new FileLogger(typeof(QRCodesManager), filePath);
+                var dirPath = FileLogger.NextAvailableDirectory(Application.persistentDataPath, defaultLoggerName);
+                Logger = new FileLogger(typeof(QRCodesManager), dirPath);
             }
 
             Logger.Log("finished Start");

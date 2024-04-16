@@ -72,7 +72,7 @@ namespace Svanesjo.MRIoT.QRCodes
         {
             var qrLogger = QRCodesManager.Instance.Logger;
             if (qrLogger is FileLogger fileLogger)
-                _logger = fileLogger.CreateSubLogger(typeof(QRVisualSpawner));
+                _logger = fileLogger.CreateSibling(typeof(QRVisualSpawner));
 
             _logger.Log("start");
 

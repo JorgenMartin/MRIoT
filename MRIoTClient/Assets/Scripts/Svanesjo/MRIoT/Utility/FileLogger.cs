@@ -9,23 +9,30 @@ namespace Svanesjo.MRIoT.Utility
     public class FileLogger : ILogger
     {
         private readonly Type _type;
+        private readonly string _directory;
         private readonly string _filePath;
         private Stream? _stream;
         private StreamWriter? _writer;
+        private const string Extension = ".log";
 
-        public FileLogger(Type type, string filePath)
+        public FileLogger(Type type, string directory)
         {
             _type = type;
-            _filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
+            _directory = directory;
+            _filePath = Path.Combine(directory, type.Name + Extension);
         }
 
-        public FileLogger CreateSubLogger(Type type)
+        public FileLogger CreateSibling(Type type)
         {
-            return new FileLogger(type, Path.Combine(_filePath, type.Name + ".log"));
+            return new FileLogger(type, _directory);
         }
 
         private void EnsureOpenWriter()
         {
+            // If necessary, create directory
+            if (!Directory.Exists(_directory))
+                Directory.CreateDirectory(_directory);
+
             if (_writer != null) return;
             _stream ??= new FileStream(_filePath, FileMode.Append, FileAccess.Write, FileShare.Write);
             _writer = new StreamWriter(_stream, Encoding.UTF8);
@@ -66,32 +73,33 @@ namespace Svanesjo.MRIoT.Utility
             _stream?.Close();
         }
 
-        public static string NextAvailableFilePath(string directory, string defaultFileName)
+        public static string NextAvailableDirectory(string parentDirectory, string defaultDirectoryName)
         {
-            var fileName = defaultFileName;
-            var filePath = Path.Combine(directory, fileName);
-            while (File.Exists(filePath))
+            var dirName = defaultDirectoryName;
+            var dirPath = Path.Combine(parentDirectory, dirName);
+            while (Directory.Exists(dirPath) || File.Exists(dirPath))
             {
-                var start = fileName.IndexOf('0');
-                var end = fileName.IndexOf('.');
-                if (start < 0 || end > fileName.Length || start >= end)
+                var start = dirName.IndexOf('0');
+                var end = dirName.IndexOf('.');
+                if (end == -1) end = dirName.Length;
+                if (start < 0 || end > dirName.Length || start >= end)
                     throw new IndexOutOfRangeException();
-                var intString = fileName.Substring(start, end - start);
+                var intString = dirName.Substring(start, end - start);
 
                 var parsed = int.TryParse(intString, out var val);
                 if (!parsed)
                     throw new FormatException(
-                        "Could not parse file name, should be '[A-Za-z]*[0-9]+\\.[A-Za-z0-9]+'");
+                        "Could not parse directory name, should be '[A-Za-z]*[0-9]+[\\.[A-Za-z0-9]+]{0,1}'");
 
                 var newString = $"{(val + 1).ToString($"D{intString.Length}")}";
                 if (newString.Length > intString.Length)
-                    throw new IndexOutOfRangeException("Incrementing would extend the file name!");
+                    throw new IndexOutOfRangeException("Incrementing would change the length of the directory name!");
 
-                fileName = $"{fileName[..start]}{newString}{fileName[end..]}";
-                filePath = Path.Combine(directory, fileName);
+                dirName = $"{dirName[..start]}{newString}{dirName[end..]}";
+                dirPath = Path.Combine(parentDirectory, dirName);
             }
 
-            return filePath;
+            return dirPath;
         }
     }
 }
