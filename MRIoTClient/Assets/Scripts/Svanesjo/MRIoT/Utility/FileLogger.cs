@@ -13,7 +13,7 @@ namespace Svanesjo.MRIoT.Utility
         private readonly string _filePath;
         private Stream? _stream;
         private StreamWriter? _writer;
-        private const string Extension = ".log";
+        private const string Extension = ".csv";
 
         public FileLogger(Type type, string directory)
         {

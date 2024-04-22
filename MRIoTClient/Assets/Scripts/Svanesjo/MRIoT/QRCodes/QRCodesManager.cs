@@ -42,6 +42,7 @@ namespace Svanesjo.MRIoT.QRCodes
         public bool IsSupported { get; private set; }
         public bool runningEvaluation; // = false;
 
+        [SerializeField] private Vector3 camPosCorrection = new(0, 1.6f, 0);
         public ILogger Logger { get; private set; } = new DebugLogger(typeof(QRCodesManager));
         [SerializeField] private string defaultLoggerName = "QREvaluation0001";
         private bool _firstQRLog = true;
@@ -89,7 +90,7 @@ namespace Svanesjo.MRIoT.QRCodes
                 camRotStr = camRot.ToString("F7");
             }
 
-            Logger.Log($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {camPosStr}; {camRotStr}; {distanceStr}; {diffPosStr}; {diffRotStr}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}, {code.LastDetectedTime}");
+            Logger.Log($"{code.Id}; {code.SpatialGraphNodeId}; {pose.position.ToString("F7")}; {pose.rotation.ToString("F7")}; {camPosStr}; {camRotStr}; {distanceStr}; {diffPosStr}; {diffRotStr}; {code.Version}; {code.PhysicalSideLength}; {code.RawDataSize}; {code.Data}; {code.LastDetectedTime}");
         }
 
         public Guid GetIdForQRCode(string qrCodeData)
@@ -272,7 +273,7 @@ namespace Svanesjo.MRIoT.QRCodes
             if (cam != null)
             {
                 var camTransform = cam.transform;
-                _lastCameraPosition = camTransform.position;
+                _lastCameraPosition = camTransform.position + camPosCorrection;
                 _lastCameraRotation = camTransform.rotation;
             }
 
