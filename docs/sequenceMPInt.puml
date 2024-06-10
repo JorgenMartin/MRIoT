@@ -7,24 +7,34 @@ box "RealWorld" #LightPink
 end box
 
 box "Host <<Microsoft HoloLens 2>>" #LightGreen
-    participant ExactManager as Exact
-    participant Game
-    participant NetworkDevice as ND
-    participant NetworkThing as NTHL
+    ' participant ExactManager as Exact
+    participant GameLogic as Game
+    participant MultiplayerDevice as ND
+    participant MultiplayerRepresentation as NTHL
 end box
 
 box "Client <<Meta Quest 3>>" #LightBlue
-    participant NetworkThing as NTMQ
+    participant MultiplayerRepresentation as NTMQ
 end box
 
+rnote across
+    Using <<Tap>> for interaction events
+    Using <<VirtualTapHappened>> for the event fired by MultiplayerRepresentation
+endnote
 
 == Physical Tap ==
 
-User -> PD : Tap
-PD -> ND : [MQTT] /exact/<mac>/event/imu/tapped
+User -> PD : <<Tap>>
+group Handled by Unity-Things: Simplified Overview
+    PD -> ND : [MQTT] /exact/<mac>/event/imu/tapped
+    ND -> ND : <<Tap>>
+end
+ND -> ND : OnTap()
 ND -> Game : OnTapped(device)
 Game -> ND : SetColor(color)
-ND -> PD : [MQTT] /exact/<mac>/action/led_ring/set_color_all_leds "255/0/255"
+group Handled by Unity-Things: Simplified Overview
+    ND -> PD : [MQTT] /exact/<mac>/action/led_ring/set_color_all_leds "255/0/255"
+end
 
 'over ND, NTMQ
 group ref: Setting color
@@ -36,12 +46,12 @@ end
 ||100||
 == Virtual Tap on HoloLens ==
 
-rnote across
-    Using `<<Select>>` for the event when a user interacts with the virtual object
-    Using `<<VirtualTapHappened>>` for the event fired by NetworkThing
-endnote
+' rnote across
+'     Using `<<Select>>` for the event when a user interacts with the virtual object
+'     Using `<<VirtualTapHappened>>` for the event fired by MultiplayerRepresentation
+' endnote
 
-User -> NTHL : <<Select>>
+User -> NTHL : <<Tap>>
 NTHL -> NTHL : VirtualTap()
 NTHL -> ND : <<VirtualTapHappened>>
 
@@ -50,7 +60,9 @@ group ref: VirtualTapHappened handling
     ND -> ND : OnTap()
     ND -> Game : OnTapped(device)
     Game -> ND : SetColor(color)
-    ND -> PD : [MQTT] /exact/<mac>/action/led_ring/set_color_all_leds "0/0/0"
+    group Handled by Unity-Things: Simplified Overview
+        ND -> PD : [MQTT] /exact/<mac>/action/led_ring/set_color_all_leds "0/0/0"
+    end
     hnote over ND, NTMQ #GoldenRod
         Same as 'ref: Setting color' in 'Physical Tap'
     endnote
@@ -59,9 +71,9 @@ end
 ||100||
 == Virtual Tap on Meta Quest ==
 
-User -> NTMQ : <<Select>>
+User -> NTMQ : <<Tap>>
 NTMQ -> NTMQ : VirtualTap()
-NTMQ -> NTHL : VirtualTapServerRpc()
+NTMQ -> NTHL : [NGO] VirtualTapServerRpc()
 NTHL -> NTHL : VirtualTap()
 NTHL -> ND : <<VirtualTapHappened>>
 

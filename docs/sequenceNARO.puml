@@ -19,9 +19,12 @@ box "Client <<Meta Quest 3>>" #LightBlue
     participant PocketDetector as PDClient
 end box
 
+rnote across
+    Using <<X>> for events, including MQTT messages
+endnote
 
-User -> Ball : <Pockets>
-Ball -> PDClient : <Collide>
+User -> Ball : <<Pockets>>
+Ball -> PDClient : <<Collide>>
 PDClient -> PDClient : OnTriggerEnter(ball)
 PDClient -> NPClient : Scored(ball, pocket)
 NPClient -> NPHost : ScoredServerRPC(ball, pocket)
@@ -29,30 +32,30 @@ NPHost -> NPHost : ScoredInternal(ball, pocket)
 NPHost -> Controller : Scored(ball, pocket)
 Controller -> Controller : ScoredCoroutine(pocket, ball)
 Controller -> DT : Scored(ball)
-rnote over DT
-    Determines pulsing parameters
-    (E.g. colors and time)
-endnote
+' rnote over DT
+'     Determines pulsing parameters
+'     (E.g. colors and time)
+' endnote
 DT -> DT : StartPulsing(color)
 group Handled by Unity-Things: Simplified overview
-    rnote over DT
-        Various calls handled by Unity-Things
-    endnote
+    ' rnote over DT
+    '     Various calls handled by Unity-Things
+    ' endnote
     DT -> Exact : SendAction("start_pulse", payload)
-    Exact -> Tile : <MQTT message>
+    Exact -> Tile : <<MQTT message>>
 end
-Tile -> Tile : <Starts pulsing>
-Controller -> Controller : <yield WaitForSeconds(time)>
+Tile -> Tile : <<Starts pulsing>>
+Controller -> Controller : <<yield WaitForSeconds(time)>>
 Controller -> DT : ResetScored()
 DT -> DT : ResetModifications()
 DT -> DT : StopPulsing()
 group Handled by Unity-Things: Simplified overview
-    rnote over DT
-        Various calls handled by Unity-Things
-    endnote
+    ' rnote over DT
+    '     Various calls handled by Unity-Things
+    ' endnote
     DT -> Exact : SendAction("stop_pulse")
-    Exact -> Tile : <MQTT message>
+    Exact -> Tile : <<MQTT message>>
 end
-Tile -> Tile : <Stops pulsing>
+Tile -> Tile : <<Stops pulsing>>
 
 @enduml

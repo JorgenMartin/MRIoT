@@ -1,0 +1,67 @@
+@startuml sequenceDiagramSUInt
+
+!pragma teoz true
+box "RealWorld" #LightPink
+    actor User
+    participant Tile as PD
+end box
+
+box "Host <<Microsoft HoloLens 2>>" #LightGreen
+    ' participant ExactManager as Exact
+    participant GameLogic as Game
+    participant DigitalTwin as DT
+end box
+
+rnote across
+    Using <<Tap>> for interaction events
+endnote
+
+== Physical Tap ==
+
+User -> PD : <<Tap>>
+group Handled by Unity-Things: Simplified Overview
+    PD -> DT : [MQTT] /exact/<mac>/event/imu/tapped
+    DT -> DT : <<Tap>>
+end
+DT -> DT : OnTap()
+DT -> Game : OnTapped(device)
+Game -> DT : SetColor(color)
+group Handled by Unity-Things: Simplified Overview
+    DT -> PD : [MQTT] /exact/<mac>/action/led_ring/set_color_all_leds "255/0/255"
+end
+
+'over ND, NTMQ
+' group ref: Setting color
+    DT -> DT : SetUniformColor(color)
+    DT -> DT : _color = color
+' end
+
+||100||
+== Virtual Tap on HoloLens ==
+
+' rnote across
+'     Using `<<Select>>` for the event when a user interacts with the virtual object
+'     Using `<<VirtualTapHappened>>` for the event fired by the DigitalTwin
+' endnote
+
+User -> DT : <<Tap>>
+DT -> DT : OnTap()
+' DT -> DT : <<VirtualTapHappened>>
+
+'over PD, NTMQ
+' group ref: VirtualTapHappened handling
+    ' DT -> DT : OnTap()
+    DT -> Game : OnTapped(device)
+    Game -> DT : SetColor(color)
+    group Handled by Unity-Things: Simplified Overview
+        DT -> PD : [MQTT] /exact/<mac>/action/led_ring/set_color_all_leds "0/0/0"
+    end
+    ' hnote over DT #GoldenRod
+    '     Same as 'ref: Setting color' in 'Physical Tap'
+    ' endnote
+    DT -> DT : SetUniformColor(color)
+    DT -> DT : _color = color
+' end
+
+@end
+

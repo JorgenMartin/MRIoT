@@ -1,0 +1,22 @@
+@startuml classDiagram
+
+title IoT Classes
+
+package TLD as "TileLampDevice" {
+    component SpatialGraphNodeTracker
+    component TileLampDevice
+    component Device
+    component LedRing
+    component IMU
+    component NetworkedColorRing
+}
+
+package TLR as "TileLampRepresentation" {
+    component NetworkObject
+    component NetworkTransform
+    component TileLampRepresentation
+    component ColorRingRepresentation
+    component MeshColorChanger
+}
+
+@enduml
